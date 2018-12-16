@@ -1,0 +1,4 @@
+#Tue Oct 30 17:36:34 GMT 2018
+base.0=C\:\\Users\\Pieter\\Documents\\GitHub\\TeSP-PSI-PL2-07-App-Android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
