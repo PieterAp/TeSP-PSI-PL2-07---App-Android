@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte.modelo;
 
+
 import java.util.Date;
 
 public class Campanha
@@ -19,5 +20,43 @@ public class Campanha
         this.campanhaDescricao = campanhaDescricao;
     }
 
+    public long getIdCampanha() {
+        return idCampanha;
+    }
 
+    public void setIdCampanha(long idCampanha) {
+        this.idCampanha = idCampanha;
+    }
+
+    public String getCampanhaNome() {
+        return campanhaNome;
+    }
+
+    public void setCampanhaNome(String campanhaNome) {
+        this.campanhaNome = campanhaNome;
+    }
+
+    public String getCampanhaDescricao() {
+        return campanhaDescricao;
+    }
+
+    public void setCampanhaDescricao(String campanhaDescricao) {
+        this.campanhaDescricao = campanhaDescricao;
+    }
+
+    public Date getCampanhaDataInicio() {
+        return campanhaDataInicio;
+    }
+
+    public void setCampanhaDataInicio(Date campanhaDataInicio) {
+        this.campanhaDataInicio = campanhaDataInicio;
+    }
+
+    public Date getCampanhaDataFim() {
+        return campanhaDataFim;
+    }
+
+    public void setCampanhaDataFim(Date campanhaDataFim) {
+        this.campanhaDataFim = campanhaDataFim;
+    }
 }
