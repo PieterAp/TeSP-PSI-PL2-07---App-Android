@@ -5,15 +5,15 @@ public class CategoriaChild {
 
     private long idchild;
     private String childNome;
-    private String categorisaDescricao;
+    private String childDescricao;
     private long categoria_idcategorias;
     private Integer childEstado;
 
-    public CategoriaChild (long idchild, String childNome, String categorisaDescricao, long categoria_idcategorias, Integer childEstado)
+    public CategoriaChild (long idchild, String childNome, String childDescricao, long categoria_idcategorias, Integer childEstado)
     {
         this.idchild = idchild;
         this.childNome = childNome;
-        this.categorisaDescricao = categorisaDescricao;
+        this.childDescricao = childDescricao;
         this.categoria_idcategorias = categoria_idcategorias;
         this.childEstado = childEstado;
     }
@@ -34,12 +34,12 @@ public class CategoriaChild {
         this.childNome = childNome;
     }
 
-    public String getCategorisaDescricao() {
-        return categorisaDescricao;
+    public String getChildDescricao() {
+        return childDescricao;
     }
 
     public void setCategorisaDescricao(String categorisaDescricao) {
-        this.categorisaDescricao = categorisaDescricao;
+        this.childDescricao = categorisaDescricao;
     }
 
     public long getCategoria_idcategorias() {

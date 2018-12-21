@@ -20,8 +20,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
     private UserRegisterTask mAuthTask = null;
@@ -134,12 +143,19 @@ public class RegisterActivity extends AppCompatActivity {
         String firstName = mFirstNameView.getText().toString();
         String lastName = mLastNameView.getText().toString();
         String email = mEmailView.getText().toString();
-        long nif = Integer.parseInt(mNifView.getText().toString());
-        Date dateOfBirth = (Date) mDateOfBirthView.getText();
+
+        int nif = 0;
+        try{
+            nif = Integer.parseInt(mNifView.getText().toString());
+        }catch(NumberFormatException e){
+            mNifView.setError("Can not be empty.");
+
+        }
+        String dateString = mDateOfBirthView.getText().toString();
+
         String address = mAddressView.getText().toString();
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
 
@@ -148,16 +164,58 @@ public class RegisterActivity extends AppCompatActivity {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-        }else if (password.length() < 4) {
+        }else if (password.length() < 6) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }else if (!isPasswordValid(password)) {
-            mPasswordView.setError("Password is not safe!");
             focusView = mPasswordView;
             cancel = true;
         }
 
+        if (firstName.length()<3){
+            mFirstNameView.setError("First name is to short.");
+            focusView = mFirstNameView;
+            cancel = true;
+        }
+        if (lastName.length()<3){
+            mLastNameView.setError("Last name is to short.");
+            focusView = mLastNameView;
+            cancel = true;
+        }
+        if (address.length()<5){
+            mAddressView.setError("Adress is to short.");
+            focusView = mAddressView;
+            cancel = true;
+        }
+        if (username.length()<3){
+            mUsernameView.setError("Username is to short.");
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
+        try {
+            //date comes in DD/MM/YYYY - String
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = sdf.parse(dateString); // convert string to date
+            sdf.applyPattern("yyyy/MM/dd"); // convert to yyyy/mm/dd
+
+            //convert to origin YYYY-MM-DD
+            SimpleDateFormat origin = new SimpleDateFormat("yyyy/MM/dd");
+            Date dateOrigin = origin.parse(sdf.format(date)); // convert string to date
+            sdf.applyPattern("yyyy-MM-dd");// convert to yyyy-mm-dd
+            //sdf.format(dateOrigin) convert date to string
+
+            int age = getAge(sdf.format(dateOrigin)); // send string, get int
+            System.out.println("converted age2 " +age);
+            if (age<12){
+                mDateOfBirthView.setError("You must be that least 12 years old.");
+                focusView = mDateOfBirthView;
+                cancel = true;
+            }
+
+        } catch (ParseException e) {
+            mDateOfBirthView.setError("Something went wrong.");
+            focusView = mDateOfBirthView;
+            cancel = true;
+        }
 
         // Email validation
         if (TextUtils.isEmpty(email)) {
@@ -168,6 +226,12 @@ public class RegisterActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
+        }
+        int length = String.valueOf(nif).length();
+        if (!(length == 9)){
+            mNifView.setError("Only 9 digits");
+            cancel = true;
+            focusView = mNifView;
         }
 
         if (cancel) {
@@ -193,6 +257,24 @@ public class RegisterActivity extends AppCompatActivity {
         return Patterns.EMAIL_ADDRESS.matcher(password).matches();
     }
 
+    private int getAge(String birthday){
+        try{
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = format.parse(birthday);
+            System.out.println(format.format(date));
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.get(Calendar.YEAR);
+
+            return Calendar.getInstance().get(Calendar.YEAR)-calendar.get(Calendar.YEAR);
+
+        } catch (ParseException e) {
+            return 0;
+        }
+
+    }
 
 
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
@@ -223,10 +305,8 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-
             if (success) {
                 finish();
-
                 Intent intent = new Intent (getApplication(), HomeActivity.class);
                 //intent.putExtra(HomeActivity.DADOS_EMAIL, mEmail);
                 startActivity(intent);

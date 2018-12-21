@@ -82,8 +82,8 @@ android:layout_weight="5">
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="@string/prompt_firstName"
                             android:maxLines="1"
+                            android:hint="@string/prompt_firstName"
                             android:singleLine="true"
                             android:textColor="@android:color/white"
                             android:textColorHint="@android:color/white"
@@ -176,14 +176,14 @@ android:layout_weight="5">
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:editable="false"
+                            android:focusable="false"
                             android:hint="@string/prompt_dateOfBirth"
-                            android:inputType="none"
+                            android:inputType="date"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:textColor="@android:color/white"
                             android:textColorHint="@android:color/white"
-                            android:textSize="14sp"
-                            android:focusable="false"/>
+                            android:textSize="14sp" />
 
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>

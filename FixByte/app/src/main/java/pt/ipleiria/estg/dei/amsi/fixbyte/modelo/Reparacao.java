@@ -11,8 +11,8 @@ public class Reparacao {
     private String reparacaoNome;
     private String reparacaoEstado;
     private long reparacaoNumero;
-    private Date reparacaoData;
-    private Date reparacaoDataConcluido;
+    private String reparacaoData;
+    private String reparacaoDataConcluido;
     private String reparacaoDescricao;
     private long user_iduser;
 
@@ -20,7 +20,7 @@ public class Reparacao {
 
 
 
-    public Reparacao(long idreparacao, String reparacaoNome,Date reparacaoData,Date reparacaoDataConcluido, String reparacaoEstado, long reparacaoNumero, String reparacaoDescricao, long user_iduser) {
+    public Reparacao(long idreparacao, String reparacaoNome,String reparacaoData,String reparacaoDataConcluido, String reparacaoEstado, long reparacaoNumero, String reparacaoDescricao, long user_iduser) {
         this.idreparacao = idreparacao;
         this.reparacaoNome = reparacaoNome;
         this.reparacaoEstado = reparacaoEstado;
@@ -66,19 +66,19 @@ public class Reparacao {
         this.reparacaoNumero = reparacaoNumero;
     }
 
-    public Date getReparacaoData() {
+    public String getReparacaoData() {
         return reparacaoData;
     }
 
-    public void setReparacaoData(Date reparacaoData) {
+    public void setReparacaoData(String reparacaoData) {
         this.reparacaoData = reparacaoData;
     }
 
-    public Date getReparacaoDataConcluido() {
+    public String getReparacaoDataConcluido() {
         return reparacaoDataConcluido;
     }
 
-    public void setReparacaoDataConcluido(Date reparacaoDataConcluido) {
+    public void setReparacaoDataConcluido(String reparacaoDataConcluido) {
         this.reparacaoDataConcluido = reparacaoDataConcluido;
     }
 

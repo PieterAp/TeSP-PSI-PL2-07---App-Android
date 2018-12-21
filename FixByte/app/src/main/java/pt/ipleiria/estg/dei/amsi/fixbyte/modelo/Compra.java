@@ -1,21 +1,25 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte.modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Compra {
 
     private long idCompra;
-    private Date compraData;
+    private String compraData;
     private long user_iduser;
     private Float compraValor;
     private Integer compraEstado;
 
 
-    public Compra (long idCompra, Date compraData, long user_iduser, Float compraValor, Integer compraEstado)
+    public Compra (long idCompra, String compraData, long user_iduser, Float compraValor, Integer compraEstado)
     {
         this.idCompra = idCompra;
+
         Date date = new Date();
-        this.compraData = date;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        this.compraData = df.format(date);
         this.user_iduser = user_iduser;
         this.compraValor = compraValor;
         this.compraEstado = compraEstado;
@@ -30,11 +34,11 @@ public class Compra {
         this.idCompra = idCompra;
     }
 
-    public Date getCompraData() {
+    public String getCompraData() {
         return compraData;
     }
 
-    public void setCompraData(Date compraData) {
+    public void setCompraData(String compraData) {
         this.compraData = compraData;
     }
 

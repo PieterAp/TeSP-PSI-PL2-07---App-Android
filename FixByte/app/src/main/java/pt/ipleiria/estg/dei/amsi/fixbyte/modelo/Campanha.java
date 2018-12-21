@@ -8,10 +8,10 @@ public class Campanha
     private long idCampanha;
     private String campanhaNome;
     private String campanhaDescricao;
-    private Date campanhaDataInicio;
-    private Date campanhaDataFim;
+    private String campanhaDataInicio;
+    private String campanhaDataFim;
 
-    public Campanha (long id, String campanhaNome, String campanhaDescricao, Date campanhaDataInicio, Date campanhaDataFim)
+    public Campanha (long id, String campanhaNome, String campanhaDescricao, String campanhaDataInicio, String campanhaDataFim)
     {
         this.idCampanha = id;
         this.campanhaNome = campanhaNome;
@@ -44,19 +44,19 @@ public class Campanha
         this.campanhaDescricao = campanhaDescricao;
     }
 
-    public Date getCampanhaDataInicio() {
+    public String getCampanhaDataInicio() {
         return campanhaDataInicio;
     }
 
-    public void setCampanhaDataInicio(Date campanhaDataInicio) {
+    public void setCampanhaDataInicio(String campanhaDataInicio) {
         this.campanhaDataInicio = campanhaDataInicio;
     }
 
-    public Date getCampanhaDataFim() {
+    public String getCampanhaDataFim() {
         return campanhaDataFim;
     }
 
-    public void setCampanhaDataFim(Date campanhaDataFim) {
+    public void setCampanhaDataFim(String campanhaDataFim) {
         this.campanhaDataFim = campanhaDataFim;
     }
 }

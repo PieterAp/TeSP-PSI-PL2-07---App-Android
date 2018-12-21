@@ -8,13 +8,13 @@ public class Userdata {
     private String userNomeProprio;
     private String userApelido;
     private Integer userNIF;
-    private Date userDataNasc;
+    private String userDataNasc;
     private String userEstado;
     private String userMorada;
     private long user_id;
     private Integer userVisibilidade;
 
-    public Userdata(long iduser, String userNomeProprio, String userApelido, Integer userNIF, Date userDataNasc, String userEstado, String userMorada, long user_id, Integer userVisibilidade) {
+    public Userdata(long iduser, String userNomeProprio, String userApelido, Integer userNIF, String userDataNasc, String userEstado, String userMorada, long user_id, Integer userVisibilidade) {
         this.iduser = iduser;
         this.userNomeProprio = userNomeProprio;
         this.userApelido = userApelido;
@@ -58,11 +58,11 @@ public class Userdata {
         this.userNIF = userNIF;
     }
 
-    public Date getUserDataNasc() {
+    public String getUserDataNasc() {
         return userDataNasc;
     }
 
-    public void setUserDataNasc(Date userDataNasc) {
+    public void setUserDataNasc(String userDataNasc) {
         this.userDataNasc = userDataNasc;
     }
 
