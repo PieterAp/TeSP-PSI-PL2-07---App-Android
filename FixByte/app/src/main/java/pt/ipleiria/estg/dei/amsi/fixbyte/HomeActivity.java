@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -62,7 +63,10 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.itemSales:
-                        setFragment(salesFragment);
+                        //setFragment(salesFragment);
+                        Intent intent = new Intent(getApplication(), ListaCampanhasActivity.class);
+                        intent.putExtra(ListaCampanhasActivity.DADOS_EMAIL, "ola");
+                        startActivity(intent);
                         return true;
 
                     case R.id.itemCart:

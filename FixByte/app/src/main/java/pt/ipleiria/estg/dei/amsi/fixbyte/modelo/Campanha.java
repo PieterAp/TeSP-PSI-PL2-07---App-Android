@@ -11,13 +11,13 @@ public class Campanha
     private String campanhaDataInicio;
     private String campanhaDataFim;
 
-    public Campanha (long id, String campanhaNome, String campanhaDescricao, String campanhaDataInicio, String campanhaDataFim)
+    public Campanha (long idCampanha, String campanhaNome, String campanhaDataInicio, String campanhaDescricao, String campanhaDataFim)
     {
-        this.idCampanha = id;
+        this.idCampanha = idCampanha;
         this.campanhaNome = campanhaNome;
         this.campanhaDataInicio = campanhaDataInicio;
-        this.campanhaDataFim = campanhaDataFim;
         this.campanhaDescricao = campanhaDescricao;
+        this.campanhaDataFim = campanhaDataFim;
     }
 
     public long getIdCampanha() {

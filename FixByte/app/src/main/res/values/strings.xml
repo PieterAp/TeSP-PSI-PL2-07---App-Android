@@ -46,4 +46,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Strings related to sales-->
+    <string name="salename">Name:</string>
+    <string name="saleDataInicio">Start date:</string>
+    <string name="saleDataFim">End date:</string>
+    <string name="imgSale">TODO</string>
+
 </resources>

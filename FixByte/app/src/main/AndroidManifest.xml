@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,6 +38,12 @@
             android:theme="@style/AppTheme.MenuMultiItem">
 
         </activity>
+        <activity android:name=".ListaCampanhasActivity"
+            android:parentActivityName=".HomeActivity"/>
+
+        <activity android:name=".DetalhesProdutosCampanha"
+            android:parentActivityName=".ListaCampanhasActivity"/>
+        DetalhesProdutosCampanha
         <activity
             android:name=".SampleActivity"
             android:label="@string/title_activity_sample"

@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -208,11 +210,20 @@ public class RegisterActivity extends AppCompatActivity {
             if (age<12){
                 mDateOfBirthView.setError("You must be that least 12 years old.");
                 focusView = mDateOfBirthView;
+
+                Context contexto = getApplicationContext();
+
+                Toast.makeText(contexto, "You must be that least 12 years old.", Toast.LENGTH_SHORT).show();
+
+                focusView = mDateOfBirthView;
                 cancel = true;
             }
 
         } catch (ParseException e) {
             mDateOfBirthView.setError("Something went wrong.");
+            Context contexto = getApplicationContext();
+
+            Toast.makeText(contexto, "Something went wrong", Toast.LENGTH_SHORT).show();
             focusView = mDateOfBirthView;
             cancel = true;
         }
