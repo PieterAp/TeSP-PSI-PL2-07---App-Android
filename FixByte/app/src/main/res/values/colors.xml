@@ -5,5 +5,5 @@
     //Color of phone top bar
     <color name="colorPrimaryDark">#FF502C</color>
     //Color of smth else which i still haven't discovered
-    <color name="colorAccent">#212121</color>
+    <color name="colorAccent">#9e9e9e</color>
 </resources>

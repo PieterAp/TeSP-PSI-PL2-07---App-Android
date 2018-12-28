@@ -70,6 +70,8 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.itemCart:
+                        Intent intent1 = new Intent(getApplication(), AccountActivity.class);
+                        startActivity(intent1);
                         setFragment(cartFragment);
                         return true;
 

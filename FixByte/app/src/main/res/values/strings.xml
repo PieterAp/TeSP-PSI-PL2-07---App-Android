@@ -52,4 +52,10 @@
     <string name="saleDataFim">End date:</string>
     <string name="imgSale">TODO</string>
 
+
+    <string name="action_editAccount">Edit account</string>
+    <string name="action_edit">Save</string>
+
+
+
 </resources>

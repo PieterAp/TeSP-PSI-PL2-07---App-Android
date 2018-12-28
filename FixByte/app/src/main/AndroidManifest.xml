@@ -41,6 +41,9 @@
         <activity android:name=".ListaCampanhasActivity"
             android:parentActivityName=".HomeActivity"/>
 
+        <activity android:name=".AccountActivity"
+            android:parentActivityName=".HomeActivity"/>
+        AccountActivity
         <activity android:name=".DetalhesProdutosCampanha"
             android:parentActivityName=".ListaCampanhasActivity"/>
         DetalhesProdutosCampanha
