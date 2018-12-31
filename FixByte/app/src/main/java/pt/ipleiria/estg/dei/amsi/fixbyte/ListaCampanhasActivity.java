@@ -87,13 +87,16 @@ public class ListaCampanhasActivity extends AppCompatActivity implements Campanh
     {
         if (listacampanhas!=null)
         {
+            if (lvlistView == null) {
+                lvlistView =  findViewById(R.id.listviewCampanhas);
+            }
             listacampanhasAdaptador = new ListaCampanhaAdaptador(this,listacampanhas);
             lvlistView.setAdapter(listacampanhasAdaptador);
         }
     }
 
     @Override
-    public void onUpdateListaLivrosBD(Campanha campanha, int operacao) {
+    public void onUpdateListaCampanhasBD(Campanha campanha, int operacao) {
 
     }
 }

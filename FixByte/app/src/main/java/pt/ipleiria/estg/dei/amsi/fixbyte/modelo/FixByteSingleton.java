@@ -23,7 +23,7 @@ public class FixByteSingleton implements CampanhasListener{
     private ArrayList<Campanha> campanhas;
     private CampanhaBDHelper campanhaBDHelper = null;
 
-    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
+    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas?access-token=gCbooY6tLxq1jk2S4hfi4y5bUVNzdG2Q ";
 
     private String mUrlAPILogin = "http://amsi.dei.estg.ipleiria.pt/api/auth/login";
 
@@ -74,8 +74,6 @@ public class FixByteSingleton implements CampanhasListener{
 
     public void adicionarCampanhasBD(ArrayList<Campanha> listaCampanhas)
     {
-
-        campanhaBDHelper.removeAllCampanhas();
         for (Campanha campanha : listaCampanhas){
             adicionarCampanhaBD(campanha);
         }
@@ -84,24 +82,30 @@ public class FixByteSingleton implements CampanhasListener{
 
         if (!isConnected){
             campanhas = campanhaBDHelper.getAllCampanhasBD();
-            //mais coisas
+            System.out.println("CAMPANHAS1: " + campanhas);
+
+            if (!campanhas.isEmpty()){
+                if(campanhasListener != null)
+                {
+                    campanhasListener.onRefreshListaCampanhas(campanhas);
+                }
+            }
+
 
         }else{
-
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICampanhas, null, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("--> RESPOSTA: " + response);
-
-
                     campanhas = FixByteJsonParser.parserJsonCampanhas(response,context);
-                    adicionarCampanhasBD(campanhas);
 
                     if(campanhasListener != null)
                     {
-                        campanhasListener.onRefreshListaCampanhas(campanhas);
+                        campanhaBDHelper.removeAllCampanhas();
+                        adicionarCampanhasBD(campanhas);
 
+                        campanhasListener.onRefreshListaCampanhas(campanhas);
                     }
                 }
             }, new Response.ErrorListener(){
@@ -158,7 +162,7 @@ public class FixByteSingleton implements CampanhasListener{
     }
 
     @Override
-    public void onUpdateListaLivrosBD(Campanha campanha, int operacao)
+    public void onUpdateListaCampanhasBD(Campanha campanha, int operacao)
     {
         switch (operacao){
             case 1: adicionarCampanhaBD(campanha);

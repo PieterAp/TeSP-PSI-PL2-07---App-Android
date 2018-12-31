@@ -62,7 +62,7 @@ public class ListaCampanhaAdaptador extends BaseAdapter {
         return convertView;
     }
 
-    public void refresh(ArrayList<Campanha> livros)
+    public void refresh(ArrayList<Campanha> campanhas)
     {
         this.campanhas=campanhas;
         notifyDataSetChanged();
@@ -83,11 +83,11 @@ public class ListaCampanhaAdaptador extends BaseAdapter {
 
         }
 
-        public void update (Campanha sale)
+        public void update (Campanha campanha)
         {
-            nome.setText(sale.getCampanhaNome());
-            dataInicio.setText(sale.getCampanhaDataInicio());
-            dataFim.setText(sale.getCampanhaDataFim());
+            nome.setText(campanha.getCampanhaNome());
+            dataInicio.setText(campanha.getCampanhaDataInicio());
+            dataFim.setText(campanha.getCampanhaDataFim());
      }
     }
 }

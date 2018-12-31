@@ -40,7 +40,7 @@ public class CompraprodutoBDHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         this.onCreate(db);
     }
-    public Compraproduto adicionarLivroBD(Compraproduto compraproduto){
+    public Compraproduto adicionarCompraProdutooBD(Compraproduto compraproduto){
 
         ContentValues values = new ContentValues();
         values.put(COMPRA_IDCOMPRAS, compraproduto.getCompra_idcompras());

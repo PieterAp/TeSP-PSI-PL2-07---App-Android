@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CampanhaBDHelper extends SQLiteOpenHelper {
@@ -32,8 +34,8 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
         String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 CAMPANHANOME    + " TEXT NOT NULL, " +
                 CAMPANHADATAINICIO     + " TEXT NOT NULL, " +
-                CAMPANHADATAFIM     + " TEXT NOT NULL, " +
-                CAMPANHADESCRICAO       + " TEXT NOT NULL " +
+                CAMPANHADESCRICAO     + " TEXT NOT NULL, " +
+                CAMPANHADATAFIM       + " TEXT NOT NULL " +
                 ")";
 
         db.execSQL(createCampanhatable);
@@ -49,8 +51,8 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(CAMPANHANOME, campanha.getCampanhaNome());
         values.put(CAMPANHADATAINICIO, campanha.getCampanhaDataInicio());
-        values.put(CAMPANHADATAFIM, campanha.getCampanhaDataFim());
         values.put(CAMPANHADESCRICAO, campanha.getCampanhaDescricao());
+        values.put(CAMPANHADATAFIM, campanha.getCampanhaDataFim());
 
         long id = this.database.insert(TABLE_NAME, null,values);
 
@@ -65,8 +67,8 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(CAMPANHANOME, campanha.getCampanhaNome());
         values.put(CAMPANHADATAINICIO, campanha.getCampanhaDataInicio());
-        values.put(CAMPANHADATAFIM, campanha.getCampanhaDataFim());
         values.put(CAMPANHADESCRICAO, campanha.getCampanhaDescricao());
+        values.put(CAMPANHADATAFIM, campanha.getCampanhaDataFim());
 
         return this.database.update(TABLE_NAME, values, "idCampanha = ?", new String[]{"" + campanha.getIdCampanha()})>0;
     }
@@ -77,19 +79,28 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
     public ArrayList<Campanha> getAllCampanhasBD(){
 
         ArrayList<Campanha> campanhas = new ArrayList<>();
-        Cursor cursor = this.database.query(TABLE_NAME,new String[]{"idCampanha", CAMPANHANOME,CAMPANHADATAINICIO,CAMPANHADATAFIM,CAMPANHADESCRICAO},null,null,null,null,null);
+        Cursor cursor = this.database.query(TABLE_NAME,new String[]{"idCampanha", CAMPANHANOME,CAMPANHADATAINICIO,CAMPANHADESCRICAO,CAMPANHADATAFIM},null,null,null,null,null);
 
         if (cursor.moveToFirst()){
             do{
-                Campanha nextCampanha = new Campanha(
-                        cursor.getLong(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4));
-                nextCampanha.setIdCampanha(cursor.getLong(0));
+                try {
+                    String endDateString = cursor.getString(4);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date endDatedate = format.parse(endDateString);
+                    if (System.currentTimeMillis() < endDatedate.getTime()){
+                        Campanha nextCampanha = new Campanha(
+                                cursor.getLong(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4));
+                        nextCampanha.setIdCampanha(cursor.getLong(0));
+                        campanhas.add(nextCampanha);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                campanhas.add(nextCampanha);
             }while(cursor.moveToNext());
 
         }

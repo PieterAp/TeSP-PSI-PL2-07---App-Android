@@ -6,5 +6,5 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 
 public interface CampanhasListener {
     void onRefreshListaCampanhas(ArrayList<Campanha> listacampanhas);
-    void onUpdateListaLivrosBD (Campanha livro, int operacao);
+    void onUpdateListaCampanhasBD (Campanha livro, int operacao);
 }
