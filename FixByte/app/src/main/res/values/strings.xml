@@ -6,6 +6,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -24,7 +25,7 @@
     <string name="prompt_nif">NIF</string>
     <string name="prompt_dateOfBirth">Date of birth</string>
     <string name="prompt_address">Address</string>
-    <string name="prompt_username">Username</string>
+
     <string name="prompt_cancel">CANCEL</string>
 
     <!-- Strings related to menuBottomNavigationItems -->
@@ -32,7 +33,6 @@
     <string name="bottom_categories">Categories</string>
     <string name="bottom_sales">Sales</string>
     <string name="bottom_cart">MyCart</string>
-
     <!-- Strings related to home -->
     <string name="asd"></string>
 

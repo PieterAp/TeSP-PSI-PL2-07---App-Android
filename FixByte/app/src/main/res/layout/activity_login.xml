@@ -69,17 +69,22 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/TextLabel">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/email"
+                    <EditText
+                        android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
+                        android:layout_weight="1"
+                        android:hint="@string/prompt_username"
+                        android:imeActionId="6"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"
+                        android:text="fdsfdsfds"
                         android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white" />
-
+                        android:textColorHint="@android:color/white"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -91,6 +96,7 @@
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="@string/prompt_password"
                         android:imeActionId="6"
                         android:imeActionLabel="@string/action_sign_in_short"
@@ -99,6 +105,7 @@
                         android:maxLines="1"
                         android:shadowColor="@android:color/black"
                         android:singleLine="true"
+                        android:text="dsadsadsa"
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white" />
 

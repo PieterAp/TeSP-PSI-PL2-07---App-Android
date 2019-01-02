@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
 public class FixByteJsonParser {
 
@@ -23,75 +24,81 @@ public class FixByteJsonParser {
     }
 
     //region campanhas
-        public static ArrayList<Campanha> parserJsonCampanhas (JSONArray response, Context context){
+    public static ArrayList<Campanha> parserJsonCampanhas (JSONArray response, Context context){
 
-            ArrayList<Campanha> tempListCampanha = new ArrayList<>();
-
-            try{
-                for (int i = 0; i< response.length();i++){
-                    JSONObject campanha = (JSONObject) response.get(i);
-
-                    long idCampanha     = campanha.getLong("idCampanha");
-                    String campanhaNome   = campanha.getString("campanhaNome");
-                    String campanhaDataInicio    = campanha.getString("campanhaDataInicio");
-                    String campanhaDescricao    = campanha.getString("campanhaDescricao");
-                    String campanhaDataFim         = campanha.getString("campanhaDataFim");
-
-                    Campanha auxCampanha = new Campanha(idCampanha,campanhaNome,campanhaDataInicio,campanhaDescricao,campanhaDataFim);
-                    tempListCampanha.add(auxCampanha);
-
-                }
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-            return tempListCampanha;
-
-        }
-        //endregion
-
-    //region produtoCampanha
-        public static ArrayList<ProdutoCampanha> parserJsonProdutosCampanha (JSONArray response, Context context){
-
-            ArrayList<ProdutoCampanha> tempListProdutoCampanha = new ArrayList<>();
-
-            try{
-                for (int i = 0; i< response.length();i++){
-                    JSONObject produtocampanha = (JSONObject) response.get(i);
-
-                    long idprodutocampanha     = produtocampanha.getLong("idprodutocampanha");
-                    Long produtos_idprodutos   = produtocampanha.getLong("produtos_idprodutos");
-                    Long campanha_idCampanha    = produtocampanha.getLong("campanha_idCampanha");
-                    Integer CampanhaPercentagem    = produtocampanha.getInt("CampanhaPercentagem");
-
-                    ProdutoCampanha auxProdutoCampanha = new ProdutoCampanha(idprodutocampanha,produtos_idprodutos,campanha_idCampanha,CampanhaPercentagem);
-                    tempListProdutoCampanha.add(auxProdutoCampanha);
-
-                }
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-            return tempListProdutoCampanha;
-
-        }
-
-    public static Campanha parserJsonProdutosCampanha (String response, Context context){
-
-        Campanha auxCampanha = null;
+        ArrayList<Campanha> tempListCampanha = new ArrayList<>();
 
         try{
-            JSONObject produtocampanha = new JSONObject(response);
+            for (int i = 0; i< response.length();i++){
+                JSONObject campanha = (JSONObject) response.get(i);
 
-            long idprodutocampanha     = produtocampanha.getLong("idprodutocampanha");
-            Long produtos_idprodutos   = produtocampanha.getLong("produtos_idprodutos");
-            Long campanha_idCampanha    = produtocampanha.getLong("campanha_idCampanha");
-            Integer CampanhaPercentagem    = produtocampanha.getInt("CampanhaPercentagem");
+                long idCampanha     = campanha.getLong("idCampanha");
+                String campanhaNome   = campanha.getString("campanhaNome");
+                String campanhaDataInicio    = campanha.getString("campanhaDataInicio");
+                String campanhaDescricao    = campanha.getString("campanhaDescricao");
+                String campanhaDataFim         = campanha.getString("campanhaDataFim");
 
-            ProdutoCampanha auxProdutoCampanha = new ProdutoCampanha(idprodutocampanha,produtos_idprodutos,campanha_idCampanha,CampanhaPercentagem);
+                Campanha auxCampanha = new Campanha(idCampanha,campanhaNome,campanhaDataInicio,campanhaDescricao,campanhaDataFim);
+                tempListCampanha.add(auxCampanha);
+
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }
-        return auxCampanha;
+        return tempListCampanha;
 
     }
     //endregion
+
+    //region produtoCampanha
+    public static ArrayList<ProdutoCampanha> parserJsonProdutosCampanha (JSONArray response, Context context){
+
+        ArrayList<ProdutoCampanha> tempListProdutoCampanha = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject produtocampanha = (JSONObject) response.get(i);
+
+                long idprodutocampanha     = produtocampanha.getLong("idprodutocampanha");
+                long produtos_idprodutos   = produtocampanha.getLong("produtos_idprodutos");
+                long campanha_idCampanha    = produtocampanha.getLong("campanha_idCampanha");
+                Integer CampanhaPercentagem    = produtocampanha.getInt("CampanhaPercentagem");
+
+                ProdutoCampanha auxProdutoCampanha = new ProdutoCampanha(idprodutocampanha,produtos_idprodutos,campanha_idCampanha,CampanhaPercentagem);
+                tempListProdutoCampanha.add(auxProdutoCampanha);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListProdutoCampanha;
+    }
+    //endregion
+
+    //region user
+    public static ArrayList<User> parserJsonUser (JSONArray response, Context context){
+
+        ArrayList<User> tempListUser = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject user = (JSONObject) response.get(i);
+
+                long id     = user.getLong("id");
+                String username   = user.getString("username");
+                String password    = user.getString("password");
+                String email    = user.getString("email");
+
+                User auxUser = new User(id,username,password,email);
+                tempListUser.add(auxUser);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListUser;
+    }
+    //endregion
+
+   
 }

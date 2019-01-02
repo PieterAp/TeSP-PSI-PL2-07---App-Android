@@ -3,31 +3,25 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaCampanhaAdaptador;
-import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.CampanhasListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaProdutoCampanhaAdaptador;
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
 
 
-public class ListaCampanhasActivity extends AppCompatActivity implements CampanhasListener {
+public class ListaCampanhasActivity extends AppCompatActivity implements FixByteListener {
 
     public static final String DADOS_EMAIL = "amsi.dei.estg.ipleiria.pt.EMAIL";
 
@@ -57,7 +51,7 @@ public class ListaCampanhasActivity extends AppCompatActivity implements Campanh
             editor.putString("DADOS_EMAIL",text);
         }
 
-        FixByteSingleton.getInstance(getApplicationContext()).setCampanhasListener(this);
+        FixByteSingleton.getInstance(getApplicationContext()).setFixByteListener(this);
         FixByteSingleton.getInstance(getApplicationContext()).getAllCampanhasAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()));
 
         lvlistView = (ListView) findViewById(R.id.listviewCampanhas);
@@ -67,9 +61,11 @@ public class ListaCampanhasActivity extends AppCompatActivity implements Campanh
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Campanha tempCacampanha = (Campanha) parent.getItemAtPosition(position);
+                Campanha tempCampanha = (Campanha) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), DetalhesProdutosCampanha.class);
-                intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCacampanha.getIdCampanha());
+                System.out.println("--> RESPOSTA111: " + position);
+
+                intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCampanha.getIdCampanha());
                 startActivity(intent);
             }
         });
@@ -97,6 +93,15 @@ public class ListaCampanhasActivity extends AppCompatActivity implements Campanh
 
     @Override
     public void onUpdateListaCampanhasBD(Campanha campanha, int operacao) {
+
+    }
+    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha)
+    {
+
+    }
+
+    @Override
+    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
 
     }
 }

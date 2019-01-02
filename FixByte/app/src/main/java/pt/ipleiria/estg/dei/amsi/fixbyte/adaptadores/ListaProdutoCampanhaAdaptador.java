@@ -5,33 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.R;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 
-public class ListaCampanhaAdaptador extends BaseAdapter {
+public class ListaProdutoCampanhaAdaptador extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<Campanha> campanhas;
+    private ArrayList<ProdutoCampanha> produtoscampanha;
 
 
-    public ListaCampanhaAdaptador(Context context, ArrayList<Campanha> campanhas) {
+    public ListaProdutoCampanhaAdaptador(Context context, ArrayList<ProdutoCampanha> produtoscampanha) {
         this.context = context;
-        this.campanhas = campanhas;
+        this.produtoscampanha = produtoscampanha;
     }
 
     @Override
     public int getCount() {
-        return campanhas.size();
+        return produtoscampanha.size();
     }
     @Override
     public Object getItem(int position) {
-        return campanhas.get(position);
+        return produtoscampanha.get(position);
     }
 
     @Override
@@ -58,13 +58,13 @@ public class ListaCampanhaAdaptador extends BaseAdapter {
             convertView.setTag(viewHolderLista);
         }
 
-        viewHolderLista.update(campanhas.get(position));
+        viewHolderLista.update(produtoscampanha.get(position));
         return convertView;
     }
 
-    public void refresh(ArrayList<Campanha> campanhas)
+    public void refresh(ArrayList<ProdutoCampanha> produtoscampanha)
     {
-        this.campanhas=campanhas;
+        this.produtoscampanha=produtoscampanha;
         notifyDataSetChanged();
     }
 
@@ -83,11 +83,14 @@ public class ListaCampanhaAdaptador extends BaseAdapter {
 
         }
 
-        public void update (Campanha campanha)
+        public void update (ProdutoCampanha produtocampanha)
         {
-            nome.setText(campanha.getCampanhaNome());
-            dataInicio.setText(campanha.getCampanhaDataInicio());
-            dataFim.setText(campanha.getCampanhaDataFim());
+            String stridcampanha = Long.toString(produtocampanha.getCampanha_idCampanha());
+            String stridproduto = Long.toString(produtocampanha.getProdutos_idprodutos());
+
+            nome.setText(produtocampanha.getCampanhaPercentagem());
+            dataInicio.setText(stridcampanha);
+            dataFim.setText(stridproduto);
         }
     }
 }

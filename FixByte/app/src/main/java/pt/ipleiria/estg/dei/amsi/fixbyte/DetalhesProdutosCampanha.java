@@ -1,92 +1,86 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import java.util.ArrayList;
+
+import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaProdutoCampanhaAdaptador;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class DetalhesProdutosCampanha extends AppCompatActivity {
-
+public class DetalhesProdutosCampanha extends AppCompatActivity implements ProdutosCampanhaListener {
     public static final String DETALHES_PRODUCTS_SALE = "DETALHES_PRODUCTS_SALE";
-    private EditText txt;
-    private EditText editTextSerie;
-    private EditText editTextAutor;
-    private EditText editTextAno;
-/*
-    private ProdutoCampanha campanha;
-    FloatingActionButton fab;
-    long idLivro;
 
+    SharedPreferences sharePref;
+    SharedPreferences.Editor editor;
+
+    Long idCampanha;
+
+    private ListView lvlistView;
+    private ArrayList<Campanha> listaCampanhas;
+    private ListaProdutoCampanhaAdaptador listacampanhasAdaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_products_sale);
+        setContentView(R.layout.activity_lista_campanhas);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        sharePref = getPreferences(Context.MODE_PRIVATE);
+        editor = sharePref.edit();
 
-        idLivro = getIntent().getLongExtra(DETALHES_PRODUCTS_SALE,-1);
+        idCampanha = getIntent().getLongExtra(DETALHES_PRODUCTS_SALE,-1);
 
-        editTextTitulo = findViewById(R.id.editTextTitulo);
-        editTextSerie = findViewById(R.id.editTextSerie);
-        editTextAutor = findViewById(R.id.editTextAutor);
-        editTextAno = findViewById(R.id.editTextAno);
-        imageViewCapa = findViewById(R.id.imageViewCapa);
-        fab = findViewById(R.id.fabGuardar);
+        FixByteSingleton.getInstance(getApplicationContext()).setProdutosCampanhaListener(this);
+        FixByteSingleton.getInstance(getApplicationContext()).getAllProdutoCampanhaAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),idCampanha);
+
+        lvlistView = (ListView) findViewById(R.id.listviewCampanhas);
 
 
-        if (idLivro == -1)
-        {
-            setTitle(R.string.AdicionarLivro);tostamistas
-            fab.setImageResource(R.drawable.ic_action_save);
-
-        }
-        else
-        {
-            livro = SingletonGestorLivros.getInstance(getApplicationContext()).getLivro(idLivro);
-            setTitle("Detalhes" + ((Livro) livro).getTitulo());
-            preencherDadosLivro();
-            fab.setImageResource(R.drawable.ic_action_delete);
-            //btnRemover.setVisible(true);
-        }
+        lvlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Campanha tempCampanha = (Campanha) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), DetalhesProdutosCampanha.class);
+                intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCampanha.getIdCampanha());
+                startActivity(intent);
+            }
+        });
 
     }
 
-    private void preencherDadosLivro ()
-    {
-        editTextTitulo.setText(campanha.get());
-        editTextSerie.setText(campanha.getSerie());
-        editTextAutor.setText(campanha.getAutor());
 
+    protected void onResume()
+    {
+        super.onResume();
+        FixByteSingleton.getInstance(getApplicationContext()).getAllCampanhasAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha)
     {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_detalhes_livro, menu);
-
-        return super.onCreateOptionsMenu(menu);
+        if (listaprodutoscampanha!=null)
+        {
+            if (lvlistView == null) {
+                lvlistView =  findViewById(R.id.listviewCampanhas);
+            }
+            listacampanhasAdaptador = new ListaProdutoCampanhaAdaptador(this,listaprodutoscampanha);
+            lvlistView.setAdapter(listacampanhasAdaptador);
+        }
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.itemRemover:
-                Toast.makeText(this, "Remover", Toast.LENGTH_SHORT).show();
-                SingletonGestorLivros.getInstance(getApplicationContext()).removerLivro(idLivro);
-                finish();
-                return true;
-        }
+    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
 
-        return super.onOptionsItemSelected(item);
-    }*/
+    }
+
 }

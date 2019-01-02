@@ -63,7 +63,7 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public boolean editarLivroBD(Campanha campanha){
+    public boolean editarCampanhaBD(Campanha campanha){
         ContentValues values = new ContentValues();
         values.put(CAMPANHANOME, campanha.getCampanhaNome());
         values.put(CAMPANHADATAINICIO, campanha.getCampanhaDataInicio());
@@ -72,7 +72,7 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
 
         return this.database.update(TABLE_NAME, values, "idCampanha = ?", new String[]{"" + campanha.getIdCampanha()})>0;
     }
-    public boolean removerLivroBD (long idCampanha){
+    public boolean removerCampanhaBD (long idCampanha){
         return this.database.delete(TABLE_NAME, "idCampanha = ?", new String[]{"" + idCampanha})==1;
 
     }

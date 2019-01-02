@@ -69,7 +69,7 @@ public class ProdutoCampanhaBDHelper extends SQLiteOpenHelper {
         return this.database.delete(TABLE_NAME, "idprodutocampanha = ?", new String[]{"" + idprodutocampanha})==1;
 
     }
-    public ArrayList<ProdutoCampanha> getAllProdutoCampanhasBD(){
+    public ArrayList<ProdutoCampanha> getAllProdutoCampanhasBD(long id){
         ArrayList<ProdutoCampanha> produtoscampanha = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_NAME,new String[]{"idprodutocampanha", PRODUTOS_IDPRODUTOS,CAMPANHA_IDCAMPANHA,CAMPANHAPERCENTAGEM},null,null,null,null,null);
@@ -91,7 +91,13 @@ public class ProdutoCampanhaBDHelper extends SQLiteOpenHelper {
         return produtoscampanha;
     }
     public void removeAllProdutosCampanha(){
-        this.database.delete(TABLE_NAME,null,null);
+
+        try {
+            this.database.delete(TABLE_NAME,null,null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
