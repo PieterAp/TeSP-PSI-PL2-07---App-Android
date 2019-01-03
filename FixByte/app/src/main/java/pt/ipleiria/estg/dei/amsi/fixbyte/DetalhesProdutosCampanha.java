@@ -12,12 +12,13 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaProdutoCampanhaAdaptador;
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.ProdutocampanhaListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class DetalhesProdutosCampanha extends AppCompatActivity implements ProdutosCampanhaListener {
+public class DetalhesProdutosCampanha extends AppCompatActivity implements ProdutocampanhaListener {
     public static final String DETALHES_PRODUCTS_SALE = "DETALHES_PRODUCTS_SALE";
 
     SharedPreferences sharePref;
@@ -39,7 +40,7 @@ public class DetalhesProdutosCampanha extends AppCompatActivity implements Produ
 
         idCampanha = getIntent().getLongExtra(DETALHES_PRODUCTS_SALE,-1);
 
-        FixByteSingleton.getInstance(getApplicationContext()).setProdutosCampanhaListener(this);
+        //FixByteSingleton.getInstance(getApplicationContext()).setProdutosCampanhaListener(this);
         FixByteSingleton.getInstance(getApplicationContext()).getAllProdutoCampanhaAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),idCampanha);
 
         lvlistView = (ListView) findViewById(R.id.listviewCampanhas);
