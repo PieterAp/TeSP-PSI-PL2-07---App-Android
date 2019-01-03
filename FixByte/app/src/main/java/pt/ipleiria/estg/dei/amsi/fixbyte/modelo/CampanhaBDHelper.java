@@ -31,7 +31,7 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER PRIMARY KEY, " +
                 CAMPANHANOME    + " TEXT NOT NULL, " +
                 CAMPANHADATAINICIO     + " TEXT NOT NULL, " +
                 CAMPANHADESCRICAO     + " TEXT NOT NULL, " +

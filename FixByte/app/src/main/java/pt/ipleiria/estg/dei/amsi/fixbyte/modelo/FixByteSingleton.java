@@ -16,9 +16,10 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.UserListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class FixByteSingleton implements FixByteListener {
+public class FixByteSingleton implements FixByteListener, UserListener {
     private static FixByteSingleton INSTANCE = null;
 
     private ArrayList<Campanha> campanhas;
@@ -369,7 +370,7 @@ public class FixByteSingleton implements FixByteListener {
             if (!users.isEmpty()){
                 if(fixByteListener != null)
                 {
-                    fixByteListener.onRefreshListaUsers(users);
+                    //fixByteListener.onRefreshListaUsers(users);
                 }
             }
         }else{

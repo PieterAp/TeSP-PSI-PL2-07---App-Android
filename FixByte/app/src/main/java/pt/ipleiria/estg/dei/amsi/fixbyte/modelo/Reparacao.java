@@ -26,7 +26,7 @@ public class Reparacao {
         this.reparacaoEstado = reparacaoEstado;
         this.reparacaoNumero = reparacaoNumero;
         //Date date = new Date();
-        //this.reparacaoData = date;
+        //this.reparacaoData = date;+
         //this.reparacaoDataConcluido = date;
         this.reparacaoData = reparacaoData;
         this.reparacaoDataConcluido = reparacaoDataConcluido;
@@ -46,9 +46,7 @@ public class Reparacao {
         return reparacaoNome;
     }
 
-    public void setReparacaoNome(String reparacaoNome) {
-        this.reparacaoNome = reparacaoNome;
-    }
+    public void setReparacaoNome(String reparacaoNome) { }
 
     public String getReparacaoEstado() {
         return reparacaoEstado;

@@ -17,6 +17,7 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
 
@@ -104,4 +105,5 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
     public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
 
     }
+
 }
