@@ -17,6 +17,7 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "tesp-psi-pl2-07-web";
     private static final String TABLE_NAME = "campanha";
 
+    private static final String CAMPANHAID = "idCampanha";
     private static final String CAMPANHANOME = "campanhaNome";
     private static final String CAMPANHADATAINICIO = "campanhaDataInicio";
     private static final String CAMPANHADATAFIM = "campanhaDataFim";
@@ -31,7 +32,7 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER PRIMARY KEY, " +
+        String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER, " +
                 CAMPANHANOME    + " TEXT NOT NULL, " +
                 CAMPANHADATAINICIO     + " TEXT NOT NULL, " +
                 CAMPANHADESCRICAO     + " TEXT NOT NULL, " +
@@ -49,17 +50,14 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
     public Campanha adicionarCampanhaBD(Campanha campanha){
 
         ContentValues values = new ContentValues();
+
+        values.put(CAMPANHAID, campanha.getIdCampanha());
         values.put(CAMPANHANOME, campanha.getCampanhaNome());
         values.put(CAMPANHADATAINICIO, campanha.getCampanhaDataInicio());
         values.put(CAMPANHADESCRICAO, campanha.getCampanhaDescricao());
         values.put(CAMPANHADATAFIM, campanha.getCampanhaDataFim());
 
-        long id = this.database.insert(TABLE_NAME, null,values);
-
-        if (id > -1){
-            campanha.setIdCampanha(id);
-            return campanha;
-        }
+        this.database.insert(TABLE_NAME, null,values);
         return null;
     }
 

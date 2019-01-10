@@ -65,8 +65,6 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
             {
                 Campanha tempCampanha = (Campanha) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), DetalhesProdutosCampanha.class);
-                System.out.println("--> RESPOSTA111: " + position);
-
                 intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCampanha.getIdCampanha());
                 startActivity(intent);
             }

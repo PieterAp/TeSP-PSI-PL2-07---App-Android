@@ -19,6 +19,8 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mMainNav;
     private FrameLayout nMainFrame;
 
+    public static final String TOKEN = "amsi.dei.estg.ipleiria.pt.TOKEN";
+
     private HomeFragment homeFragment;
     private CategoriesFragment categoriesFragment;
     private SalesFragment salesFragment;

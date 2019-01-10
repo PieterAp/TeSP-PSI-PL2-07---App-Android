@@ -51,14 +51,14 @@ public class ListaProdutoCampanhaAdaptador extends BaseAdapter {
             convertView = inflater.inflate(R.layout.fragment_sales,null);
         }
 
-        ViewHolderLista viewHolderLista = (ViewHolderLista) convertView.getTag();
-        if (viewHolderLista == null)
+        ViewHolderListaproduto viewHolderListaproduto = (ViewHolderListaproduto) convertView.getTag();
+        if (viewHolderListaproduto == null)
         {
-            viewHolderLista = new ViewHolderLista(convertView);
-            convertView.setTag(viewHolderLista);
+            viewHolderListaproduto = new ViewHolderListaproduto(convertView);
+            convertView.setTag(viewHolderListaproduto);
         }
 
-        viewHolderLista.update(produtoscampanha.get(position));
+        viewHolderListaproduto.update(produtoscampanha.get(position));
         return convertView;
     }
 
@@ -68,29 +68,32 @@ public class ListaProdutoCampanhaAdaptador extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private class ViewHolderLista
+    private class ViewHolderListaproduto
     {
         private TextView nome;
-        private TextView dataInicio;
-        private TextView dataFim;
+        private TextView preco;
+        private TextView precodpsDesconto;
+        private TextView percentagem;
 
 
-        public ViewHolderLista (View convertView)
+
+        public ViewHolderListaproduto (View convertView)
         {
             nome = convertView.findViewById(R.id.txtNome);
-            dataInicio = convertView.findViewById(R.id.txtDataInicio);
-            dataFim = convertView.findViewById(R.id.txtDateFim);
+           // preco = convertView.findViewById(R.id.txtpreco);
+            //precodpsDesconto = convertView.findViewById(R.id.txt);
+            //percentagem = convertView.findViewById(R.id.txtpercentagem);
+
 
         }
 
         public void update (ProdutoCampanha produtocampanha)
         {
-            String stridcampanha = Long.toString(produtocampanha.getCampanha_idCampanha());
-            String stridproduto = Long.toString(produtocampanha.getProdutos_idprodutos());
+             nome.setText(produtocampanha.getProdutoNome());
+             preco.setText(String.valueOf(produtocampanha.getProdutoPreco()));
+             precodpsDesconto.setText(produtocampanha.getPrecoDpsDesconto());
+             percentagem.setText(produtocampanha.getCampanhaPercentagem());
 
-            nome.setText(produtocampanha.getCampanhaPercentagem());
-            dataInicio.setText(stridcampanha);
-            dataFim.setText(stridproduto);
         }
     }
 }

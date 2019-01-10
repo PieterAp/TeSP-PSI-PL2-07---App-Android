@@ -81,7 +81,7 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="fdsfdsfds"
+                        android:text="pedro"
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white"
                         android:textSize="14sp" />
@@ -105,7 +105,7 @@
                         android:maxLines="1"
                         android:shadowColor="@android:color/black"
                         android:singleLine="true"
-                        android:text="dsadsadsa"
+                        android:text="pedropedro"
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white" />
 

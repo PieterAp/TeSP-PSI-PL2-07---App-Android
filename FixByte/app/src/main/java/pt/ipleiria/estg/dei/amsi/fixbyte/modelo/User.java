@@ -4,14 +4,14 @@ public class User {
 
     private long id;
     private String username;
-    private String password_hash;
     private String email;
+    private String token;
 
-    public User(long id, String username, String password_hash, String email) {
+    public User(long id, String username, String email, String token) {
         this.id = id;
         this.username = username;
-        this.password_hash = password_hash;
         this.email = email;
+        this.token = token;
     }
 
     public long getId() {
@@ -30,13 +30,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
-    }
-
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
-    }
 
     public String getEmail() {
         return email;
@@ -44,5 +37,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
