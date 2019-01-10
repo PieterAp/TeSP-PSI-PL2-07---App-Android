@@ -16,6 +16,7 @@
         tools:context=".RegisterActivity">
 
         <LinearLayout
+            android:id="@+id/EditAccount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
@@ -45,7 +46,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/nameEditAccount"
+            />
 
             <Space
                 android:layout_width="match_parent"
@@ -73,16 +76,17 @@
 
                         <EditText
                             android:id="@+id/username"
-                            android:enabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:hint="@string/prompt_username"
                             android:inputType="text"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:textColor="@color/colorAccent"
-                            android:textColorHint="@color/colorAccent"
-                            android:textSize="14sp" />
+                            android:textColor="@android:color/black"
+                            android:textColorHint="@android:color/background_dark"
+                            android:textSize="14sp"
+                            android:theme="@style/username" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -113,9 +117,10 @@
                                 android:inputType="textPersonName"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:textColor="@color/colorAccent"
-                                android:textColorHint="@color/colorAccent"
-                                android:textSize="14sp" />
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/black"
+                                android:textSize="14sp"
+                                android:theme="@style/first_name" />
 
                         </android.support.design.widget.TextInputLayout>
 
@@ -133,9 +138,11 @@
                                 android:inputType="textPersonName"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:textColor="@android:color/white"
+                                android:textColor="@android:color/black"
                                 android:textColorHint="@color/colorAccent"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:theme="@style/last_name"
+                                />
 
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
@@ -161,7 +168,9 @@
                             android:singleLine="true"
                             android:textColor="@color/colorAccent"
                             android:textColorHint="@color/colorAccent"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:theme="@style/address"
+                        />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -169,6 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:layout_weight="0" />
+
                     <LinearLayout
                         android:id="@+id/fifthLine"
                         android:layout_width="match_parent"
@@ -197,7 +207,9 @@
                                 android:singleLine="true"
                                 android:textColor="@color/colorAccent"
                                 android:textColorHint="@color/colorAccent"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:theme="@style/password"
+                                />
 
                         </android.support.design.widget.TextInputLayout>
 
@@ -220,11 +232,14 @@
                                 android:singleLine="true"
                                 android:textColor="@color/colorAccent"
                                 android:textColorHint="@color/colorAccent"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:theme="@style/dateOfBirth"
+                                />
 
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="252dp"
                         android:layout_height="match_parent"

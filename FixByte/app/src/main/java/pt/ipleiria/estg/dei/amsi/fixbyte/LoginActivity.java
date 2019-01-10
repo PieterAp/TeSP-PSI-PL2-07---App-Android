@@ -3,10 +3,10 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -20,28 +20,29 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.LoginListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -65,6 +66,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    //User Listener
+
+    private String token = null;
+    private boolean key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,13 +200,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (username.length() < 6 ) {
-            mUsernameView.setError("Username must have more than 6 digits");
+        } else if (username.length() < 5 ) {
+            mUsernameView.setError("Username must have more than 5 digits");
             focusView = mUsernameView;
             cancel = true;
         }
-
-
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -316,8 +320,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            // Simulate network access.
+            FixByteSingleton.getInstance(getApplicationContext()).setUpdateLogin(LoginActivity.this);
+
             try {
                 // Simulate network access.
+                FixByteSingleton.getInstance(getApplicationContext()).APILogin(getApplicationContext(),mUsername,mPassword);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
@@ -339,18 +347,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
-            if (success) {
-                finish();
-
-                Intent intent = new Intent (getApplication(), HomeActivity.class);
-                //intent.putExtra(HomeActivity.DADOS_EMAIL, mEmail);
-                startActivity(intent);
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+            if (key){
+                if (success) {
+                    finish();
+                    Intent intent = new Intent (getApplication(), HomeActivity.class);
+                    intent.putExtra(HomeActivity.TOKEN, token);
+                    Toast.makeText(getApplicationContext(), "Sign in successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    finish();
+                }
             }
+            mPasswordView.setError("Didnt match");
+            mPasswordView.requestFocus();
         }
 
         @Override
@@ -358,6 +366,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    @Override
+    public void onUpdateLogin (boolean key, String token)
+    {
+        this.key = key;
+        this.token = token;
     }
 }
 

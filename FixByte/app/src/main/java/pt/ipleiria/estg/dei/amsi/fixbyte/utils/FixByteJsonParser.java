@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.amsi.fixbyte.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,44 +60,74 @@ public class FixByteJsonParser {
             for (int i = 0; i< response.length();i++){
                 JSONObject produtocampanha = (JSONObject) response.get(i);
 
-                long idprodutocampanha     = produtocampanha.getLong("idprodutocampanha");
-                long produtos_idprodutos   = produtocampanha.getLong("produtos_idprodutos");
-                long campanha_idCampanha    = produtocampanha.getLong("campanha_idCampanha");
-                Integer CampanhaPercentagem    = produtocampanha.getInt("CampanhaPercentagem");
+                long idprodutos     = produtocampanha.getLong("idprodutos");
+                String produtoNome   = produtocampanha.getString("produtoNome");
+                String produtoCodigo    = produtocampanha.getString("produtoCodigo");
+                String produtoDataCriacao    = produtocampanha.getString("produtoDataCriacao");
+                long produtoStock    = produtocampanha.getLong("produtoStock");
+                double produtoPreco = produtocampanha.getDouble("produtoPreco");
+                String produtoMarca = produtocampanha.getString("produtoMarca");
+                String produtoDescricao1 = produtocampanha.getString("produtoDescricao1");
+                String produtoDescricao2 = produtocampanha.getString("produtoDescricao2");
+                String produtoDescricao3 = produtocampanha.getString("produtoDescricao3");
+                String produtoDescricao4 = produtocampanha.getString("produtoDescricao4");
+                String produtoDescricao5 = produtocampanha.getString("produtoDescricao5");
+                String produtoDescricao6 = produtocampanha.getString("produtoDescricao6");
+                String produtoDescricao7 = produtocampanha.getString("produtoDescricao7");
+                String produtoDescricao8 = produtocampanha.getString("produtoDescricao8");
+                String produtoDescricao9 = produtocampanha.getString("produtoDescricao9");
+                String produtoDescricao10 = produtocampanha.getString("produtoDescricao10");
+                long categoria_child_id = produtocampanha.getLong("categoria_child_id");
+                String produtoImagem1 = produtocampanha.getString("produtoImagem1");
+                String produtoImagem2 = produtocampanha.getString("produtoImagem2");
+                String produtoImagem3 = produtocampanha.getString("produtoImagem3");
+                String produtoImagem4 = produtocampanha.getString("produtoImagem4");
+                Integer campanhaPercentagem = produtocampanha.getInt("campanhaPercentagem");
+                Integer precoDpsDesconto = produtocampanha.getInt("precoDpsDesconto");
 
-                ProdutoCampanha auxProdutoCampanha = new ProdutoCampanha(idprodutocampanha,produtos_idprodutos,campanha_idCampanha,CampanhaPercentagem);
+
+                ProdutoCampanha auxProdutoCampanha = new ProdutoCampanha(idprodutos,produtoNome,
+                        produtoCodigo,produtoDataCriacao,produtoStock,produtoPreco,produtoMarca,
+                        produtoDescricao1,produtoDescricao2,produtoDescricao3,produtoDescricao4,
+                        produtoDescricao5,produtoDescricao6,produtoDescricao7,produtoDescricao8,
+                        produtoDescricao9,produtoDescricao10,categoria_child_id,produtoImagem1,
+                        produtoImagem2,produtoImagem3,produtoImagem4,campanhaPercentagem,precoDpsDesconto);
+
                 tempListProdutoCampanha.add(auxProdutoCampanha);
+
 
             }
         }catch (JSONException e){
             e.printStackTrace();
+            System.out.println("--> RESPOSTAERROR: " +  e);
+
         }
         return tempListProdutoCampanha;
     }
     //endregion
 
     //region user
-    public static ArrayList<User> parserJsonUser (JSONArray response, Context context){
+    public static User parserJsonLogin (String response, Context context){
 
-        ArrayList<User> tempListUser = new ArrayList<>();
+        User auxUser = null;
+        try
+        {
+            JSONObject user = new JSONObject(response);
 
-        try{
-            for (int i = 0; i< response.length();i++){
-                JSONObject user = (JSONObject) response.get(i);
+            int idLivro = user.getInt("id");
+            String username = user.getString("username");
+            String email = user.getString("email");
+            String access_token = user.getString("access_token");
 
-                long id     = user.getLong("id");
-                String username   = user.getString("username");
-                String password    = user.getString("password");
-                String email    = user.getString("email");
 
-                User auxUser = new User(id,username,password,email);
-                tempListUser.add(auxUser);
-
-            }
-        }catch (JSONException e){
+            auxUser = new User (idLivro,username,email,access_token);
+        }catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        return tempListUser;
+
+        return auxUser;
+
     }
     //endregion
 
