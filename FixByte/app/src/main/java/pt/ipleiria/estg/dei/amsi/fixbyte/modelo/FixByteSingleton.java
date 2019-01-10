@@ -26,6 +26,7 @@ public class FixByteSingleton implements FixByteListener, UserListener {
     private ArrayList<ProdutoCampanha> produtoscampanha;
     private ArrayList<User> users;
     private ArrayList<Userdata> usersdata;
+    private ArrayList<Categoria> categorias;
 
 
 
@@ -33,13 +34,15 @@ public class FixByteSingleton implements FixByteListener, UserListener {
     private CampanhaBDHelper campanhaBDHelper = null;
     private UserBDHelper userBDHelper = null;
     private UserdataBDHelper userdataBDHelper = null;
+    private CategoriaBDHelper categoriaBDHelper = null;
 
 
     //private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
-    private String mUrlAPIProdutosCampanhas = "http://192.168.1.69:8888/v1/campanhas/";
-    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
-    private String mUrlAPIUser = "http://192.168.1.69:8888/v1/users";
-    private String mUrlAPIUserData = "http://192.168.1.69:8888/v1/users";
+    private String mUrlAPIProdutosCampanhas = "http://192.168.137.1:8888/v1/campanhas/";
+    private String mUrlAPICampanhas = "http://192.168.137.1:8888/v1/campanhas";
+    private String mUrlAPIUser = "http://192.168.137.1:8888/v1/users";
+    private String mUrlAPIUserData = "http://192.168.137.1:8888/v1/users";
+    private String mUrlAPICategorias = "http://192.168.137.1:8888/v1/categorias";
 
     private static RequestQueue volleyQueue;
 
@@ -63,6 +66,9 @@ public class FixByteSingleton implements FixByteListener, UserListener {
 
         produtoscampanha = new ArrayList<>();
         produtocampanhaBDHelper = new ProdutoCampanhaBDHelper(context);
+
+        categorias = new ArrayList<>();
+        categoriaBDHelper = new CategoriaBDHelper(context);
     }
 
     //region Campanha
@@ -458,4 +464,90 @@ public class FixByteSingleton implements FixByteListener, UserListener {
     }
     //endregion
 
+    //region categoria
+    public ArrayList<Categoria> getCategorias()
+    {
+        return new ArrayList<>(categorias);
+    }
+
+    public Categoria getCategoria (long idcategorias)
+    {
+        for (Categoria categoria : categorias)
+        {
+            if (categoria.getIdcategorias() == idcategorias)
+            {
+                return categoria;
+            }
+        }
+        return null;
+    }
+
+    public void adicionarCategoriaBD(Categoria categoria)
+    {
+
+        categoriaBDHelper.adicionarCategoriaBD(categoria);
+    }
+
+    public void adicionarCategoriasBD(ArrayList<Categoria> listaCategorias)
+    {
+        for (Categoria categoria : listaCategorias){
+            adicionarCategoriaBD(categoria);
+        }
+    }
+
+    public void getAllCategoriasAPI (final Context context, boolean isConnected){
+
+        if (!isConnected){
+            categorias = categoriaBDHelper.getAllCategoriasBD();
+            System.out.println("CATEGORIAS TUK: " + categorias);
+            Toast.makeText(context, "CATEGORIAS TUK: " + categorias, Toast.LENGTH_SHORT).show();
+
+            if (!categorias.isEmpty()){
+                if(fixByteListener != null)
+                {
+                    fixByteListener.onRefreshListaCategorias(categorias);
+                }
+            }
+        }else{
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategorias, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    categorias = FixByteJsonParser.parserJsonCategorias(response,context);
+
+                    if(fixByteListener != null)
+                    {
+                        categoriaBDHelper.removeAllCategorias();
+                        adicionarCategoriasBD(categorias);
+
+                        fixByteListener.onRefreshListaCategorias(categorias);
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+
+                }
+
+            });
+            volleyQueue.add(req);
+        }
+
+    }
+
+
+    @Override
+    public void onRefreshListaCategorias(ArrayList<Categoria> listacategorias)
+    {
+
+    }
+
+    @Override
+    public void onUpdateListaCategoriasBD(Categoria categoria, int operacao)
+    {
+
+    }
+    //endregion
 }

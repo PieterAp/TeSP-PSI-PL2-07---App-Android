@@ -30,7 +30,6 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
                 CATEGORIANOME    + " TEXT NOT NULL, " +
                 CATEGORIADESCRICAO     + " TEXT NOT NULL, " +
                 CATEGORIAESTADO     + " INTEGER NOT NULL " +
-
                 ")";
 
         db.execSQL(createCategoriatable);
@@ -67,10 +66,11 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
         return this.database.update(TABLE_NAME, values, "idcategorias = ?", new String[]{"" + categoria.getIdcategorias()})>0;
     }
 
-    public boolean removerLivroBD (long idLivro){
-        return this.database.delete(TABLE_NAME, "idcategorias = ?", new String[]{"" + idLivro})==1;
+    public boolean removerCategoriaBD (long idcategorias){
+        return this.database.delete(TABLE_NAME, "idcategorias = ?", new String[]{"" + idcategorias})==1;
 
     }
+
     public ArrayList<Categoria> getAllCategoriasBD(){
         ArrayList<Categoria> categorias = new ArrayList<>();
 
@@ -91,6 +91,9 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
         }
         return categorias;
     }
-    public void removeAllLivros(){
-        this.database.delete(TABLE_NAME,null,null);}
+
+    public void removeAllCategorias()
+    {
+        this.database.delete(TABLE_NAME,null,null);
+    }
 }

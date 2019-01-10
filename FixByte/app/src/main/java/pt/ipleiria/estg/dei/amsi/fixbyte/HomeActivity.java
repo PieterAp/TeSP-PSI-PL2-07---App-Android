@@ -24,6 +24,8 @@ public class HomeActivity extends AppCompatActivity {
     private SalesFragment salesFragment;
     private CartFragment cartFragment;
 
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,19 +61,21 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.itemCategories:
-                        setFragment(categoriesFragment);
+                        //setFragment(categoriesFragment);
+                        Intent intent = new Intent(getApplication(), CategoriaListaActivity.class);
+                        startActivity(intent);
                         return true;
 
                     case R.id.itemSales:
                         //setFragment(salesFragment);
-                        Intent intent = new Intent(getApplication(), ListaCampanhasActivity.class);
+                        intent = new Intent(getApplication(), ListaCampanhasActivity.class);
                         intent.putExtra(ListaCampanhasActivity.DADOS_EMAIL, "ola");
                         startActivity(intent);
                         return true;
 
                     case R.id.itemCart:
-                        Intent intent1 = new Intent(getApplication(), AccountActivity.class);
-                        startActivity(intent1);
+                        intent = new Intent(getApplication(), AccountActivity.class);
+                        startActivity(intent);
                         setFragment(cartFragment);
                         return true;
 

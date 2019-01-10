@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.amsi.fixbyte.listeners;
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
@@ -13,4 +14,6 @@ public interface FixByteListener {
     void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha);
     void onUpdateListaProdutosCampanhaBD (ProdutoCampanha produtocampanha, int operacao);
 
+    void onRefreshListaCategorias(ArrayList<Categoria> listacategorias);
+    void onUpdateListaCategoriasBD (Categoria categoria, int operacao);
 }

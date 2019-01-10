@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
@@ -100,5 +101,29 @@ public class FixByteJsonParser {
     }
     //endregion
 
-   
+   //region categorias
+   public static ArrayList<Categoria> parserJsonCategorias (JSONArray response, Context context){
+
+       ArrayList<Categoria> tempListCategoria = new ArrayList<>();
+
+       try{
+           for (int i = 0; i< response.length();i++){
+               JSONObject categoria = (JSONObject) response.get(i);
+
+               long idcategorias     = categoria.getLong("idcategorias");
+               String categoriaNome   = categoria.getString("categoriaNome");
+               String categoriaDescricao    = categoria.getString("categoriaDescricao");
+               Integer categoriaEstado    = categoria.getInt("categoriaEstado");
+
+               Categoria auxCategoria = new Categoria(idcategorias,categoriaNome,categoriaDescricao,categoriaEstado);
+               tempListCategoria.add(auxCategoria);
+
+           }
+       }catch (JSONException e){
+           e.printStackTrace();
+       }
+       return tempListCategoria;
+
+   }
+    //endregion
 }

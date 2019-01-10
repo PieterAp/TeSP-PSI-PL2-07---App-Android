@@ -15,6 +15,7 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaCampanhaAdaptador;
 import pt.ipleiria.estg.dei.amsi.fixbyte.adaptadores.ListaProdutoCampanhaAdaptador;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
@@ -103,6 +104,16 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
 
     @Override
     public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
+
+    }
+
+    @Override
+    public void onRefreshListaCategorias(ArrayList<Categoria> listacategorias) {
+
+    }
+
+    @Override
+    public void onUpdateListaCategoriasBD(Categoria categoria, int operacao) {
 
     }
 

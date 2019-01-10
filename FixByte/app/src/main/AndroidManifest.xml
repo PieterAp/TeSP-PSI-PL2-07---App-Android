@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -38,20 +37,23 @@
             android:theme="@style/AppTheme.MenuMultiItem">
 
         </activity>
-        <activity android:name=".ListaCampanhasActivity"
-            android:parentActivityName=".HomeActivity"/>
-
-        <activity android:name=".AccountActivity"
-            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".ListaCampanhasActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".AccountActivity"
+            android:parentActivityName=".HomeActivity" />
         AccountActivity
-        <activity android:name=".DetalhesProdutosCampanha"
-            android:parentActivityName=".ListaCampanhasActivity"/>
+        <activity
+            android:name=".DetalhesProdutosCampanha"
+            android:parentActivityName=".ListaCampanhasActivity" />
         DetalhesProdutosCampanha
         <activity
             android:name=".SampleActivity"
             android:label="@string/title_activity_sample"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CategoriesItemActivity" />
+        <activity android:name=".CategoriaListaActivity"></activity>
     </application>
 
 </manifest>
