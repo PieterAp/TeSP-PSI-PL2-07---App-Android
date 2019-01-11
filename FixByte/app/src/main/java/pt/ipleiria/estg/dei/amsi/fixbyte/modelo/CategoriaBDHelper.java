@@ -16,6 +16,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
     private static final String CATEGORIANOME = "categoriaNome";
     private static final String CATEGORIADESCRICAO = "categoriaDescricao";
     private static final String CATEGORIAESTADO = "categoriaEstado";
+    private static final String QNTPRODUTOS = "qntProdutos";
 
     private final SQLiteDatabase database;
 
@@ -30,6 +31,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
                 CATEGORIANOME    + " TEXT NOT NULL, " +
                 CATEGORIADESCRICAO     + " TEXT NOT NULL, " +
                 CATEGORIAESTADO     + " INTEGER NOT NULL " +
+                QNTPRODUTOS     + " INTEGER NOT NULL " +
                 ")";
 
         db.execSQL(createCategoriatable);
@@ -47,6 +49,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
         values.put(CATEGORIANOME, categoria.getCategoriaNome());
         values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
         values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
+        values.put(QNTPRODUTOS, categoria.getQntProdutos());
 
         long id = this.database.insert(TABLE_NAME, null,values);
 
@@ -62,6 +65,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
         values.put(CATEGORIANOME, categoria.getCategoriaNome());
         values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
         values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
+        values.put(QNTPRODUTOS, categoria.getQntProdutos());
 
         return this.database.update(TABLE_NAME, values, "idcategorias = ?", new String[]{"" + categoria.getIdcategorias()})>0;
     }
@@ -74,7 +78,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
     public ArrayList<Categoria> getAllCategoriasBD(){
         ArrayList<Categoria> categorias = new ArrayList<>();
 
-        Cursor cursor = this.database.query(TABLE_NAME,new String[]{"idcategorias", CATEGORIANOME,CATEGORIADESCRICAO,CATEGORIAESTADO},null,null,null,null,null);
+        Cursor cursor = this.database.query(TABLE_NAME,new String[]{"idcategorias", CATEGORIANOME,CATEGORIADESCRICAO,CATEGORIAESTADO,QNTPRODUTOS},null,null,null,null,null);
 
         if (cursor.moveToFirst()){
             do{
@@ -82,7 +86,8 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getInt(3));
+                        cursor.getInt(3),
+                        cursor.getInt(4));
 
                 nextCategoria.setIdcategorias(cursor.getLong(0));
                 categorias.add(nextCategoria);
@@ -94,6 +99,13 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
 
     public void removeAllCategorias()
     {
-        this.database.delete(TABLE_NAME,null,null);
+        try
+        {
+            this.database.delete(TABLE_NAME,null,null);
+        }
+        catch (Exception Ex)
+        {
+            System.out.println("ERROR ON removeAllCategorias" + Ex);
+        }
     }
 }

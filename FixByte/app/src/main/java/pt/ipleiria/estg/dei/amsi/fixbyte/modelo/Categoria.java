@@ -8,14 +8,15 @@ public class Categoria {
     private String categoriaNome;
     private String categoriaDescricao;
     private Integer categoriaEstado;
+    private Integer qntProdutos;
 
-    public Categoria (long idcategorias, String categoriaNome, String categoriaDescricao, Integer categoriaEstado)
+    public Categoria (long idcategorias, String categoriaNome, String categoriaDescricao, Integer categoriaEstado, Integer qntProdutos)
     {
         this.idcategorias = idcategorias;
         this.categoriaNome = categoriaNome;
         this.categoriaDescricao = categoriaDescricao;
         this.categoriaEstado = categoriaEstado;
-
+        this.qntProdutos = qntProdutos;
     }
 
     public long getIdcategorias() {
@@ -48,5 +49,13 @@ public class Categoria {
 
     public void setCategoriaEstado(Integer categoriaEstado) {
         this.categoriaEstado = categoriaEstado;
+    }
+
+    public Integer getQntProdutos() {
+        return qntProdutos;
+    }
+
+    public void setQntProdutos(Integer qntProdutos) {
+        this.qntProdutos = qntProdutos;
     }
 }

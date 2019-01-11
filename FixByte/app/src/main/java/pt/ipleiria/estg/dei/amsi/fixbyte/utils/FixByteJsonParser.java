@@ -145,8 +145,10 @@ public class FixByteJsonParser {
                String categoriaNome   = categoria.getString("categoriaNome");
                String categoriaDescricao    = categoria.getString("categoriaDescricao");
                Integer categoriaEstado    = categoria.getInt("categoriaEstado");
+               Integer qntProdutos    = categoria.getInt("qntProdutos");
 
-               Categoria auxCategoria = new Categoria(idcategorias,categoriaNome,categoriaDescricao,categoriaEstado);
+
+               Categoria auxCategoria = new Categoria(idcategorias,categoriaNome,categoriaDescricao,categoriaEstado,qntProdutos);
                tempListCategoria.add(auxCategoria);
 
            }
