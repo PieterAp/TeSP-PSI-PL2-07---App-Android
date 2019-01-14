@@ -42,7 +42,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
 
     //private String mUrlAPICampanhas = "http://10.20.140.21:8888/v1/campanhas";
-    private String mUrlAPIProdutosCampanhas = "http://10.20.140.21:8888/v1/campanhas/";
+    private String mUrlAPIProdutosCampanhas = "http://192.168.137.1:8888/v1/campanhas/";
     private String mUrlAPICampanhas = "http://192.168.137.1:8888/v1/campanhas";
     private String mUrlAPIUser = "http://192.168.137.1:8888/v1/users";
     private String mUrlAPIUserData = "http://192.168.137.1:8888/v1/users";
@@ -417,6 +417,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                     if(fixByteListener != null)
                     {
+                        //categoriaBDHelper.removeAllCategorias();
                         adicionarCategoriasBD(categorias);
                         fixByteListener.onRefreshListaCategorias(categorias);
                     }

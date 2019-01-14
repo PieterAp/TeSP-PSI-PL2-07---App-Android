@@ -80,13 +80,13 @@ public class ListaCategoriaAdaptador extends BaseAdapter
         public ViewHolderLista (View convertView)
         {
             nome = convertView.findViewById(R.id.textViewNomeCategoria);
-            //qntItems = convertView.findViewById(R.id.textViewCategoriaQnt);
+            qntItems = convertView.findViewById(R.id.textViewCategoriaQnt);
         }
 
         public void update (Categoria categoria)
         {
             nome.setText(categoria.getCategoriaNome());
-            //qntItems.setText(categoria.get());
+            qntItems.setText(categoria.getQntProdutos().toString() + " items");
         }
     }
 }
