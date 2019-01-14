@@ -356,9 +356,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     startActivity(intent);
                     finish();
                 }
+            }else{
+                mPasswordView.setError("Didnt match");
+                mPasswordView.requestFocus();
             }
-            mPasswordView.setError("Didnt match");
-            mPasswordView.requestFocus();
+
         }
 
         @Override

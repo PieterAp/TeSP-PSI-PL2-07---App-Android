@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
@@ -107,7 +108,7 @@ public class FixByteJsonParser {
     }
     //endregion
 
-    //region user
+    //region login
     public static User parserJsonLogin (String response, Context context){
 
         User auxUser = null;
@@ -132,7 +133,7 @@ public class FixByteJsonParser {
     }
     //endregion
 
-   //region categorias
+    //region categorias
    public static ArrayList<Categoria> parserJsonCategorias (JSONArray response, Context context){
 
        ArrayList<Categoria> tempListCategoria = new ArrayList<>();
@@ -156,5 +157,33 @@ public class FixByteJsonParser {
        return tempListCategoria;
 
    }
+    //endregion
+
+    //region login
+    public static Map parserJsonRegisto (String response, Context context){
+
+        try
+        {
+            if (response.equals("Register successfully")){
+                response = ok;
+                return ok;
+            }
+            JSONObject user = new JSONObject(response);
+
+            int idLivro = user.getInt("id");
+            String username = user.getString("username");
+            String email = user.getString("email");
+            String access_token = user.getString("access_token");
+
+
+            auxUser = new User (idLivro,username,email,access_token);
+        }catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return null;
+
+    }
     //endregion
 }

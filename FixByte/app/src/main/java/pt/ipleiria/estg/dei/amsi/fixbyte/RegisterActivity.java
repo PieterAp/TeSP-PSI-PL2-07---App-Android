@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,19 +21,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.RegisterListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
+
+public class RegisterActivity extends AppCompatActivity implements RegisterListener {
     private UserRegisterTask mAuthTask = null;
 
     private EditText mFirstNameView;
@@ -45,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mAddressView;
     private EditText mUsernameView;
     private EditText mPasswordView;
+
+    private Map error = null;
 
     private DatePickerDialog.OnDateSetListener mDateOfBirthListener;
 
@@ -204,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
             Date dateOrigin = origin.parse(sdf.format(date)); // convert string to date
             sdf.applyPattern("yyyy-MM-dd");// convert to yyyy-mm-dd
             //sdf.format(dateOrigin) convert date to string
-
+            dateString =sdf.format(dateOrigin);
             int age = getAge(sdf.format(dateOrigin)); // send string, get int
             System.out.println("converted age2 " +age);
             if (age<12){
@@ -252,7 +251,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            mAuthTask = new UserRegisterTask(email, password);
+            mAuthTask = new UserRegisterTask(firstName, lastName, email, nif,dateString,address,username,password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -287,14 +286,26 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
+        private final String mFirstName;
+        private final String mLastName;
         private final String mEmail;
+        private final long mNif;
+        private final String mDateOfBirth;
+        private final String mAddress;
+        private final String mUsername;
         private final String mPassword;
 
-        UserRegisterTask(String email, String password) {
+
+        UserRegisterTask(String firstname, String lastname, String email, long nif, String date, String address, String username, String password) {
+            mFirstName = firstname;
+            mLastName = lastname;
             mEmail = email;
+            mNif = nif;
+            mDateOfBirth = date;
+            mAddress = address;
+            mUsername = username;
             mPassword = password;
         }
 
@@ -302,8 +313,11 @@ public class RegisterActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            FixByteSingleton.getInstance(getApplicationContext()).setUpdateRegisto(RegisterActivity.this);
+
             try {
-                // Simulate network access.
+                FixByteSingleton.getInstance(getApplicationContext()).APIRegisto(getApplicationContext(),mFirstName,mLastName,mEmail,mNif,mDateOfBirth,mAddress,mUsername,mPassword);
+
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
@@ -318,7 +332,7 @@ public class RegisterActivity extends AppCompatActivity {
             mAuthTask = null;
             if (success) {
                 finish();
-                Intent intent = new Intent (getApplication(), HomeActivity.class);
+                Intent intent = new Intent (getApplication(), LoginActivity.class);
                 //intent.putExtra(HomeActivity.DADOS_EMAIL, mEmail);
                 startActivity(intent);
                 finish();
@@ -332,5 +346,9 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onCancelled() {
             mAuthTask = null;
         }
+    }
+    public void onUpdateRegisto (Map error)
+    {
+        this.error = error;
     }
 }

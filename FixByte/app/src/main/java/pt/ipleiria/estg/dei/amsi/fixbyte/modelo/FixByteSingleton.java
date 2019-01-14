@@ -21,10 +21,11 @@ import java.util.Map;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.LoginListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.RegisterListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.UserListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class FixByteSingleton implements FixByteListener, LoginListener {
+public class FixByteSingleton implements FixByteListener, LoginListener, RegisterListener {
     private static FixByteSingleton INSTANCE = null;
 
     private ArrayList<Campanha> campanhas;
@@ -32,7 +33,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
 
     private ArrayList<Categoria> categorias;
     private User user;
-
+    private Map registo;
 
     private CampanhaBDHelper campanhaBDHelper = null;
     private UserBDHelper userBDHelper = null;
@@ -42,15 +43,18 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
 
     //private String mUrlAPICampanhas = "http://10.20.140.21:8888/v1/campanhas";
     private String mUrlAPIProdutosCampanhas = "http://10.20.140.21:8888/v1/campanhas/";
-    private String mUrlAPICampanhas = "http://10.20.140.21:8888/v1/campanhas";
+    private String mUrlAPICampanhas = "http://192.168.137.1:8888/v1/campanhas";
     private String mUrlAPIUser = "http://192.168.137.1:8888/v1/users";
     private String mUrlAPIUserData = "http://192.168.137.1:8888/v1/users";
     private String mUrlAPICategorias = "http://192.168.137.1:8888/v1/categorias";
     private String APILogin = "http://10.20.140.21:8888/v1/users/login";
+    private String APIRegisto = "http://192.168.137.1:8888/v1/users/registo";
+
     private static RequestQueue volleyQueue;
 
     private FixByteListener fixByteListener;
     private LoginListener loginListener;
+    private RegisterListener registerListener;
 
 
     public static synchronized FixByteSingleton getInstance(Context context)
@@ -259,8 +263,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
     }
     //endregion
 
+    //region login
     public void APILogin(final Context context, final String username, final String password){
-
 
         StringRequest req = new StringRequest
                 (Request.Method.POST, APILogin, new Response.Listener<String>() {
@@ -303,6 +307,60 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
         };
         volleyQueue.add(req);
     }
+    //endregion
+
+    public void APIRegisto(final Context context, final String firstname, final String lastname, final String email, final long nif, final String date, final String address, final String username, final String password){
+        System.out.println("--> RESPOSTA " + firstname);
+
+        StringRequest req = new StringRequest
+                (Request.Method.POST, APIRegisto, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("--> RESPOSTA ADD POST : "+response);
+
+
+                        if (response.equals("false")){
+                            registo = null;
+                        }else{
+                            registo = FixByteJsonParser.parserJsonRegisto(response,context);
+
+                            if (registo != null){
+                                if(registerListener != null)
+                                {
+                                    registerListener.onUpdateRegisto(registo);
+                                }
+                            }else{
+                                if(registerListener != null) {
+                                    registerListener.onUpdateRegisto(registo);
+                                }
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d( "Errorr ADD: " + error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                params.put("firstname", firstname);
+                params.put("lastname", lastname);
+                params.put("nif", Long.toString(nif));
+                params.put("address", address);
+                params.put("birthday", date);
+                params.put("email", email);
+                params.put("password", password);
+                return params;
+            }
+        };
+        volleyQueue.add(req);
+    }
+    //region registo
+
     //endregion
 
     //region categoria
@@ -359,9 +417,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
 
                     if(fixByteListener != null)
                     {
-                        categoriaBDHelper.removeAllCategorias();
                         adicionarCategoriasBD(categorias);
-
                         fixByteListener.onRefreshListaCategorias(categorias);
                     }
                 }
@@ -377,7 +433,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
         }
 
     }
-
+    //endregion
 
     @Override
     public void onRefreshListaCategorias(ArrayList<Categoria> listacategorias)
@@ -398,5 +454,17 @@ public class FixByteSingleton implements FixByteListener, LoginListener {
     @Override
     public void onUpdateLogin(boolean key, String token) {
     }
-    //endregion
+
+
+
+    public void setUpdateRegisto(RegisterListener registerListener) {
+        this.registerListener = registerListener;
+    }
+
+    @Override
+    public void onUpdateRegisto(Map error) {
+    }
+
+
+
 }
