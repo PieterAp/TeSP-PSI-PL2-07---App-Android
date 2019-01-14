@@ -6,12 +6,20 @@ public class User {
     private String username;
     private String email;
     private String token;
+    private String userNomeProprio;
+    private String userApelido;
+    private String userMorada;
+    private String userDataNasc;
 
-    public User(long id, String username, String email, String token) {
+    public User(long id, String username, String email, String token, String userNomeProprio, String userApelido, String userMorada, String userDataNasc) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.token = token;
+        this.userNomeProprio = userNomeProprio;
+        this.userApelido = userApelido;
+        this.userMorada = userMorada;
+        this.userDataNasc = userDataNasc;
     }
 
     public long getId() {
@@ -30,7 +38,6 @@ public class User {
         this.username = username;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -47,4 +54,35 @@ public class User {
         this.token = token;
     }
 
+    public String getUserNomeProprio() {
+        return userNomeProprio;
+    }
+
+    public void setUserNomeProprio(String userNomeProprio) {
+        this.userNomeProprio = userNomeProprio;
+    }
+
+    public String getUserApelido() {
+        return userApelido;
+    }
+
+    public void setUserApelido(String userApelido) {
+        this.userApelido = userApelido;
+    }
+
+    public String getUserMorada() {
+        return userMorada;
+    }
+
+    public void setUserMorada(String userMorada) {
+        this.userMorada = userMorada;
+    }
+
+    public String getUserDataNasc() {
+        return userDataNasc;
+    }
+
+    public void setUserDataNasc(String userDataNasc) {
+        this.userDataNasc = userDataNasc;
+    }
 }

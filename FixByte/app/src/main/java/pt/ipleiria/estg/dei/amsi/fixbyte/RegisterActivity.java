@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,12 +22,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.RegisterListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
@@ -43,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
     private EditText mUsernameView;
     private EditText mPasswordView;
 
-    private Map error = null;
+    private JSONObject error = null;
 
     private DatePickerDialog.OnDateSetListener mDateOfBirthListener;
 
@@ -312,19 +320,82 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
             FixByteSingleton.getInstance(getApplicationContext()).setUpdateRegisto(RegisterActivity.this);
+            final boolean[] Notcancel = {true};
 
             try {
                 FixByteSingleton.getInstance(getApplicationContext()).APIRegisto(getApplicationContext(),mFirstName,mLastName,mEmail,mNif,mDateOfBirth,mAddress,mUsername,mPassword);
-
                 Thread.sleep(2000);
+                Thread uiThread = new HandlerThread("UIHandler"){
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                try{
+                                    if (error != null){
+                                        if (!error.isNull("username")){
+                                            mUsernameView.setError(error.get("username").toString());
+                                            mUsernameView.requestFocus();
+                                            Notcancel[0] = false;
+                                            System.out.println("--> RESPOSTA ERROR12 : "+Notcancel[0]);
+
+                                        }
+                                        if (!error.isNull("userNomeProprio")){
+                                            mFirstNameView.setError(error.get("userNomeProprio").toString());
+                                            mFirstNameView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("userApelido")){
+                                            mLastNameView.setError(error.get("userApelido").toString());
+                                            mLastNameView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("email")){
+                                            mEmailView.setError(error.get("email").toString());
+                                            mEmailView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("userNIF")){
+                                            mNifView.setError(error.get("userNIF").toString());
+                                            mNifView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("userDataNasc")){
+                                            mDateOfBirthView.setError(error.get("userDataNasc").toString());
+                                            mDateOfBirthView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("userMorada")){
+                                            mAddressView.setError(error.get("userMorada").toString());
+                                            mAddressView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                        if (!error.isNull("password")){
+                                            mPasswordView.setError(error.get("password").toString());
+                                            mPasswordView.requestFocus();
+                                            Notcancel[0] = false;
+                                        }
+                                    }else{
+                                        Notcancel[0] = true;
+                                        Toast.makeText(getApplicationContext(), "Register successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                };
+                uiThread.start();
             } catch (InterruptedException e) {
                 return false;
             }
-
-            // TODO: register the new account here.
-            return true;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return Notcancel[0];
         }
 
         @Override
@@ -336,9 +407,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
                 //intent.putExtra(HomeActivity.DADOS_EMAIL, mEmail);
                 startActivity(intent);
                 finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 
@@ -347,7 +415,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
             mAuthTask = null;
         }
     }
-    public void onUpdateRegisto (Map error)
+    public void onUpdateRegisto (JSONObject error)
     {
         this.error = error;
     }

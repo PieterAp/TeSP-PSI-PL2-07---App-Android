@@ -116,13 +116,18 @@ public class FixByteJsonParser {
         {
             JSONObject user = new JSONObject(response);
 
-            int idLivro = user.getInt("id");
+            int id = user.getInt("id");
             String username = user.getString("username");
             String email = user.getString("email");
             String access_token = user.getString("access_token");
+            String userNomeProprio = user.getString("userNomeProprio");
+            String userApelido = user.getString("userApelido");
+            String userMorada = user.getString("userMorada");
+            String userDataNasc = user.getString("userDataNasc");
 
 
-            auxUser = new User (idLivro,username,email,access_token);
+
+            auxUser = new User (id,username,email,access_token,userNomeProprio,userApelido,userMorada,userDataNasc);
         }catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -148,7 +153,6 @@ public class FixByteJsonParser {
                Integer categoriaEstado    = categoria.getInt("categoriaEstado");
                Integer qntProdutos    = categoria.getInt("qntProdutos");
 
-
                Categoria auxCategoria = new Categoria(idcategorias,categoriaNome,categoriaDescricao,categoriaEstado,qntProdutos);
                tempListCategoria.add(auxCategoria);
 
@@ -162,30 +166,18 @@ public class FixByteJsonParser {
     //endregion
 
     //region login
-    public static Map parserJsonRegisto (String response, Context context){
-
+    public static JSONObject parserJsonRegisto (String response, Context context){
         try
         {
             if (response.equals("Register successfully")){
-                response = ok;
-                return ok;
+                return null;
             }
-            JSONObject user = new JSONObject(response);
+            return new JSONObject(response);
 
-            int idLivro = user.getInt("id");
-            String username = user.getString("username");
-            String email = user.getString("email");
-            String access_token = user.getString("access_token");
-
-
-            auxUser = new User (idLivro,username,email,access_token);
         }catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
         return null;
-
     }
     //endregion
 }

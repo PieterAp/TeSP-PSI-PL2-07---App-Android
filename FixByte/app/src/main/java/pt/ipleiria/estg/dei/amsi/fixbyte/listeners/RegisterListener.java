@@ -1,7 +1,9 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte.listeners;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public interface RegisterListener {
-    void onUpdateRegisto (Map error);
+    void onUpdateRegisto (JSONObject error);
 }

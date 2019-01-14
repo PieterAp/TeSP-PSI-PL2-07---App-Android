@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,7 +34,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     private ArrayList<Categoria> categorias;
     private User user;
-    private Map registo;
+    private JSONObject registo;
 
     private CampanhaBDHelper campanhaBDHelper = null;
     private UserBDHelper userBDHelper = null;
@@ -42,13 +43,13 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
 
     //private String mUrlAPICampanhas = "http://10.20.140.21:8888/v1/campanhas";
-    private String mUrlAPIProdutosCampanhas = "http://192.168.137.1:8888/v1/campanhas/";
-    private String mUrlAPICampanhas = "http://192.168.137.1:8888/v1/campanhas";
-    private String mUrlAPIUser = "http://192.168.137.1:8888/v1/users";
-    private String mUrlAPIUserData = "http://192.168.137.1:8888/v1/users";
-    private String mUrlAPICategorias = "http://192.168.137.1:8888/v1/categorias";
-    private String APILogin = "http://10.20.140.21:8888/v1/users/login";
-    private String APIRegisto = "http://192.168.137.1:8888/v1/users/registo";
+    private String mUrlAPIProdutosCampanhas = "http://192.168.1.69:8888/v1/campanhas/";
+    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
+    private String mUrlAPIUser = "http://192.168.1.69:8888/v1/users";
+    private String mUrlAPIUserData = "http://192.168.1.69:8888/v1/users";
+    private String mUrlAPICategorias = "http://192.168.1.69:8888/v1/categorias";
+    private String APILogin = "http://192.168.1.69:8888/v1/users/login";
+    private String APIRegisto = "http://192.168.1.69:8888/v1/users/registo";
 
     private static RequestQueue volleyQueue;
 
@@ -270,9 +271,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                 (Request.Method.POST, APILogin, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("--> RESPOSTA ADD POST : "+response);
-
-
                         if (response.equals("false")){
                             user = null;
                         }else{
@@ -310,20 +308,14 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     //endregion
 
     public void APIRegisto(final Context context, final String firstname, final String lastname, final String email, final long nif, final String date, final String address, final String username, final String password){
-        System.out.println("--> RESPOSTA " + firstname);
-
         StringRequest req = new StringRequest
                 (Request.Method.POST, APIRegisto, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("--> RESPOSTA ADD POST : "+response);
-
-
                         if (response.equals("false")){
                             registo = null;
                         }else{
                             registo = FixByteJsonParser.parserJsonRegisto(response,context);
-
                             if (registo != null){
                                 if(registerListener != null)
                                 {
@@ -463,7 +455,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     }
 
     @Override
-    public void onUpdateRegisto(Map error) {
+    public void onUpdateRegisto(JSONObject error) {
     }
 
 
