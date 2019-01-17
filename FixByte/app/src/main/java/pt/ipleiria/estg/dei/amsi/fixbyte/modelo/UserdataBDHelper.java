@@ -28,7 +28,7 @@ public class UserdataBDHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createUserdatatable = "CREATE TABLE " + TABLE_NAME + "(iduser INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createUserdatatable = "CREATE TABLE " + TABLE_NAME + "(iduser INTEGER, " +
                 NOMEPROPRIO    + " TEXT NOT NULL, " +
                 APELIDO     + " TEXT NOT NULL, " +
                 ESTADO     + " TEXT NOT NULL, " +

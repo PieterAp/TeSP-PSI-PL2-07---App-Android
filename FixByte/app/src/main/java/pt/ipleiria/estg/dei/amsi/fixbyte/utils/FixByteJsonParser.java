@@ -122,12 +122,10 @@ public class FixByteJsonParser {
             String access_token = user.getString("access_token");
             String userNomeProprio = user.getString("userNomeProprio");
             String userApelido = user.getString("userApelido");
-            String userMorada = user.getString("userMorada");
             String userDataNasc = user.getString("userDataNasc");
+            String userMorada = user.getString("userMorada");
 
-
-
-            auxUser = new User (id,username,email,access_token,userNomeProprio,userApelido,userMorada,userDataNasc);
+            auxUser = new User (id,username,email,access_token,userNomeProprio,userApelido,userDataNasc,userMorada);
         }catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -178,6 +176,36 @@ public class FixByteJsonParser {
             e.printStackTrace();
         }
         return null;
+    }
+    //endregion
+
+    //getAccounrt
+    public static ArrayList<User> parserJsonGetUser (JSONArray response, Context context){
+
+        ArrayList<User> tempListUser = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject user = (JSONObject) response.get(i);
+
+                long id     = user.getLong("id");
+                String username   = user.getString("username");
+                String email    = user.getString("email");
+                String userNomeProprio    = user.getString("userNomeProprio");
+                String token    = user.getString("access_token");
+                String userApelido         = user.getString("userApelido");
+                String userMorada         = user.getString("userMorada");
+                String userDataNasc         = user.getString("userDataNasc");
+
+                User auxUser = new User(id,username,email,token,userNomeProprio,userApelido,userDataNasc,userMorada);
+                tempListUser.add(auxUser);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListUser;
+
     }
     //endregion
 }

@@ -20,42 +20,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.ComprasListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.LoginListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.RegisterListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.UserListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class FixByteSingleton implements FixByteListener, LoginListener, RegisterListener {
+public class FixByteSingleton implements FixByteListener, LoginListener, RegisterListener, UserListener, ComprasListener {
     private static FixByteSingleton INSTANCE = null;
 
     private ArrayList<Campanha> campanhas;
+    private ArrayList<User> userdata;
     private ArrayList<ProdutoCampanha> produtoscampanha;
-
     private ArrayList<Categoria> categorias;
+
     private User user;
     private JSONObject registo;
 
-    private CampanhaBDHelper campanhaBDHelper = null;
-    private UserBDHelper userBDHelper = null;
-    private UserdataBDHelper userdataBDHelper = null;
+    private FixByteBDHelper bdhelper = null;
     private CategoriaBDHelper categoriaBDHelper = null;
 
-
-    //private String mUrlAPICampanhas = "http://10.20.140.21:8888/v1/campanhas";
     private String mUrlAPIProdutosCampanhas = "http://192.168.1.69:8888/v1/campanhas/";
     private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
-    private String mUrlAPIUser = "http://192.168.1.69:8888/v1/users";
-    private String mUrlAPIUserData = "http://192.168.1.69:8888/v1/users";
     private String mUrlAPICategorias = "http://192.168.1.69:8888/v1/categorias";
     private String APILogin = "http://192.168.1.69:8888/v1/users/login";
     private String APIRegisto = "http://192.168.1.69:8888/v1/users/registo";
+    private String APIgetAccount = "http://192.168.1.69:8888/v1/users/account?accesstoken=";
+    private String APIsetAccount = "http://192.168.1.69:8888/v1/users/edit";
+    private String APIgetCompras = "http://192.168.1.69:8888/v1/users/getcompras?accesstoken=";
+    private String APIsetCompras = "http://192.168.1.69:8888/v1/users/setcompras";
 
     private static RequestQueue volleyQueue;
 
     private FixByteListener fixByteListener;
     private LoginListener loginListener;
     private RegisterListener registerListener;
+    private UserListener userListener;
+    private ComprasListener comprasListener;
 
 
     public static synchronized FixByteSingleton getInstance(Context context)
@@ -70,7 +72,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     private FixByteSingleton(Context context){
         campanhas = new ArrayList<>();
-        campanhaBDHelper = new CampanhaBDHelper(context);
+        bdhelper = new FixByteBDHelper(context);
 
         produtoscampanha = new ArrayList<>();
 
@@ -100,7 +102,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void adicionarCampanhaBD(Campanha campanha)
     {
 
-        campanhaBDHelper.adicionarCampanhaBD(campanha);
+        bdhelper.adicionarCampanhaBD(campanha);
     }
 
     public void adicionarCampanhasBD(ArrayList<Campanha> listaCampanhas)
@@ -112,7 +114,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void getAllCampanhasAPI (final Context context, boolean isConnected){
 
         if (!isConnected){
-            campanhas = campanhaBDHelper.getAllCampanhasBD();
+            campanhas = bdhelper.getAllCampanhasBD();
             if (!campanhas.isEmpty()){
                 if(fixByteListener != null)
                 {
@@ -129,7 +131,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                     if(fixByteListener != null)
                     {
-                        campanhaBDHelper.removeAllCampanhas();
+                        bdhelper.removeAllCampanhas();
                         adicionarCampanhasBD(campanhas);
                         fixByteListener.onRefreshListaCampanhas(campanhas);
                     }
@@ -148,7 +150,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         Campanha campanhaaux = getCampanha(idCampanha);
         if (campanhaaux!=null)
         {
-            if (campanhaBDHelper.removerCampanhaBD((campanhaaux.getIdCampanha())))
+            if (bdhelper.removerCampanhaBD((campanhaaux.getIdCampanha())))
             {
                 campanhas.remove(campanhaaux);
             }
@@ -167,7 +169,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         campanhaux.setCampanhaDataInicio(campanha.getCampanhaDataInicio());
         campanhaux.setCampanhaDescricao(campanha.getCampanhaDescricao());
 
-        if (campanhaBDHelper.editarCampanhaBD(campanha))
+        if (bdhelper.editarCampanhaBD(campanha))
         {
             System.out.println("CAMPANHAS ADICIONADAS");
         }
@@ -280,6 +282,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                                 if(loginListener != null)
                                 {
                                     loginListener.onUpdateLogin(true, user.getToken());
+                                    bdhelper.removeAllUsers();
+                                    adicionarUserBD(user);
                                 }
                             }else{
                                 if(loginListener != null) {
@@ -305,8 +309,17 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         };
         volleyQueue.add(req);
     }
+
+    public void setUpdateLogin(LoginListener loginListener) {
+        this.loginListener = loginListener;
+    }
+
+    @Override
+    public void onUpdateLogin(boolean key, String token) {
+    }
     //endregion
 
+    //region registo
     public void APIRegisto(final Context context, final String firstname, final String lastname, final String email, final long nif, final String date, final String address, final String username, final String password){
         StringRequest req = new StringRequest
                 (Request.Method.POST, APIRegisto, new Response.Listener<String>() {
@@ -351,8 +364,14 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         };
         volleyQueue.add(req);
     }
-    //region registo
 
+    public void setUpdateRegisto(RegisterListener registerListener) {
+        this.registerListener = registerListener;
+    }
+
+    @Override
+    public void onUpdateRegisto(JSONObject error) {
+    }
     //endregion
 
     //region categoria
@@ -426,7 +445,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         }
 
     }
-    //endregion
 
     @Override
     public void onRefreshListaCategorias(ArrayList<Categoria> listacategorias)
@@ -440,24 +458,198 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     }
 
-    public void setUpdateLogin(LoginListener loginListener) {
-        this.loginListener = loginListener;
+    //endregion
+
+    //region compras
+    public void APIsetCompras(final Context context, final String accesstoken){
+
+        StringRequest req = new StringRequest
+                (Request.Method.PUT, APIsetCompras, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("false")){
+                            user = null;
+                        }else{
+                            user = FixByteJsonParser.parserJsonLogin(response,context);
+
+                            if (user != null){
+                                if(loginListener != null)
+                                {
+                                    loginListener.onUpdateLogin(true, user.getToken());
+                                }
+                            }else{
+                                if(loginListener != null) {
+                                    loginListener.onUpdateLogin(false, null);
+                                }
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d( "Errorr ADD: " + error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("accesstoken", accesstoken);
+                return params;
+            }
+        };
+        volleyQueue.add(req);
+    }
+
+    public void APIgetCompras (final Context context, boolean isConnected){
+        if (isConnected){
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetCompras, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    campanhas = FixByteJsonParser.parserJsonCampanhas(response,context);
+
+                    if(fixByteListener != null)
+                    {
+                        bdhelper.removeAllCampanhas();
+                        adicionarCampanhasBD(campanhas);
+                        fixByteListener.onRefreshListaCampanhas(campanhas);
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+    //endregion
+
+    //region account set and get
+    public ArrayList<User> getUsers()
+    {
+        return new ArrayList<>(userdata);
+    }
+
+    public User getUser (long id)
+    {
+        for (User user : userdata)
+        {
+            if (user.getId() == id)
+            {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public void adicionarUserBD(User user)
+    {
+
+        bdhelper.adicionarUserBD(user);
+    }
+
+    public void adicionarUsersBD(ArrayList<User> listaUsers)
+    {
+        for (User user : listaUsers){
+            adicionarUserBD(user);
+        }
+    }
+
+    public void APIEditAccount(final Context context, final String accesstoken){
+
+        StringRequest req = new StringRequest
+                (Request.Method.PUT, APIsetAccount, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("false")){
+                            user = null;
+                        }else{
+                            user = FixByteJsonParser.parserJsonLogin(response,context);
+
+                            if (user != null){
+                                if(loginListener != null)
+                                {
+                                    loginListener.onUpdateLogin(true, user.getToken());
+                                }
+                            }else{
+                                if(loginListener != null) {
+                                    loginListener.onUpdateLogin(false, null);
+                                }
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d( "Errorr ADD: " + error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("accesstoken", accesstoken);
+                return params;
+            }
+        };
+        volleyQueue.add(req);
+    }
+
+    public void APIgetAccount (final Context context, boolean isConnected, String token){
+        String APIgetAccount1 = APIgetAccount;
+        APIgetAccount1 += token;
+        if (!isConnected){
+            userdata = bdhelper.getAllUsersBD();
+            if (!userdata.isEmpty()){
+                if(userListener != null)
+                {
+                    userListener.onRefreshListaUser(userdata);
+                }
+            }
+        }else{
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetAccount1, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA321: " + response);
+                    userdata = FixByteJsonParser.parserJsonGetUser(response,context);
+                    userListener.onRefreshListaUser(userdata);
+
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
+    public void removerUser (long idUser)
+    {
+        User useraux = getUser(idUser);
+        if (useraux!=null)
+        {
+            if (bdhelper.removerUserBD((useraux.getId())))
+            {
+                userdata.remove(useraux);
+            }
+        }
+    }
+    public void setUserListener(UserListener userListener)
+    {
+        this.userListener = userListener;
     }
 
     @Override
-    public void onUpdateLogin(boolean key, String token) {
+    public void onRefreshListaUser(ArrayList<User> userdata) {
+
     }
-
-
-
-    public void setUpdateRegisto(RegisterListener registerListener) {
-        this.registerListener = registerListener;
-    }
-
-    @Override
-    public void onUpdateRegisto(JSONObject error) {
-    }
-
-
+    //endregion
 
 }

@@ -12,41 +12,74 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CampanhaBDHelper extends SQLiteOpenHelper {
-    private static  final int DB_VERSION =1;
+public class FixByteBDHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "tesp-psi-pl2-07-web";
-    private static final String TABLE_NAME = "campanha";
 
+    private static  final int DB_VERSION =1;
+    private static final String TABLE_NAME = "campanha";
     private static final String CAMPANHAID = "idCampanha";
     private static final String CAMPANHANOME = "campanhaNome";
     private static final String CAMPANHADATAINICIO = "campanhaDataInicio";
     private static final String CAMPANHADATAFIM = "campanhaDataFim";
     private static final String CAMPANHADESCRICAO = "campanhaDescricao";
 
+
+    private static  final int DB_VERSION_USER = 1;
+    private static final String TABLE_NAME_USER = "user";
+    private static final String USERNAME = "username";
+    private static final String EMAIL = "email";
+    private static final String ACCESSTOKEN = "accesstoken";
+    private static final String NOMEPROPRIO = "userNomeProprio";
+    private static final String APELIDO = "userApelido";
+    private static final String MORADA = "userMorada";
+    private static final String DATANASC = "userDataNasc";
+
     private final SQLiteDatabase database;
 
-    public CampanhaBDHelper(Context context) {
+    public FixByteBDHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.database = this.getWritableDatabase();
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void createTableUser(SQLiteDatabase db){
+        String createUsertable = "CREATE TABLE " + TABLE_NAME_USER +
+                "(id INTEGER, " +
+                USERNAME    + " TEXT NOT NULL, " +
+                EMAIL     + " TEXT NOT NULL, " +
+                ACCESSTOKEN + " TEXT NOT NULL, " +
+                NOMEPROPRIO    + " TEXT NOT NULL, " +
+                APELIDO     + " TEXT NOT NULL, " +
+                DATANASC     + " TEXT NOT NULL, " +
+                MORADA       + " TEXT NOT NULL " +
+                ")";
+
+        db.execSQL(createUsertable);
+    }
+    public void createTableCampanha(SQLiteDatabase db){
         String createCampanhatable = "CREATE TABLE " + TABLE_NAME + "(idCampanha INTEGER, " +
                 CAMPANHANOME    + " TEXT NOT NULL, " +
                 CAMPANHADATAINICIO     + " TEXT NOT NULL, " +
                 CAMPANHADESCRICAO     + " TEXT NOT NULL, " +
                 CAMPANHADATAFIM       + " TEXT NOT NULL " +
                 ")";
-
         db.execSQL(createCampanhatable);
     }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        createTableCampanha(db);
+        createTableUser(db);
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
+        this.onCreate(db);
         this.onCreate(db);
     }
+
+    //region campanhas
     public Campanha adicionarCampanhaBD(Campanha campanha){
 
         ContentValues values = new ContentValues();
@@ -108,5 +141,65 @@ public class CampanhaBDHelper extends SQLiteOpenHelper {
     public void removeAllCampanhas(){
         this.database.delete(TABLE_NAME,null,null);
     }
+    //endregion campanhas
+
+    //region user
+    public User adicionarUserBD(User user){
+
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, user.getUsername());
+        values.put(EMAIL, user.getEmail());
+        values.put(ACCESSTOKEN, user.getToken());
+        values.put(NOMEPROPRIO, user.getUserNomeProprio());
+        values.put(APELIDO, user.getUserApelido());
+        values.put(DATANASC, user.getUserDataNasc());
+        values.put(MORADA, user.getUserMorada());
+
+        this.database.insert(TABLE_NAME_USER, null,values);
+
+        return null;
+    }
+    public boolean editarUserBD(User user){
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, user.getUsername());
+        values.put(EMAIL, user.getEmail());
+        values.put(ACCESSTOKEN, user.getToken());
+        values.put(NOMEPROPRIO, user.getUserNomeProprio());
+        values.put(APELIDO, user.getUserApelido());
+        values.put(DATANASC, user.getUserDataNasc());
+        values.put(MORADA, user.getUserMorada());
+
+        return this.database.update(TABLE_NAME, values, "id = ?", new String[]{"" + user.getId()})>0;
+    }
+    public boolean removerUserBD (long idUser){
+        return this.database.delete(TABLE_NAME, "id = ?", new String[]{"" + idUser})==1;
+
+    }
+    public ArrayList<User> getAllUsersBD(){
+        ArrayList<User> users = new ArrayList<>();
+
+        Cursor cursor = this.database.query(TABLE_NAME_USER,new String[]{"id", USERNAME,EMAIL,ACCESSTOKEN,NOMEPROPRIO,APELIDO,DATANASC,MORADA},null,null,null,null,null);
+
+        if (cursor.moveToFirst()){
+            do{
+                User nextUser = new User(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getString(7));
+                nextUser.setId(cursor.getLong(0));
+                users.add(nextUser);
+            }while(cursor.moveToNext());
+        }
+        return users;
+    }
+    public void removeAllUsers(){
+        this.database.delete(TABLE_NAME_USER,null,null);
+    }
+    //endregion
 
 }

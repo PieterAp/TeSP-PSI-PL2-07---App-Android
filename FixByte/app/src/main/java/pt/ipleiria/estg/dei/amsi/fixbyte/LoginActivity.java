@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     //User Listener
-
     private String token = null;
     private boolean key;
 

@@ -3,14 +3,17 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,19 +24,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AccountActivity extends AppCompatActivity {
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.UserListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
+import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
+public class AccountActivity extends AppCompatActivity implements UserListener {
+
+    public static final String TOKEN = "amsi.dei.estg.ipleiria.pt.TOKEN";
+
+    SharedPreferences sharePref;
+    SharedPreferences.Editor editor;
+
+    private Context context;
+    private LayoutInflater inflater;
+
+    private EditText mUsernameView;
     private EditText mFirstNameView;
     private EditText mLastNameView;
     private EditText mDateOfBirthView;
     private EditText mAddressView;
     private EditText mPasswordView;
 
+    private ArrayList<User> user;
     private DatePickerDialog.OnDateSetListener mDateOfBirthListener;
 
     @Override
@@ -42,6 +63,7 @@ public class AccountActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_account);
 
+        mUsernameView = (EditText) findViewById(R.id.username);
         mFirstNameView = (EditText) findViewById(R.id.first_name);
         mLastNameView = (EditText) findViewById(R.id.last_name);
         mDateOfBirthView = (EditText) findViewById(R.id.dateOfBirth);
@@ -95,9 +117,23 @@ public class AccountActivity extends AppCompatActivity {
                 attemptToConfirm();
             }
         });
+
+        load();
+
     }
 
+    private void load(){
+        FixByteSingleton.getInstance(getApplicationContext()).setUserListener(this);
+        FixByteSingleton.getInstance(getApplicationContext()).APIgetAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),getIntent().getStringExtra(TOKEN));
 
+        if (user != null){
+            mUsernameView.setText(user.get(0).getUsername());
+            mFirstNameView.setText(user.get(0).getUserNomeProprio());
+            mLastNameView.setText(user.get(0).getUserApelido());
+            mDateOfBirthView.setText(user.get(0).getUserDataNasc());
+            mAddressView.setText(user.get(0).getUserMorada());
+        }
+    }
     /**
      * Attempts to register the account specified in the form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -206,5 +242,17 @@ public class AccountActivity extends AppCompatActivity {
             return 0;
         }
 
+    }
+    @Override
+    public void onRefreshListaUser(ArrayList<User> userdata) {
+        this.user = userdata;
+
+        if (mUsernameView != null){
+            mUsernameView.setText(user.get(0).getUsername());
+            mFirstNameView.setText(user.get(0).getUserNomeProprio());
+            mLastNameView.setText(user.get(0).getUserApelido());
+            mDateOfBirthView.setText(user.get(0).getUserDataNasc());
+            mAddressView.setText(user.get(0).getUserMorada());
+        }
     }
 }

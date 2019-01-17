@@ -30,7 +30,7 @@ public class CategoriaBDHelper extends SQLiteOpenHelper {
         String createCategoriatable = "CREATE TABLE " + TABLE_NAME + "(idcategorias INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 CATEGORIANOME    + " TEXT NOT NULL, " +
                 CATEGORIADESCRICAO     + " TEXT NOT NULL, " +
-                CATEGORIAESTADO     + " INTEGER NOT NULL " +
+                CATEGORIAESTADO     + " INTEGER NOT NULL, " +
                 QNTPRODUTOS     + " INTEGER NOT NULL " +
                 ")";
 

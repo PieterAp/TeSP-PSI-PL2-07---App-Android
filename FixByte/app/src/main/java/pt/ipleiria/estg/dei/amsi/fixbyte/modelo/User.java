@@ -11,15 +11,15 @@ public class User {
     private String userMorada;
     private String userDataNasc;
 
-    public User(long id, String username, String email, String token, String userNomeProprio, String userApelido, String userMorada, String userDataNasc) {
+    public User(long id, String username, String email, String token, String userNomeProprio, String userApelido, String userDataNasc, String userMorada) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.token = token;
         this.userNomeProprio = userNomeProprio;
         this.userApelido = userApelido;
-        this.userMorada = userMorada;
         this.userDataNasc = userDataNasc;
+        this.userMorada = userMorada;
     }
 
     public long getId() {
