@@ -559,44 +559,46 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         }
     }
 
-    public void APIEditAccount(final Context context, final String accesstoken){
+    public void APIEditAccount(final Context context, boolean isConnected, final String accesstoken,final String firstname, final String lastname, final String date, final String address,final String password){
 
-        StringRequest req = new StringRequest
-                (Request.Method.PUT, APIsetAccount, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("false")){
-                            user = null;
-                        }else{
-                            user = FixByteJsonParser.parserJsonLogin(response,context);
+        if (!isConnected){
+            Toast.makeText(context, "You must be connected to the internet", Toast.LENGTH_SHORT).show();
 
-                            if (user != null){
-                                if(loginListener != null)
-                                {
-                                    loginListener.onUpdateLogin(true, user.getToken());
-                                }
+        }else {
+            StringRequest req = new StringRequest
+                    (Request.Method.PUT, APIsetAccount, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            System.out.println("--> RESPOSTA321: " + response);
+
+                            if (response.equals("\"Alteracao com sucesso\"")){
+                                Toast.makeText(context, "Changed successfully", Toast.LENGTH_SHORT).show();
                             }else{
-                                if(loginListener != null) {
-                                    loginListener.onUpdateLogin(false, null);
-                                }
+                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d( "Errorr ADD: " + error.getMessage());
-                    }
-                }) {
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d( "Errorr ADD: " + error.getMessage());
+                        }
+                    }) {
 
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("accesstoken", accesstoken);
-                return params;
-            }
-        };
-        volleyQueue.add(req);
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("accesstoken", accesstoken);
+                    params.put("firstname", firstname);
+                    params.put("lastname", lastname);
+                    params.put("date", date);
+                    params.put("address", address);
+                    params.put("password", password);
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
+
     }
 
     public void APIgetAccount (final Context context, boolean isConnected, String token){
@@ -615,7 +617,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                 @Override
                 public void onResponse(JSONArray response) {
-                    System.out.println("--> RESPOSTA321: " + response);
                     userdata = FixByteJsonParser.parserJsonGetUser(response,context);
                     userListener.onRefreshListaUser(userdata);
 

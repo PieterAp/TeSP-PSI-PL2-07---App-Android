@@ -103,7 +103,7 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptToConfirm();
+                    attemptToEdit();
                     return true;
                 }
                 return false;
@@ -114,7 +114,7 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
         mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptToConfirm();
+                attemptToEdit();
             }
         });
 
@@ -127,11 +127,27 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
         FixByteSingleton.getInstance(getApplicationContext()).APIgetAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),getIntent().getStringExtra(TOKEN));
 
         if (user != null){
-            mUsernameView.setText(user.get(0).getUsername());
-            mFirstNameView.setText(user.get(0).getUserNomeProprio());
-            mLastNameView.setText(user.get(0).getUserApelido());
-            mDateOfBirthView.setText(user.get(0).getUserDataNasc());
-            mAddressView.setText(user.get(0).getUserMorada());
+            try {
+                Button mEmailSignUpButton = (Button) findViewById(R.id.btnSave);
+                mEmailSignUpButton.setVisibility(View.INVISIBLE);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = sdf.parse(user.get(0).getUserDataNasc());
+                sdf.applyPattern("yyyy/MM/dd");
+
+                SimpleDateFormat origin = new SimpleDateFormat("yyyy/MM/dd");
+                Date dateOrigin = origin.parse(sdf.format(date));
+                sdf.applyPattern("dd/MM/yyyy");
+
+                mUsernameView.setText(user.get(0).getUsername());
+                mFirstNameView.setText(user.get(0).getUserNomeProprio());
+                mLastNameView.setText(user.get(0).getUserApelido());
+                mDateOfBirthView.setText(sdf.format(dateOrigin));
+                mAddressView.setText(user.get(0).getUserMorada());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     /**
@@ -139,7 +155,7 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual account is created.
      */
-    private void attemptToConfirm()
+    private void attemptToEdit()
     {
         // Reset errors.
         mPasswordView.setError(null);
@@ -155,14 +171,14 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
         View focusView = null;
 
         //Password Validation
-        if (password.trim().isEmpty()){
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        }else if (password.length() < 6) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+        if (password.isEmpty()){
+
+        }else{
+            if (password.length() < 6) {
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
         }
 
         if (firstName.length()<3){
@@ -180,7 +196,6 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
             focusView = mAddressView;
             cancel = true;
         }
-
 
         try {
             //date comes in DD/MM/YYYY - String
@@ -208,21 +223,21 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
 
         } catch (ParseException e) {
             mDateOfBirthView.setError("Something went wrong.");
-            Context contexto = getApplicationContext();
-
-            Toast.makeText(contexto, "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             focusView = mDateOfBirthView;
             cancel = true;
         }
+
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            Intent intent = new Intent (getApplication(), HomeActivity.class);
-            startActivity(intent);
-            finish();
+            editAPI(firstName,lastName,dateString,address,password);
         }
+    }
+
+    private void editAPI(String firstName,String lastName,String dateString,String address,String password){
+        FixByteSingleton.getInstance(getApplicationContext()).setUserListener(this);
+        FixByteSingleton.getInstance(getApplicationContext()).APIEditAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),getIntent().getStringExtra(TOKEN),firstName,lastName,dateString,address,password);
     }
 
     private int getAge(String birthday){
@@ -248,11 +263,23 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
         this.user = userdata;
 
         if (mUsernameView != null){
-            mUsernameView.setText(user.get(0).getUsername());
-            mFirstNameView.setText(user.get(0).getUserNomeProprio());
-            mLastNameView.setText(user.get(0).getUserApelido());
-            mDateOfBirthView.setText(user.get(0).getUserDataNasc());
-            mAddressView.setText(user.get(0).getUserMorada());
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = sdf.parse(user.get(0).getUserDataNasc());
+                sdf.applyPattern("yyyy/MM/dd");
+
+                SimpleDateFormat origin = new SimpleDateFormat("yyyy/MM/dd");
+                Date dateOrigin = origin.parse(sdf.format(date));
+                sdf.applyPattern("dd/MM/yyyy");
+
+                mUsernameView.setText(user.get(0).getUsername());
+                mFirstNameView.setText(user.get(0).getUserNomeProprio());
+                mLastNameView.setText(user.get(0).getUserApelido());
+                mDateOfBirthView.setText(sdf.format(dateOrigin));
+                mAddressView.setText(user.get(0).getUserMorada());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

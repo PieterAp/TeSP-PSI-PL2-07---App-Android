@@ -179,7 +179,7 @@ public class FixByteJsonParser {
     }
     //endregion
 
-    //getAccounrt
+    //getAccount
     public static ArrayList<User> parserJsonGetUser (JSONArray response, Context context){
 
         ArrayList<User> tempListUser = new ArrayList<>();
