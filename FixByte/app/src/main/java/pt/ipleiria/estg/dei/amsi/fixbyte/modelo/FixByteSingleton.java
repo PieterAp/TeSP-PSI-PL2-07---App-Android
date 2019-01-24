@@ -39,7 +39,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private JSONObject registo;
 
     private FixByteBDHelper bdhelper = null;
-    private CategoriaBDHelper categoriaBDHelper = null;
 
     private String IPAdress = "192.168.137.1";
     private String Port = "8888";
@@ -80,7 +79,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         produtoscampanha = new ArrayList<>();
 
         categorias = new ArrayList<>();
-        categoriaBDHelper = new CategoriaBDHelper(context);
     }
 
     //region Campanha
@@ -398,7 +396,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void adicionarCategoriaBD(Categoria categoria)
     {
 
-        categoriaBDHelper.adicionarCategoriaBD(categoria);
+        bdhelper.adicionarCategoriaBD(categoria);
     }
 
     public void adicionarCategoriasBD(ArrayList<Categoria> listaCategorias)
@@ -411,10 +409,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void getAllCategoriasAPI (final Context context, boolean isConnected){
 
         if (!isConnected){
-            categorias = categoriaBDHelper.getAllCategoriasBD();
-            System.out.println("CATEGORIAS TUK: " + categorias);
-            Toast.makeText(context, "CATEGORIAS TUK: " + categorias, Toast.LENGTH_SHORT).show();
-
+            categorias = bdhelper.getAllCategoriasBD();
             if (!categorias.isEmpty()){
                 if(fixByteListener != null)
                 {
@@ -431,7 +426,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                     if(fixByteListener != null)
                     {
-                        //categoriaBDHelper.removeAllCategorias();
+                        bdhelper.removeAllCategorias();
                         adicionarCategoriasBD(categorias);
                         fixByteListener.onRefreshListaCategorias(categorias);
                     }
@@ -440,9 +435,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                 @Override
                 public void onErrorResponse(VolleyError error){
                     System.out.println("ERROR: " + error);
-
                 }
-
             });
             volleyQueue.add(req);
         }
