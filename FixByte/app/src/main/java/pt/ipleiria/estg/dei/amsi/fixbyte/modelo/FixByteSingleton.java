@@ -41,15 +41,18 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private FixByteBDHelper bdhelper = null;
     private CategoriaBDHelper categoriaBDHelper = null;
 
-    private String mUrlAPIProdutosCampanhas = "http://192.168.1.69:8888/v1/campanhas/";
-    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
-    private String mUrlAPICategorias = "http://192.168.1.69:8888/v1/categorias";
-    private String APILogin = "http://192.168.1.69:8888/v1/users/login";
-    private String APIRegisto = "http://192.168.1.69:8888/v1/users/registo";
-    private String APIgetAccount = "http://192.168.1.69:8888/v1/users/account?accesstoken=";
-    private String APIsetAccount = "http://192.168.1.69:8888/v1/users/edit";
-    private String APIgetCompras = "http://192.168.1.69:8888/v1/users/getcompras?accesstoken=";
-    private String APIsetCompras = "http://192.168.1.69:8888/v1/users/setcompras";
+    private String IPAdress = "192.168.137.1";
+    private String Port = "8888";
+
+    private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
+    private String mUrlAPICampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas";
+    private String mUrlAPICategorias = "http://"+IPAdress+":"+Port+"/v1/categorias";
+    private String APILogin = "http://"+IPAdress+":"+Port+"/v1/users/login";
+    private String APIRegisto = "http://"+IPAdress+":"+Port+"/v1/users/registo";
+    private String APIgetAccount = "http://"+IPAdress+":"+Port+"/v1/users/account?accesstoken=";
+    private String APIsetAccount = "http://"+IPAdress+":"+Port+"/v1/users/edit";
+    private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/users/getcompras?accesstoken=";
+    private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/users/setcompras";
 
     private static RequestQueue volleyQueue;
 
