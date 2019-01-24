@@ -70,8 +70,6 @@ public class HomeActivity extends AppCompatActivity {
 
                     case R.id.itemCategories:
                         setFragment(categoriesFragment);
-                        //Intent intent = new Intent(getApplication(), CategoriaListaActivity.class);
-                        //startActivity(intent);
                         return true;
 
                     case R.id.itemSales:
