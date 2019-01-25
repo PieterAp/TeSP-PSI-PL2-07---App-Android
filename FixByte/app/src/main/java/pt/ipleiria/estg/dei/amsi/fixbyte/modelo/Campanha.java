@@ -1,6 +1,8 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte.modelo;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Campanha
@@ -54,6 +56,31 @@ public class Campanha
 
     public String getCampanhaDataFim() {
         return campanhaDataFim;
+    }
+
+    public String getCampanhaDataFimEnglishParse() {
+
+        SimpleDateFormat format = new SimpleDateFormat("d");
+
+        System.out.println("this is my starting date" + format.toString());
+
+        if(this.campanhaDataFim.endsWith("1") && !this.campanhaDataFim.endsWith("11"))
+            format = new SimpleDateFormat("d'st' MMMM");
+        else if(this.campanhaDataFim.endsWith("2") && !this.campanhaDataFim.endsWith("12"))
+            format = new SimpleDateFormat("d'nd' MMMM");
+        else if(this.campanhaDataFim.endsWith("3") && !this.campanhaDataFim.endsWith("13"))
+            format = new SimpleDateFormat("d'rd' MMMM");
+        else
+            format = new SimpleDateFormat("d'th' MMMM");
+
+        SimpleDateFormat formatCampanha = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = formatCampanha.parse(campanhaDataFim);
+            return format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return campanhaDataFim;
+        }
     }
 
     public void setCampanhaDataFim(String campanhaDataFim) {

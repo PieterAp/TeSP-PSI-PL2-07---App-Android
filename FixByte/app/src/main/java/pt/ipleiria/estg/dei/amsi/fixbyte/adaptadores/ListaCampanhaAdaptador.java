@@ -8,7 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.R;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
@@ -71,23 +76,22 @@ public class ListaCampanhaAdaptador extends BaseAdapter {
     private class ViewHolderLista
     {
         private TextView nome;
-        private TextView dataInicio;
+        private TextView descricao;
         private TextView dataFim;
 
 
         public ViewHolderLista (View convertView)
         {
             nome = convertView.findViewById(R.id.txtNome);
-            dataInicio = convertView.findViewById(R.id.txtDataInicio);
+            descricao = convertView.findViewById(R.id.txtDescricao);
             dataFim = convertView.findViewById(R.id.txtDateFim);
-
         }
 
         public void update (Campanha campanha)
         {
             nome.setText(campanha.getCampanhaNome());
-            dataInicio.setText(campanha.getCampanhaDataInicio());
-            dataFim.setText(campanha.getCampanhaDataFim());
+            descricao.setText(campanha.getCampanhaDescricao());
+            dataFim.setText(campanha.getCampanhaDataFimEnglishParse());
         }
     }
 }
