@@ -36,6 +36,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private ArrayList<Categoria> categorias;
     private ArrayList<CategoriaChild> categoriasChild;
     private ArrayList<Produto> produtos;
+    private ArrayList<Compra> compras;
 
     private User user;
     private JSONObject registo;
@@ -53,8 +54,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private String APIRegisto = "http://"+IPAdress+":"+Port+"/v1/users/registo";
     private String APIgetAccount = "http://"+IPAdress+":"+Port+"/v1/users/account?accesstoken=";
     private String APIsetAccount = "http://"+IPAdress+":"+Port+"/v1/users/edit";
-    private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/users/getcompras?accesstoken=";
-    private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/users/setcompras";
+    private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/getcompras?accesstoken=";
+    private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/setcompras";
     private String mUrlAPIProdutos = "http://"+IPAdress+":"+Port+"/v1/produtos";
     private String mUrlAPIProduto = "http://"+IPAdress+":"+Port+"/v1/produtos/";
 
@@ -65,7 +66,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private RegisterListener registerListener;
     private UserListener userListener;
     private ComprasListener comprasListener;
-
 
     public static synchronized FixByteSingleton getInstance(Context context)
     {
@@ -82,7 +82,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         bdhelper = new FixByteBDHelper(context);
 
         produtoscampanha = new ArrayList<>();
-
+        compras = new ArrayList<>();
         categorias = new ArrayList<>();
         categoriasChild = new ArrayList<>();
         produtos = new ArrayList<>();
@@ -545,27 +545,16 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     //endregion
 
     //region compras
-    public void APIsetCompras(final Context context, final String accesstoken){
+    public void APIsetCompras(final Context context, final String accesstoken, final long id){
 
         StringRequest req = new StringRequest
                 (Request.Method.PUT, APIsetCompras, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("false")){
-                            user = null;
+                            compras = null;
                         }else{
-                            user = FixByteJsonParser.parserJsonLogin(response,context);
-
-                            if (user != null){
-                                if(loginListener != null)
-                                {
-                                    loginListener.onUpdateLogin(true, user.getToken());
-                                }
-                            }else{
-                                if(loginListener != null) {
-                                    loginListener.onUpdateLogin(false, null);
-                                }
-                            }
+                            Toast.makeText(context, "Successfully Added", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -579,26 +568,28 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("accesstoken", accesstoken);
+                params.put("idproduto", ""+id);
                 return params;
             }
         };
         volleyQueue.add(req);
     }
 
-    public void APIgetCompras (final Context context, boolean isConnected){
+    public void APIgetCompras (final Context context, boolean isConnected, String accesstoken){
         if (isConnected){
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetCompras, null, new Response.Listener<JSONArray>() {
+            String APIgetCompras1 = APIgetCompras;
+            APIgetCompras1 += accesstoken;
+
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetCompras1, null, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("--> RESPOSTA: " + response);
-                    campanhas = FixByteJsonParser.parserJsonCampanhas(response,context);
-
+                    compras = FixByteJsonParser.parserJsongetCompras(response,context);
                     if(fixByteListener != null)
                     {
-                        bdhelper.removeAllCampanhas();
-                        adicionarCampanhasBD(campanhas);
-                        fixByteListener.onRefreshListaCampanhas(campanhas);
+                        comprasListener.onRefreshListaCompra(compras);
+
                     }
                 }
             }, new Response.ErrorListener(){
@@ -609,6 +600,15 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
             });
             volleyQueue.add(req);
         }
+    }
+    public void setComprasListener(ComprasListener comprasListener)
+    {
+        this.comprasListener = comprasListener;
+    }
+
+    @Override
+    public void onRefreshListaCompra(ArrayList<Compra> compra) {
+
     }
     //endregion
 
@@ -688,6 +688,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void APIgetAccount (final Context context, boolean isConnected, String token){
         String APIgetAccount1 = APIgetAccount;
         APIgetAccount1 += token;
+        System.out.println("--> RESPOSTA: " + token);
+
         if (!isConnected){
             userdata = bdhelper.getAllUsersBD();
             if (!userdata.isEmpty()){

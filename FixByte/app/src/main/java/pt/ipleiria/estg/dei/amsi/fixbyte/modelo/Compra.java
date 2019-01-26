@@ -5,64 +5,77 @@ import java.util.Date;
 
 public class Compra {
 
-    private long idCompra;
-    private String compraData;
-    private long user_iduser;
-    private Float compraValor;
-    private Integer compraEstado;
+    private long idprodutos;
+    private Double produto_preco;
+    private String produtoNome;
+    private String produtoImagem1;
+    private String produtoImagem2;
+    private String produtoImagem3;
+    private String produtoImagem4;
 
-
-    public Compra (long idCompra, String compraData, long user_iduser, Float compraValor, Integer compraEstado)
-    {
-        this.idCompra = idCompra;
-
-        Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
-        this.compraData = df.format(date);
-        this.user_iduser = user_iduser;
-        this.compraValor = compraValor;
-        this.compraEstado = compraEstado;
-
+    public Compra(long idprodutos, Double produto_preco, String produtoNome, String produtoImagem1, String produtoImagem2, String produtoImagem3, String produtoImagem4) {
+        this.idprodutos = idprodutos;
+        this.produto_preco = produto_preco;
+        this.produtoNome = produtoNome;
+        this.produtoImagem1 = produtoImagem1;
+        this.produtoImagem2 = produtoImagem2;
+        this.produtoImagem3 = produtoImagem3;
+        this.produtoImagem4 = produtoImagem4;
     }
 
-    public long getIdCompra() {
-        return idCompra;
+    public long getIdprodutos() {
+        return idprodutos;
     }
 
-    public void setIdCompra(long idCompra) {
-        this.idCompra = idCompra;
+    public void setIdprodutos(long idprodutos) {
+        this.idprodutos = idprodutos;
     }
 
-    public String getCompraData() {
-        return compraData;
+    public Double getProduto_preco() {
+        return produto_preco;
     }
 
-    public void setCompraData(String compraData) {
-        this.compraData = compraData;
+    public void setProduto_preco(Double produto_preco) {
+        this.produto_preco = produto_preco;
     }
 
-    public long getUser_iduser() {
-        return user_iduser;
+    public String getProdutoNome() {
+        return produtoNome;
     }
 
-    public void setUser_iduser(long user_iduser) {
-        this.user_iduser = user_iduser;
+    public void setProdutoNome(String produtoNome) {
+        this.produtoNome = produtoNome;
     }
 
-    public Float getCompraValor() {
-        return compraValor;
+    public String getProdutoImagem1() {
+        return produtoImagem1;
     }
 
-    public void setCompraValor(Float compraValor) {
-        this.compraValor = compraValor;
+    public void setProdutoImagem1(String produtoImagem1) {
+        this.produtoImagem1 = produtoImagem1;
     }
 
-    public Integer getCompraEstado() {
-        return compraEstado;
+    public String getProdutoImagem2() {
+        return produtoImagem2;
     }
 
-    public void setCompraEstado(Integer compraEstado) {
-        this.compraEstado = compraEstado;
+    public void setProdutoImagem2(String produtoImagem2) {
+        this.produtoImagem2 = produtoImagem2;
+    }
+
+    public String getProdutoImagem3() {
+        return produtoImagem3;
+    }
+
+    public void setProdutoImagem3(String produtoImagem3) {
+        this.produtoImagem3 = produtoImagem3;
+    }
+
+    public String getProdutoImagem4() {
+        return produtoImagem4;
+    }
+
+    public void setProdutoImagem4(String produtoImagem4) {
+        this.produtoImagem4 = produtoImagem4;
     }
 }

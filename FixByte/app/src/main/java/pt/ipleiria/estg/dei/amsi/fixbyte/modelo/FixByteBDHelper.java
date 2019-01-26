@@ -264,10 +264,10 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         values.put(DATANASC, user.getUserDataNasc());
         values.put(MORADA, user.getUserMorada());
 
-        return this.database.update(TABLE_NAME, values, "id = ?", new String[]{"" + user.getId()})>0;
+        return this.database.update(TABLE_NAME_USER, values, "id = ?", new String[]{"" + user.getId()})>0;
     }
     public boolean removerUserBD (long idUser){
-        return this.database.delete(TABLE_NAME, "id = ?", new String[]{"" + idUser})==1;
+        return this.database.delete(TABLE_NAME_USER, "id = ?", new String[]{"" + idUser})==1;
 
     }
     public ArrayList<User> getAllUsersBD(){

@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -18,9 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
-
-    SharedPreferences sharePref;
-    SharedPreferences.Editor editor;
 
     private BottomNavigationView mMainNav;
     private FrameLayout nMainFrame;
@@ -38,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
     }
 
 
@@ -82,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.itemCart:
                         intent = new Intent(getApplication(), AccountActivity.class);
                         String text = getIntent().getStringExtra(TOKEN);
-                        intent.putExtra(AccountActivity.TOKEN,getIntent().getStringExtra(TOKEN));
                         startActivity(intent);
                         setFragment(cartFragment);
                         return true;
