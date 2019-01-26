@@ -34,6 +34,13 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     private static final String MORADA = "userMorada";
     private static final String DATANASC = "userDataNasc";
 
+
+    private static final String TABLE_NAME_CATEGORIA = "categoria";
+    private static final String CATEGORIANOME = "categoriaNome";
+    private static final String CATEGORIADESCRICAO = "categoriaDescricao";
+    private static final String CATEGORIAESTADO = "categoriaEstado";
+    private static final String QNTPRODUTOS = "qntProdutos";
+
     private final SQLiteDatabase database;
 
     public FixByteBDHelper(Context context) {
@@ -64,18 +71,31 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
                 ")";
         db.execSQL(createCampanhatable);
     }
+    public void createTableCategoria(SQLiteDatabase db){
+        String createCategoriatable = "CREATE TABLE " + TABLE_NAME_CATEGORIA + "(idcategorias INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                CATEGORIANOME    + " TEXT NOT NULL, " +
+                CATEGORIADESCRICAO     + " TEXT NOT NULL, " +
+                CATEGORIAESTADO     + " INTEGER NOT NULL, " +
+                QNTPRODUTOS     + " INTEGER NOT NULL " +
+                ")";
+
+        db.execSQL(createCategoriatable);
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTableCampanha(db);
         createTableUser(db);
+        createTableCategoria(db);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        this.onCreate(db);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
         this.onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_CATEGORIA);
         this.onCreate(db);
     }
 
@@ -202,4 +222,66 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     }
     //endregion
 
+    //region categorias
+    public Categoria adicionarCategoriaBD(Categoria categoria){
+
+        ContentValues values = new ContentValues();
+        values.put(CATEGORIANOME, categoria.getCategoriaNome());
+        values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
+        values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
+        values.put(QNTPRODUTOS, categoria.getQntProdutos());
+
+        long id = this.database.insert(TABLE_NAME_CATEGORIA, null,values);
+
+        if (id > -1){
+            categoria.setIdcategorias(id);
+            return categoria;
+        }
+        return null;
+    }
+    public boolean editarCategoriaBD(Categoria categoria){
+        ContentValues values = new ContentValues();
+        values.put(CATEGORIANOME, categoria.getCategoriaNome());
+        values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
+        values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
+        values.put(QNTPRODUTOS, categoria.getQntProdutos());
+
+        return this.database.update(TABLE_NAME, values, "idcategorias = ?", new String[]{"" + categoria.getIdcategorias()})>0;
+    }
+    public boolean removerCategoriaBD (long idcategorias){
+        return this.database.delete(TABLE_NAME_CATEGORIA, "idcategorias = ?", new String[]{"" + idcategorias})==1;
+
+    }
+    public ArrayList<Categoria> getAllCategoriasBD(){
+        ArrayList<Categoria> categorias = new ArrayList<>();
+
+        Cursor cursor = this.database.query(TABLE_NAME_CATEGORIA,new String[]{"idcategorias", CATEGORIANOME,CATEGORIADESCRICAO,CATEGORIAESTADO,QNTPRODUTOS},null,null,null,null,null);
+
+        if (cursor.moveToFirst()){
+            do{
+                Categoria nextCategoria = new Categoria(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4));
+
+                nextCategoria.setIdcategorias(cursor.getLong(0));
+                categorias.add(nextCategoria);
+            }while(cursor.moveToNext());
+
+        }
+        return categorias;
+    }
+    public void removeAllCategorias(){
+        try
+        {
+            this.database.delete(TABLE_NAME_CATEGORIA,null,null);
+        }
+        catch (Exception Ex)
+        {
+            System.out.println("ERROR ON removeAllCategorias" + Ex);
+        }
+    }
+    //endregion
 }

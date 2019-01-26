@@ -39,17 +39,19 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private JSONObject registo;
 
     private FixByteBDHelper bdhelper = null;
-    private CategoriaBDHelper categoriaBDHelper = null;
 
-    private String mUrlAPIProdutosCampanhas = "http://192.168.1.69:8888/v1/campanhas/";
-    private String mUrlAPICampanhas = "http://192.168.1.69:8888/v1/campanhas";
-    private String mUrlAPICategorias = "http://192.168.1.69:8888/v1/categorias";
-    private String APILogin = "http://192.168.1.69:8888/v1/users/login";
-    private String APIRegisto = "http://192.168.1.69:8888/v1/users/registo";
-    private String APIgetAccount = "http://192.168.1.69:8888/v1/users/account?accesstoken=";
-    private String APIsetAccount = "http://192.168.1.69:8888/v1/users/edit";
-    private String APIgetCompras = "http://192.168.1.69:8888/v1/users/getcompras?accesstoken=";
-    private String APIsetCompras = "http://192.168.1.69:8888/v1/users/setcompras";
+    private String IPAdress = "192.168.137.1";
+    private String Port = "8888";
+
+    private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
+    private String mUrlAPICampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas";
+    private String mUrlAPICategorias = "http://"+IPAdress+":"+Port+"/v1/categorias";
+    private String APILogin = "http://"+IPAdress+":"+Port+"/v1/users/login";
+    private String APIRegisto = "http://"+IPAdress+":"+Port+"/v1/users/registo";
+    private String APIgetAccount = "http://"+IPAdress+":"+Port+"/v1/users/account?accesstoken=";
+    private String APIsetAccount = "http://"+IPAdress+":"+Port+"/v1/users/edit";
+    private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/users/getcompras?accesstoken=";
+    private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/users/setcompras";
 
     private static RequestQueue volleyQueue;
 
@@ -77,7 +79,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         produtoscampanha = new ArrayList<>();
 
         categorias = new ArrayList<>();
-        categoriaBDHelper = new CategoriaBDHelper(context);
     }
 
     //region Campanha
@@ -395,7 +396,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void adicionarCategoriaBD(Categoria categoria)
     {
 
-        categoriaBDHelper.adicionarCategoriaBD(categoria);
+        bdhelper.adicionarCategoriaBD(categoria);
     }
 
     public void adicionarCategoriasBD(ArrayList<Categoria> listaCategorias)
@@ -408,10 +409,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void getAllCategoriasAPI (final Context context, boolean isConnected){
 
         if (!isConnected){
-            categorias = categoriaBDHelper.getAllCategoriasBD();
-            System.out.println("CATEGORIAS TUK: " + categorias);
-            Toast.makeText(context, "CATEGORIAS TUK: " + categorias, Toast.LENGTH_SHORT).show();
-
+            categorias = bdhelper.getAllCategoriasBD();
             if (!categorias.isEmpty()){
                 if(fixByteListener != null)
                 {
@@ -428,7 +426,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                     if(fixByteListener != null)
                     {
-                        //categoriaBDHelper.removeAllCategorias();
+                        bdhelper.removeAllCategorias();
                         adicionarCategoriasBD(categorias);
                         fixByteListener.onRefreshListaCategorias(categorias);
                     }
@@ -437,9 +435,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                 @Override
                 public void onErrorResponse(VolleyError error){
                     System.out.println("ERROR: " + error);
-
                 }
-
             });
             volleyQueue.add(req);
         }

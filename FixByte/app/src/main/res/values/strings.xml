@@ -49,7 +49,7 @@
     <!-- Strings related to sales-->
     <string name="salename">Name:</string>
     <string name="saleDataInicio">Start date:</string>
-    <string name="saleDataFim">End date:</string>
+    <string name="saleDataFim">Ending:</string>
     <string name="imgSale">TODO</string>
 
 

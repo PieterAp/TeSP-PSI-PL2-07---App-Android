@@ -52,7 +52,7 @@ public class ListaCategoriaAdaptador extends BaseAdapter
 
         if (convertView == null)
         {
-            convertView = inflater.inflate(R.layout.activity_categories_item,null);
+            convertView = inflater.inflate(R.layout.fragment_category_item,null);
         }
 
         ViewHolderLista viewHolderLista = (ViewHolderLista) convertView.getTag();
