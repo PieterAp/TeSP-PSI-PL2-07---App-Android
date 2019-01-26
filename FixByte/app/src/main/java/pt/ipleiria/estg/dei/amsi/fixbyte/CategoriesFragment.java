@@ -3,6 +3,8 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
         import android.content.Intent;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentTransaction;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
@@ -27,6 +29,9 @@ public class CategoriesFragment extends Fragment implements FixByteListener
     private ArrayList<Categoria> listaCategorias;
     private ListaCategoriaAdaptador listaCategoriaAdaptador;
 
+    private CategoryChildListFragment categoryChildListFragment;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -42,19 +47,18 @@ public class CategoriesFragment extends Fragment implements FixByteListener
 
         lvlistView = (ListView) getView().findViewById(R.id.listVIewCategories);
 
+        categoryChildListFragment = new CategoryChildListFragment();
+
         lvlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Categoria tempCategoria = (Categoria) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getActivity().getApplicationContext(), DetalhesProdutosCampanha.class);
-                System.out.println("--> RESPOSTA111: " + position);
-                System.out.println("--> NOME DA CAMPANHA CLICADA: " + tempCategoria.getCategoriaNome());
-
-                //intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCategoria.getIdcategorias());
-                //startActivity(intent);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, categoryChildListFragment);
+                fragmentTransaction.commit();
             }
         });
+
     }
 
     public  void onResume()
