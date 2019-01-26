@@ -467,8 +467,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                         if (response.equals("false")){
                             compras = null;
                         }else{
-                            //compra = FixByteJsonParser.parserJsonsetCompras(response,context);
-
+                            Toast.makeText(context, "Successfully Added", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -502,6 +501,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                     compras = FixByteJsonParser.parserJsongetCompras(response,context);
                     if(fixByteListener != null)
                     {
+                        comprasListener.onRefreshListaCompra(compras);
 
                     }
                 }
