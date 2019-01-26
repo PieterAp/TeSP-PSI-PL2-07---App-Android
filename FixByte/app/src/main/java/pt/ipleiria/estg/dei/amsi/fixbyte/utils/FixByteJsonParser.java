@@ -182,7 +182,7 @@ public class FixByteJsonParser {
                 Integer childEstado = categoriaChild.getInt("childEstado");
                 Integer qntProdutos = categoriaChild.getInt("qntProdutos");
 
-                CategoriaChild auxCategoriaChild = new CategoriaChild(idchild,childNome,childDescricao,categoria_idcategorias,childEstado);
+                CategoriaChild auxCategoriaChild = new CategoriaChild(idchild,childNome,childDescricao,categoria_idcategorias,childEstado,qntProdutos);
                 tempListCategoriaChild.add(auxCategoriaChild);
 
             }
@@ -281,31 +281,32 @@ public class FixByteJsonParser {
             e.printStackTrace();
         }
         return tempListProduto;
-        //region getCompras
-        public static ArrayList<Compra> parserJsongetCompras (JSONArray response, Context context){
+    }
+    //region getCompras
+    public static ArrayList<Compra> parserJsongetCompras (JSONArray response, Context context) {
 
-            ArrayList<Compra> tempListCompra = new ArrayList<>();
+        ArrayList<Compra> tempListCompra = new ArrayList<>();
 
-            try{
-                for (int i = 0; i< response.length();i++){
-                    JSONObject compra = (JSONObject) response.get(i);
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject compra = (JSONObject) response.get(i);
 
-                    long idprodutos     = compra.getLong("idprodutos");
-                    Double produto_preco   = compra.getDouble("produto_preco");
-                    String produtoNome    = compra.getString("produtoNome");
-                    String produtoImagem1    = compra.getString("produtoImagem1");
-                    String produtoImagem2    = compra.getString("produtoImagem2");
-                    String produtoImagem3    = compra.getString("produtoImagem3");
-                    String produtoImagem4    = compra.getString("produtoImagem4");
+                long idprodutos = compra.getLong("idprodutos");
+                Double produto_preco = compra.getDouble("produto_preco");
+                String produtoNome = compra.getString("produtoNome");
+                String produtoImagem1 = compra.getString("produtoImagem1");
+                String produtoImagem2 = compra.getString("produtoImagem2");
+                String produtoImagem3 = compra.getString("produtoImagem3");
+                String produtoImagem4 = compra.getString("produtoImagem4");
 
-                    Compra auxCompra = new Compra(idprodutos,produto_preco,produtoNome,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4);
-                    tempListCompra.add(auxCompra);
+                Compra auxCompra = new Compra(idprodutos, produto_preco, produtoNome, produtoImagem1, produtoImagem2, produtoImagem3, produtoImagem4);
+                tempListCompra.add(auxCompra);
 
-                }
-            }catch (JSONException e){
-                System.out.println("--> error: " + e);
             }
-            return tempListCompra;
+        } catch (JSONException e) {
+            System.out.println("--> error: " + e);
+        }
+        return tempListCompra;
     }
     //endregion
 }
