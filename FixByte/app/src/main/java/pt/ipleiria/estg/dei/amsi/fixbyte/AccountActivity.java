@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.HandlerThread;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -38,11 +39,6 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
 public class AccountActivity extends AppCompatActivity implements UserListener {
-
-    public static final String TOKEN = "amsi.dei.estg.ipleiria.pt.TOKEN";
-
-    SharedPreferences sharePref;
-    SharedPreferences.Editor editor;
 
     private Context context;
     private LayoutInflater inflater;
@@ -123,8 +119,11 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
     }
 
     private void load(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String Token = preferences.getString("token", "");
+
         FixByteSingleton.getInstance(getApplicationContext()).setUserListener(this);
-        FixByteSingleton.getInstance(getApplicationContext()).APIgetAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),getIntent().getStringExtra(TOKEN));
+        FixByteSingleton.getInstance(getApplicationContext()).APIgetAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),Token);
 
         if (user != null){
             try {
@@ -237,7 +236,11 @@ public class AccountActivity extends AppCompatActivity implements UserListener {
 
     private void editAPI(String firstName,String lastName,String dateString,String address,String password){
         FixByteSingleton.getInstance(getApplicationContext()).setUserListener(this);
-        FixByteSingleton.getInstance(getApplicationContext()).APIEditAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),getIntent().getStringExtra(TOKEN),firstName,lastName,dateString,address,password);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String Token = preferences.getString("token", "");
+
+        FixByteSingleton.getInstance(getApplicationContext()).APIEditAccount(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),Token,firstName,lastName,dateString,address,password);
+
     }
 
     private int getAge(String birthday){

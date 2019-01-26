@@ -14,6 +14,7 @@ import java.util.Map;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Compra;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
@@ -163,7 +164,7 @@ public class FixByteJsonParser {
    }
     //endregion
 
-    //region login
+    //region registo
     public static JSONObject parserJsonRegisto (String response, Context context){
         try
         {
@@ -179,7 +180,7 @@ public class FixByteJsonParser {
     }
     //endregion
 
-    //getAccount
+    //region getAccount
     public static ArrayList<User> parserJsonGetUser (JSONArray response, Context context){
 
         ArrayList<User> tempListUser = new ArrayList<>();
@@ -205,6 +206,35 @@ public class FixByteJsonParser {
             e.printStackTrace();
         }
         return tempListUser;
+
+    }
+    //endregion
+
+    //region getCompras
+    public static ArrayList<Compra> parserJsongetCompras (JSONArray response, Context context){
+
+        ArrayList<Compra> tempListCompra = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject compra = (JSONObject) response.get(i);
+
+                long idprodutos     = compra.getLong("idprodutos");
+                Double produto_preco   = compra.getDouble("produto_preco");
+                String produtoNome    = compra.getString("produtoNome");
+                String produtoImagem1    = compra.getString("produtoImagem1");
+                String produtoImagem2    = compra.getString("produtoImagem2");
+                String produtoImagem3    = compra.getString("produtoImagem3");
+                String produtoImagem4    = compra.getString("produtoImagem4");
+
+                Compra auxCompra = new Compra(idprodutos,produto_preco,produtoNome,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4);
+                tempListCompra.add(auxCompra);
+
+            }
+        }catch (JSONException e){
+            System.out.println("--> error: " + e);
+        }
+        return tempListCompra;
 
     }
     //endregion
