@@ -16,11 +16,18 @@ tools:context=".CategoriesFragment">
     android:text="Categories"
     android:textAlignment="center"
     android:textSize="18sp"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+/>
 
-<ListView
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10.0sp" />
+
+    <ListView
     android:id="@+id/listVIewCategories"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="10.0sp"/>
 
 </LinearLayout>

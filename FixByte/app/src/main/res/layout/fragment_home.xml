@@ -12,6 +12,13 @@
         android:layout_height="wrap_content"
         android:text="Home" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See product with id 1"
+        android:textAllCaps="false"/>
+
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="157dp">

@@ -86,7 +86,7 @@ public class ListaCategoriaAdaptador extends BaseAdapter
         public void update (Categoria categoria)
         {
             nome.setText(categoria.getCategoriaNome());
-            qntItems.setText(categoria.getQntProdutos().toString() + " items");
+            qntItems.setText(categoria.getQntProdutos().toString() + " Items");
         }
     }
 }
