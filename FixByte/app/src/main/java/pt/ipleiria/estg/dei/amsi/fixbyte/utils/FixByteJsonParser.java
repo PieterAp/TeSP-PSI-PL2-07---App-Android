@@ -14,6 +14,8 @@ import java.util.Map;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.CategoriaChild;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
@@ -163,6 +165,34 @@ public class FixByteJsonParser {
    }
     //endregion
 
+    //region categoriasChild
+    public static ArrayList<CategoriaChild> parserJsonCategoriasChild (JSONArray response, Context context){
+
+        ArrayList<CategoriaChild> tempListCategoriaChild = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject categoriaChild = (JSONObject) response.get(i);
+
+                long idchild = categoriaChild.getLong("idchild");
+                String childNome = categoriaChild.getString("childNome");
+                String childDescricao = categoriaChild.getString("childDescricao");
+                long categoria_idcategorias = categoriaChild.getLong("categoria_idcategorias");
+                Integer childEstado = categoriaChild.getInt("childEstado");
+                Integer qntProdutos = categoriaChild.getInt("qntProdutos");
+
+                CategoriaChild auxCategoriaChild = new CategoriaChild(idchild,childNome,childDescricao,categoria_idcategorias,childEstado);
+                tempListCategoriaChild.add(auxCategoriaChild);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListCategoriaChild;
+
+    }
+    //endregion
+
     //region login
     public static JSONObject parserJsonRegisto (String response, Context context){
         try
@@ -179,7 +209,7 @@ public class FixByteJsonParser {
     }
     //endregion
 
-    //getAccount
+    //region getAccount
     public static ArrayList<User> parserJsonGetUser (JSONArray response, Context context){
 
         ArrayList<User> tempListUser = new ArrayList<>();
@@ -206,6 +236,50 @@ public class FixByteJsonParser {
         }
         return tempListUser;
 
+    }
+    //endregion
+
+    //region produtos
+    public static ArrayList<Produto> parserJsonProdutos (JSONArray response, Context context){
+
+        ArrayList<Produto> tempListProduto = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject produto = (JSONObject) response.get(i);
+
+                long idprodutos = produto.getLong("idprodutos");
+                String produtoNome = produto.getString("produtoNome");
+                String produtoCodigo = produto.getString("produtoCodigo");
+                String produtoDataCriacao    = produto.getString("produtoDataCriacao");
+                Integer produtoStock = produto.getInt("produtoStock");
+                float produtoPreco = produto.getLong("produtoPreco");
+                String produtoMarca = produto.getString("produtoMarca");
+                String produtoDescricao1 = produto.getString("produtoDescricao1");
+                String produtoDescricao2 = produto.getString("produtoDescricao2");
+                String produtoDescricao3 = produto.getString("produtoDescricao3");
+                String produtoDescricao4 = produto.getString("produtoDescricao4");
+                String produtoDescricao5 = produto.getString("produtoDescricao5");
+                String produtoDescricao6 = produto.getString("produtoDescricao6");
+                String produtoDescricao7 = produto.getString("produtoDescricao7");
+                String produtoDescricao8 = produto.getString("produtoDescricao8");
+                String produtoDescricao9 = produto.getString("produtoDescricao9");
+                String produtoDescricao10 = produto.getString("produtoDescricao10");
+                long categoria_child_id = produto.getLong("categoria_child_id");
+                String produtoImagem1 = produto.getString("produtoImagem1");
+                String produtoImagem2 = produto.getString("produtoImagem2");
+                String produtoImagem3 = produto.getString("produtoImagem3");
+                String produtoImagem4 = produto.getString("produtoImagem4");
+                Integer produtoEstado    = produto.getInt("produtoEstado");
+
+                Produto auxProduto = new Produto(idprodutos,produtoNome,produtoCodigo,produtoStock,produtoPreco,produtoMarca,categoria_child_id,produtoDescricao1,produtoDescricao2,produtoDescricao3,produtoDescricao4,produtoDescricao5,produtoDescricao6,produtoDescricao7,produtoDescricao8,produtoDescricao9,produtoDescricao10,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4,produtoEstado);
+                tempListProduto.add(auxProduto);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListProduto;
     }
     //endregion
 }

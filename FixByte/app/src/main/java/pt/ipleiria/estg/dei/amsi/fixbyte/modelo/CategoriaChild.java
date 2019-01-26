@@ -8,14 +8,16 @@ public class CategoriaChild {
     private String childDescricao;
     private long categoria_idcategorias;
     private Integer childEstado;
+    private Integer qntProdutos;
 
-    public CategoriaChild (long idchild, String childNome, String childDescricao, long categoria_idcategorias, Integer childEstado)
+    public CategoriaChild (long idchild, String childNome, String childDescricao, long categoria_idcategorias, Integer childEstado, Integer qntProdutos)
     {
         this.idchild = idchild;
         this.childNome = childNome;
         this.childDescricao = childDescricao;
         this.categoria_idcategorias = categoria_idcategorias;
         this.childEstado = childEstado;
+        this.qntProdutos = qntProdutos;
     }
 
     public long getIdchild() {
@@ -56,5 +58,9 @@ public class CategoriaChild {
 
     public void setChildEstado(Integer childEstado) {
         this.childEstado = childEstado;
+    }
+
+    public Integer getQntProdutos() {
+        return qntProdutos;
     }
 }

@@ -34,24 +34,29 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private ArrayList<User> userdata;
     private ArrayList<ProdutoCampanha> produtoscampanha;
     private ArrayList<Categoria> categorias;
+    private ArrayList<CategoriaChild> categoriasChild;
+    private ArrayList<Produto> produtos;
 
     private User user;
     private JSONObject registo;
 
     private FixByteBDHelper bdhelper = null;
 
-    private String IPAdress = "192.168.137.1";
+    public String IPAdress = "192.168.1.84";
     private String Port = "8888";
 
     private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
     private String mUrlAPICampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas";
     private String mUrlAPICategorias = "http://"+IPAdress+":"+Port+"/v1/categorias";
+    private String mUrlAPICategoria = "http://"+IPAdress+":"+Port+"/v1/categorias/";
     private String APILogin = "http://"+IPAdress+":"+Port+"/v1/users/login";
     private String APIRegisto = "http://"+IPAdress+":"+Port+"/v1/users/registo";
     private String APIgetAccount = "http://"+IPAdress+":"+Port+"/v1/users/account?accesstoken=";
     private String APIsetAccount = "http://"+IPAdress+":"+Port+"/v1/users/edit";
     private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/users/getcompras?accesstoken=";
     private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/users/setcompras";
+    private String mUrlAPIProdutos = "http://"+IPAdress+":"+Port+"/v1/produtos";
+    private String mUrlAPIProduto = "http://"+IPAdress+":"+Port+"/v1/produtos/";
 
     private static RequestQueue volleyQueue;
 
@@ -79,6 +84,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         produtoscampanha = new ArrayList<>();
 
         categorias = new ArrayList<>();
+        categoriasChild = new ArrayList<>();
+        produtos = new ArrayList<>();
     }
 
     //region Campanha
@@ -456,6 +463,87 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     //endregion
 
+    //region categoriaChild
+    public ArrayList<CategoriaChild> getCategoriasChild()
+    {
+        return new ArrayList<>(categoriasChild);
+    }
+
+    public CategoriaChild getCategoriaChild (long idchild)
+    {
+        for (CategoriaChild categoriaChild : categoriasChild)
+        {
+            if (categoriaChild.getIdchild() == idchild)
+            {
+                return categoriaChild;
+            }
+        }
+        return null;
+    }
+
+    public void adicionarCategoriaChildBD(CategoriaChild categoriaChild)
+    {
+
+        bdhelper.adicionarCategoriaChildBD(categoriaChild);
+    }
+
+    public void adicionarCategoriasChildBD(ArrayList<CategoriaChild> listaCategoriasChild)
+    {
+        for (CategoriaChild categoriaChild : listaCategoriasChild){
+            adicionarCategoriaChildBD(categoriaChild);
+        }
+    }
+
+    public void getAllCategoriasChildAPI (final Context context, boolean isConnected){
+
+        if (!isConnected){
+            categoriasChild = bdhelper.getAllCategoriasChildBD();
+            if (!categoriasChild.isEmpty()){
+                if(fixByteListener != null)
+                {
+                    fixByteListener.onRefreshListaCategoriasChild(categoriasChild);
+                }
+            }
+        }else{
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategorias, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    categoriasChild = FixByteJsonParser.parserJsonCategoriasChild(response,context);
+
+                    if(fixByteListener != null)
+                    {
+                        bdhelper.removeAllCategorias();
+                        adicionarCategoriasChildBD(categoriasChild);
+                        fixByteListener.onRefreshListaCategoriasChild(categoriasChild);
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+
+    }
+
+    @Override
+    public void onRefreshListaCategoriasChild(ArrayList<CategoriaChild> listacategoriasChild)
+    {
+
+    }
+
+    @Override
+    public void onUpdateListaCategoriasChildBD(CategoriaChild categoriaChild, int operacao)
+    {
+
+    }
+
+    //endregion
+
     //region compras
     public void APIsetCompras(final Context context, final String accesstoken){
 
@@ -648,5 +736,87 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     }
     //endregion
+
+    /*
+    //region produto
+    public ArrayList<Produto> getProdutos()
+    {
+        return new ArrayList<>(produtos);
+    }
+
+    public Produto getProduto (long idprodutos)
+    {
+        for (Produto produto : produtos)
+        {
+            if (produto.getIdprodutos() == idprodutos)
+            {
+                return produto;
+            }
+        }
+        return null;
+    }
+
+    public void adicionarProdutoBD(Produto produto)
+    {
+
+        bdhelper.adicionarProdutoBD(produto);
+    }
+
+    public void adicionarProdutosBD(ArrayList<Produto> listaProdutos)
+    {
+        for (Produto produto : listaProdutos){
+            adicionarProdutoBD(produto);
+        }
+    }
+
+    public void getAllProdutosAPI (final Context context, boolean isConnected){
+
+        if (!isConnected){
+            produtos = bdhelper.getAllProdutosBD();
+            if (!produtos.isEmpty()){
+                if(fixByteListener != null)
+                {
+                    fixByteListener.onRefreshListaCategorias(categorias);
+                }
+            }
+        }else{
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategorias, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    categorias = FixByteJsonParser.parserJsonCategorias(response,context);
+
+                    if(fixByteListener != null)
+                    {
+                        bdhelper.removeAllProdutos();
+                        adicionarProdutosBD(produtos);
+                        fixByteListener.onRefreshListaCategorias(produtos);
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+
+    }
+
+    @Override
+    public void onRefreshListaProdutos(ArrayList<Produto> listaprodutos)
+    {
+
+    }
+
+    @Override
+    public void onUpdateListaProdutosBD(Produto produto, int operacao)
+    {
+
+    }
+    //endregion
+    */
 
 }
