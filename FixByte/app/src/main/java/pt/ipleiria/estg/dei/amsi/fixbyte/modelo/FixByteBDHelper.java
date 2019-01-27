@@ -36,6 +36,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME_CATEGORIA = "categoria";
+    private static final String ID_CATEGORIAS = "idcategorias";
     private static final String CATEGORIANOME = "categoriaNome";
     private static final String CATEGORIADESCRICAO = "categoriaDescricao";
     private static final String CATEGORIAESTADO = "categoriaEstado";
@@ -43,6 +44,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME_CATEGORIA_CHILD = "categoria_child";
+    private static final String IDCHILD = "idchild";
     private static final String CHILDNOME = "childNome";
     private static final String CHILDDESCRICAO = "childDescricao";
     private static final String CATEGORIA_IDCATEGORIAS = "categoria_idcategorias";
@@ -103,7 +105,8 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         db.execSQL(createCampanhatable);
     }
     public void createTableCategoria(SQLiteDatabase db){
-        String createCategoriatable = "CREATE TABLE " + TABLE_NAME_CATEGORIA + "(idcategorias INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createCategoriatable = "CREATE TABLE " + TABLE_NAME_CATEGORIA + " ("+
+                ID_CATEGORIAS     + " INTEGER NOT NULL, " +
                 CATEGORIANOME    + " TEXT NOT NULL, " +
                 CATEGORIADESCRICAO     + " TEXT NOT NULL, " +
                 CATEGORIAESTADO     + " INTEGER NOT NULL, " +
@@ -113,7 +116,8 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         db.execSQL(createCategoriatable);
     }
     public void createTableCategoriaChild(SQLiteDatabase db) {
-        String createLivrotable = "CREATE TABLE " + TABLE_NAME_CATEGORIA_CHILD + "(idchild INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createCategoriaChildtable = "CREATE TABLE " + TABLE_NAME_CATEGORIA_CHILD + " (" +
+                IDCHILD     + " INTEGER NOT NULL, " +
                 CHILDNOME    + " TEXT NOT NULL, " +
                 CHILDDESCRICAO     + " TEXT NOT NULL, " +
                 CATEGORIA_IDCATEGORIAS     + " TEXT NOT NULL, " +
@@ -121,7 +125,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
                 QNTPRODUTOS     + " INTEGER NOT NULL " +
                 ")";
 
-        db.execSQL(createLivrotable);
+        db.execSQL(createCategoriaChildtable);
     }
     public void createTableProduto(SQLiteDatabase db) {
         String createProdutotable = "CREATE TABLE " + TABLE_NAME_PRODUTO + "(idprodutos INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -301,6 +305,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     public Categoria adicionarCategoriaBD(Categoria categoria){
 
         ContentValues values = new ContentValues();
+        values.put(ID_CATEGORIAS, categoria.getIdcategorias());
         values.put(CATEGORIANOME, categoria.getCategoriaNome());
         values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
         values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
@@ -309,28 +314,33 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         long id = this.database.insert(TABLE_NAME_CATEGORIA, null,values);
 
         if (id > -1){
-            categoria.setIdcategorias(id);
+            categoria.setIdcategorias(categoria.getIdcategorias());
             return categoria;
         }
+
         return null;
     }
+
     public boolean editarCategoriaBD(Categoria categoria){
         ContentValues values = new ContentValues();
+        values.put(ID_CATEGORIAS, categoria.getIdcategorias());
         values.put(CATEGORIANOME, categoria.getCategoriaNome());
         values.put(CATEGORIADESCRICAO, categoria.getCategoriaDescricao());
         values.put(CATEGORIAESTADO, categoria.getCategoriaEstado());
         values.put(QNTPRODUTOS, categoria.getQntProdutos());
 
-        return this.database.update(TABLE_NAME, values, "idcategorias = ?", new String[]{"" + categoria.getIdcategorias()})>0;
+        return this.database.update(TABLE_NAME_CATEGORIA, values, "idcategorias = ?", new String[]{"" + categoria.getIdcategorias()})>0;
     }
+
     public boolean removerCategoriaBD (long idcategorias){
         return this.database.delete(TABLE_NAME_CATEGORIA, "idcategorias = ?", new String[]{"" + idcategorias})==1;
 
     }
+
     public ArrayList<Categoria> getAllCategoriasBD(){
         ArrayList<Categoria> categorias = new ArrayList<>();
 
-        Cursor cursor = this.database.query(TABLE_NAME_CATEGORIA,new String[]{"idcategorias", CATEGORIANOME,CATEGORIADESCRICAO,CATEGORIAESTADO,QNTPRODUTOS},null,null,null,null,null);
+        Cursor cursor = this.database.query(TABLE_NAME_CATEGORIA,new String[]{ID_CATEGORIAS, CATEGORIANOME,CATEGORIADESCRICAO,CATEGORIAESTADO,QNTPRODUTOS},null,null,null,null,null);
 
         if (cursor.moveToFirst()){
             do{
@@ -361,44 +371,46 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     //endregion
 
     //region categoriasChild
-    public CategoriaChild adicionarCategoriaChildBD(CategoriaChild categoriachild){
+    public CategoriaChild adicionarCategoriaChildBD(CategoriaChild categoriaChild){
 
         ContentValues values = new ContentValues();
-        values.put(CHILDNOME, categoriachild.getChildNome());
-        values.put(CHILDDESCRICAO, categoriachild.getChildDescricao());
-        values.put(CATEGORIA_IDCATEGORIAS, categoriachild.getCategoria_idcategorias());
-        values.put(CHILDESTADO, categoriachild.getChildEstado());
-        values.put(QNTPRODUTOS, categoriachild.getQntProdutos());
+        values.put(IDCHILD, categoriaChild.getIdchild());
+        values.put(CHILDNOME, categoriaChild.getChildNome());
+        values.put(CHILDDESCRICAO, categoriaChild.getChildDescricao());
+        values.put(CATEGORIA_IDCATEGORIAS, categoriaChild.getCategoria_idcategorias());
+        values.put(CHILDESTADO, categoriaChild.getChildEstado());
+        values.put(QNTPRODUTOS, categoriaChild.getQntProdutos());
 
 
         long id = this.database.insert(TABLE_NAME_CATEGORIA_CHILD, null,values);
 
         if (id > -1){
-            categoriachild.setIdchild(id);
-            return categoriachild;
+            categoriaChild.setIdchild(categoriaChild.getIdchild());
+            return categoriaChild;
         }
         return null;
     }
 
-    public boolean editarCategoriaChildBD(CategoriaChild categoriachild){
+    public boolean editarCategoriaChildBD(CategoriaChild categoriaChild){
         ContentValues values = new ContentValues();
-        values.put(CHILDNOME, categoriachild.getChildNome());
-        values.put(CHILDDESCRICAO, categoriachild.getChildDescricao());
-        values.put(CATEGORIA_IDCATEGORIAS, categoriachild.getCategoria_idcategorias());
-        values.put(CHILDESTADO, categoriachild.getChildEstado());
-        values.put(QNTPRODUTOS, categoriachild.getQntProdutos());
+        values.put(IDCHILD, categoriaChild.getIdchild());
+        values.put(CHILDNOME, categoriaChild.getChildNome());
+        values.put(CHILDDESCRICAO, categoriaChild.getChildDescricao());
+        values.put(CATEGORIA_IDCATEGORIAS, categoriaChild.getCategoria_idcategorias());
+        values.put(CHILDESTADO, categoriaChild.getChildEstado());
+        values.put(QNTPRODUTOS, categoriaChild.getQntProdutos());
 
-        return this.database.update(TABLE_NAME_CATEGORIA_CHILD, values, "idchild = ?", new String[]{"" + categoriachild.getIdchild()})>0;
+        return this.database.update(TABLE_NAME_CATEGORIA_CHILD, values, "idchild = ?", new String[]{"" + categoriaChild.getIdchild()})>0;
     }
 
-    public boolean removerCategoriaChildBD (long idcategorias){
-        return this.database.delete(TABLE_NAME_CATEGORIA_CHILD, "idchild = ?", new String[]{"" + idcategorias})==1;
+    public boolean removerCategoriaChildBD (long idchild){
+        return this.database.delete(TABLE_NAME_CATEGORIA_CHILD, "idchild = ?", new String[]{"" + idchild})==1;
     }
 
     public ArrayList<CategoriaChild> getAllCategoriasChildBD(){
         ArrayList<CategoriaChild> categoriasChild = new ArrayList<>();
 
-        Cursor cursor = this.database.query(TABLE_NAME_CATEGORIA_CHILD,new String[]{"idchild", CHILDNOME,CHILDDESCRICAO,CATEGORIA_IDCATEGORIAS,CHILDESTADO,QNTPRODUTOS},null,null,null,null,null);
+        Cursor cursor = this.database.query(TABLE_NAME_CATEGORIA_CHILD,new String[]{IDCHILD, CHILDNOME,CHILDDESCRICAO,CATEGORIA_IDCATEGORIAS,CHILDESTADO,QNTPRODUTOS},null,null,null,null,null);
 
         if (cursor.moveToFirst()){
             do{

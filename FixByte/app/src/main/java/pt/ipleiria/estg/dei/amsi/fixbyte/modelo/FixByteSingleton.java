@@ -49,7 +49,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
     private String mUrlAPICampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas";
     private String mUrlAPICategorias = "http://"+IPAdress+":"+Port+"/v1/categorias";
-    private String mUrlAPICategoria = "http://"+IPAdress+":"+Port+"/v1/categorias/";
+    private String mUrlAPICategoriasChild = "http://"+IPAdress+":"+Port+"/v1/categoriaschild";
     private String APILogin = "http://"+IPAdress+":"+Port+"/v1/users/login";
     private String APIRegisto = "http://"+IPAdress+":"+Port+"/v1/users/registo";
     private String APIgetAccount = "http://"+IPAdress+":"+Port+"/v1/users/account?accesstoken=";
@@ -481,15 +481,27 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         return null;
     }
 
+    public CategoriaChild getCategoriaChildByMainID (long categoria_idcategorias)
+    {
+        for (CategoriaChild categoriaChild : categoriasChild)
+        {
+            if (categoriaChild.getCategoria_idcategorias() == categoria_idcategorias)
+            {
+                return categoriaChild;
+            }
+        }
+        return null;
+    }
+
     public void adicionarCategoriaChildBD(CategoriaChild categoriaChild)
     {
-
         bdhelper.adicionarCategoriaChildBD(categoriaChild);
     }
 
     public void adicionarCategoriasChildBD(ArrayList<CategoriaChild> listaCategoriasChild)
     {
-        for (CategoriaChild categoriaChild : listaCategoriasChild){
+        for (CategoriaChild categoriaChild : listaCategoriasChild)
+        {
             adicionarCategoriaChildBD(categoriaChild);
         }
     }
@@ -505,7 +517,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                 }
             }
         }else{
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategorias, null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategoriasChild, null, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
@@ -514,7 +526,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
                     if(fixByteListener != null)
                     {
-                        bdhelper.removeAllCategorias();
+                        bdhelper.removeAllCategoriasChild();
                         adicionarCategoriasChildBD(categoriasChild);
                         fixByteListener.onRefreshListaCategoriasChild(categoriasChild);
                     }

@@ -58,6 +58,7 @@
 
 
     <string name="productDetailButton">Add to cart!</string>
+    <string name="CartButton">Pay</string>
 
 
 </resources>

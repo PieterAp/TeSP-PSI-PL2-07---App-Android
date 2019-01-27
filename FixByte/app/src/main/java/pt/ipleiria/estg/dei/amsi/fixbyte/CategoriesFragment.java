@@ -30,7 +30,7 @@ public class CategoriesFragment extends Fragment implements FixByteListener
     private ArrayList<Categoria> listaCategorias;
     private ListaCategoriaAdaptador listaCategoriaAdaptador;
 
-    private CategoryChildListFragment categoryChildListFragment;
+    private CategoriesChildFragment categoriesChildFragment;
 
 
     @Override
@@ -48,14 +48,22 @@ public class CategoriesFragment extends Fragment implements FixByteListener
 
         lvlistView = (ListView) getView().findViewById(R.id.listVIewCategories);
 
-        categoryChildListFragment = new CategoryChildListFragment();
+        categoriesChildFragment = new CategoriesChildFragment();
 
         lvlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                Categoria tempCategoria = (Categoria) parent.getItemAtPosition(position);
+
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("categoria_idcategorias",tempCategoria.getIdcategorias());
+
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame, categoryChildListFragment);
+                categoriesChildFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.main_frame, categoriesChildFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
