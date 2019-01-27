@@ -35,7 +35,6 @@
             android:name=".HomeActivity"
             android:label="Home"
             android:theme="@style/AppTheme.MenuMultiItem">
-
         </activity>
         <activity
             android:name=".ListaCampanhasActivity"
@@ -52,8 +51,9 @@
             android:name=".SampleActivity"
             android:label="@string/title_activity_sample"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CategoriesItemActivity" />
-        <activity android:name=".CategoriaListaActivity"></activity>
+        <activity android:name=".ProductDetailActivity" />
+        <activity android:name=".ComprasListActivity" />
+        <activity android:name=".ComprasItemActivity" />
     </application>
 
 </manifest>
