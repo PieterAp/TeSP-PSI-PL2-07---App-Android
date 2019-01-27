@@ -57,7 +57,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/getcompras?accesstoken=";
     private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/setcompras";
     private String mUrlAPIProdutos = "http://"+IPAdress+":"+Port+"/v1/produtos";
-    private String mUrlAPIProduto = "http://"+IPAdress+":"+Port+"/v1/produtos/";
 
     private static RequestQueue volleyQueue;
 
@@ -751,7 +750,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     }
     //endregion
 
-    /*
     //region produto
     public ArrayList<Produto> getProdutos()
     {
@@ -772,7 +770,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     public void adicionarProdutoBD(Produto produto)
     {
-
         bdhelper.adicionarProdutoBD(produto);
     }
 
@@ -790,22 +787,22 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
             if (!produtos.isEmpty()){
                 if(fixByteListener != null)
                 {
-                    fixByteListener.onRefreshListaCategorias(categorias);
+                    fixByteListener.onRefreshListaProdutos(produtos);
                 }
             }
         }else{
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPICategorias, null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPIProdutos, null, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("--> RESPOSTA: " + response);
-                    categorias = FixByteJsonParser.parserJsonCategorias(response,context);
+                    produtos = FixByteJsonParser.parserJsonProdutos(response,context);
 
                     if(fixByteListener != null)
                     {
                         bdhelper.removeAllProdutos();
                         adicionarProdutosBD(produtos);
-                        fixByteListener.onRefreshListaCategorias(produtos);
+                        fixByteListener.onRefreshListaProdutos(produtos);
                     }
                 }
             }, new Response.ErrorListener(){
@@ -831,6 +828,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     }
     //endregion
-    */
+
 
 }

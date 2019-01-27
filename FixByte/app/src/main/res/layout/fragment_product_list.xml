@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutProdutoLista"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProdutoFragment">
+
+    <TextView
+        android:id="@+id/textViewProductTop"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#e4e4e4"
+        android:gravity="center_vertical"
+        android:text="Products"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10.0sp" />
+
+    <ListView
+        android:id="@+id/listVIewProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp" />
+
+</LinearLayout>

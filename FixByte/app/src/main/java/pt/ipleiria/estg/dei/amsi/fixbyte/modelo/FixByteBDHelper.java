@@ -52,6 +52,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME_PRODUTO = "produto";
+    private static final String IDPRODUTOS = "idprodutos";
     private static final String PRODUTONOME = "produtoNome";
     private static final String PRODUTOCODIGO = "produtoCodigo";
     private static final String PRODUTOSTOCK = "produtoStock";
@@ -128,7 +129,8 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         db.execSQL(createCategoriaChildtable);
     }
     public void createTableProduto(SQLiteDatabase db) {
-        String createProdutotable = "CREATE TABLE " + TABLE_NAME_PRODUTO + "(idprodutos INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createProdutotable = "CREATE TABLE " + TABLE_NAME_PRODUTO + " (" +
+                IDPRODUTOS              + " INTEGER NOT NULL, " +
                 PRODUTONOME             + " TEXT NOT NULL, " +
                 PRODUTOCODIGO           + " TEXT NOT NULL, " +
                 PRODUTOSTOCK            + " INTEGER NOT NULL, " +
@@ -446,6 +448,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     public Produto adicionarProdutoBD(Produto produto){
 
         ContentValues values = new ContentValues();
+        values.put(IDPRODUTOS, produto.getIdprodutos());
         values.put(PRODUTONOME, produto.getProdutoNome());
         values.put(PRODUTOCODIGO, produto.getProdutoCodigo());
         values.put(PRODUTOSTOCK, produto.getProdutoStock());
@@ -477,6 +480,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     }
     public boolean editarProdutoBD(Produto produto){
         ContentValues values = new ContentValues();
+        values.put(IDPRODUTOS, produto.getIdprodutos());
         values.put(PRODUTONOME, produto.getProdutoNome());
         values.put(PRODUTOCODIGO, produto.getProdutoCodigo());
         values.put(PRODUTOSTOCK, produto.getProdutoStock());
@@ -502,13 +506,12 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     }
     public boolean removerProdutoBD (long idprodutos){
         return this.database.delete(TABLE_NAME_PRODUTO, "idprodutos = ?", new String[]{"" + idprodutos})==1;
-
     }
     public ArrayList<Produto> getAllProdutosBD(){
         ArrayList<Produto> produtos = new ArrayList<>();
 
-        Cursor cursor = this.database.query(TABLE_NAME_PRODUTO,new String[]{"idprodutos",
-                PRODUTONOME,PRODUTOCODIGO,PRODUTOSTOCK,PRODUTOPRECO, PRODUTOMARCA,CATEGORIA_CHILDID,
+        Cursor cursor = this.database.query(TABLE_NAME_PRODUTO,new String[]{
+                IDPRODUTOS,PRODUTONOME,PRODUTOCODIGO,PRODUTOSTOCK,PRODUTOPRECO, PRODUTOMARCA,CATEGORIA_CHILDID,
                 PRODUTODESCRICAO1,PRODUTODESCRICAO2,PRODUTODESCRICAO3, PRODUTODESCRICAO4,
                 PRODUTODESCRICAO5,PRODUTODESCRICAO6, PRODUTODESCRICAO7, PRODUTODESCRICAO8,
                 PRODUTODESCRICAO9,PRODUTODESCRICAO10,PRODUTOIMAGEM1,PRODUTOIMAGEM2,PRODUTOIMAGEM3,
@@ -554,7 +557,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         }
         catch (Exception Ex)
         {
-            System.out.println("ERROR ON removeAllCategorias" + Ex);
+            System.out.println("ERROR ON removeAllProdutos" + Ex);
         }
     }
     //endregion
