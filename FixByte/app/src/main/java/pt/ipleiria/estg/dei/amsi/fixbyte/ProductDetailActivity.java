@@ -52,13 +52,23 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void preencherDadosProduto()
     {
         textViewNome.setText(produto.getProdutoNome());
-        textViewDescricao.setText(produto.getProdutoDescricao1()+"\n"+produto.getProdutoDescricao2());
+        textViewDescricao.setText(produto.getProdutoDescricao1()+"\n"+
+                                  produto.getProdutoDescricao2()+"\n"+
+                                  produto.getProdutoDescricao3()+"\n"+
+                                  produto.getProdutoDescricao4()+"\n"+
+                                  produto.getProdutoDescricao5()+"\n"+
+                                  produto.getProdutoDescricao6()+"\n"+
+                                  produto.getProdutoDescricao7()+"\n"+
+                                  produto.getProdutoDescricao8()+"\n"+
+                                  produto.getProdutoDescricao9()+"\n"+
+                                  produto.getProdutoDescricao10());
         textViewPrecoOriginal.setText(produto.getProdutoPreco().toString()+"€");
 
-        ImageRoute = "C:\\wamp64\\www\\TeSP-PSI-PL2-07-WEB\\frontend\\web\\images\\products";
+        String IPAdress = FixByteSingleton.getInstance(getApplicationContext()).IPAdress;
+        ImageRoute = "http://"+IPAdress+"/TeSP-PSI-PL2-07-WEB/frontend/web/images/products"+"/"+produto.getIdprodutos()+"/"+produto.getProdutoImagem1();
 
         Glide.with(getApplicationContext())
-                .load(ImageRoute+"\\"+produto.getIdprodutos()+"\\"+produto.getProdutoImagem1())
+                .load(ImageRoute)
                 .placeholder(R.drawable.logo_fixbyte_drop_shadow)
                 .thumbnail(0f)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
