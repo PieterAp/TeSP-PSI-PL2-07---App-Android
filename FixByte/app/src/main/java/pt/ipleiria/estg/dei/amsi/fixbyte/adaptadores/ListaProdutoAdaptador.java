@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.R;
-import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.CategoriaChild;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
 
 public class ListaProdutoAdaptador extends BaseAdapter
@@ -78,14 +77,14 @@ public class ListaProdutoAdaptador extends BaseAdapter
 
         public ViewHolderLista (View convertView)
         {
-            produtoNome = convertView.findViewById(R.id.textViewProdutoNome);
-            produtoPreco = convertView.findViewById(R.id.textViewProdutoPreco);
+            produtoNome = convertView.findViewById(R.id.textViewNomeProduto);
+            produtoPreco = convertView.findViewById(R.id.textViewPrecoProduto);
         }
 
         public void update (Produto produto)
         {
             produtoNome.setText(produto.getProdutoNome());
-            produtoPreco.setText(produto.getProdutoPreco()+"€");
+            produtoPreco.setText(produto.getProdutoPreco().toString()+"€");
         }
     }
 }

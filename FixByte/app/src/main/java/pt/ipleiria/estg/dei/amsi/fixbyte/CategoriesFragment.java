@@ -20,6 +20,7 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
         import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
         import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.CategoriaChild;
         import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
+        import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
         import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
         import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
@@ -123,6 +124,16 @@ public class CategoriesFragment extends Fragment implements FixByteListener
 
     @Override
     public void onUpdateListaCategoriasChildBD(CategoriaChild categoriaChild, int operacao) {
+
+    }
+
+    @Override
+    public void onRefreshListaProdutos(ArrayList<Produto> listaProdutos) {
+
+    }
+
+    @Override
+    public void onUpdateListaProdutosBD(Produto produto, int operacao) {
 
     }
 }

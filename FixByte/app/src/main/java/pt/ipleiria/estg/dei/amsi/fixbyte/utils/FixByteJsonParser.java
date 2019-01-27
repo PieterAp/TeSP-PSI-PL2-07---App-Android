@@ -271,9 +271,9 @@ public class FixByteJsonParser {
                 String produtoImagem2 = produto.getString("produtoImagem2");
                 String produtoImagem3 = produto.getString("produtoImagem3");
                 String produtoImagem4 = produto.getString("produtoImagem4");
-                Integer produtoEstado    = produto.getInt("produtoEstado");
+                Integer produtoEstado = produto.getInt("produtoEstado");
 
-                Produto auxProduto = new Produto(idprodutos,produtoNome,produtoCodigo,produtoStock,produtoPreco,produtoMarca,categoria_child_id,produtoDescricao1,produtoDescricao2,produtoDescricao3,produtoDescricao4,produtoDescricao5,produtoDescricao6,produtoDescricao7,produtoDescricao8,produtoDescricao9,produtoDescricao10,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4,produtoEstado);
+                Produto auxProduto = new Produto(idprodutos,produtoNome,produtoCodigo,produtoDataCriacao,produtoStock,produtoPreco,produtoMarca,categoria_child_id,produtoDescricao1,produtoDescricao2,produtoDescricao3,produtoDescricao4,produtoDescricao5,produtoDescricao6,produtoDescricao7,produtoDescricao8,produtoDescricao9,produtoDescricao10,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4,produtoEstado);
                 tempListProduto.add(auxProduto);
 
             }

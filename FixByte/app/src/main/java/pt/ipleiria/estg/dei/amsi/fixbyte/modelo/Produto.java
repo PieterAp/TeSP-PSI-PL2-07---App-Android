@@ -5,6 +5,7 @@ public class Produto {
     private long idprodutos;
     private String produtoNome;
     private String produtoCodigo;
+    private String produtoDataCriacao;
     private Integer produtoStock;
     private Float produtoPreco;
     private String produtoMarca;
@@ -28,10 +29,11 @@ public class Produto {
     private Integer produtoEstado;
 
 
-    public Produto(long idprodutos, String produtoNome, String produtoCodigo, Integer produtoStock, Float produtoPreco, String produtoMarca, long categoria_child_id, String produtoDescricao1, String produtoDescricao2, String produtoDescricao3, String produtoDescricao4, String produtoDescricao5, String produtoDescricao6, String produtoDescricao7, String produtoDescricao8, String produtoDescricao9, String produtoDescricao10, String produtoImagem1, String produtoImagem2, String produtoImagem3, String produtoImagem4, Integer produtoEstado) {
+    public Produto(long idprodutos, String produtoNome, String produtoCodigo, String produtoDataCriacao ,Integer produtoStock, Float produtoPreco, String produtoMarca, long categoria_child_id, String produtoDescricao1, String produtoDescricao2, String produtoDescricao3, String produtoDescricao4, String produtoDescricao5, String produtoDescricao6, String produtoDescricao7, String produtoDescricao8, String produtoDescricao9, String produtoDescricao10, String produtoImagem1, String produtoImagem2, String produtoImagem3, String produtoImagem4, Integer produtoEstado) {
         this.idprodutos = idprodutos;
         this.produtoNome = produtoNome;
         this.produtoCodigo = produtoCodigo;
+        this.produtoDataCriacao = produtoDataCriacao;
         this.produtoStock = produtoStock;
         this.produtoPreco = produtoPreco;
         this.produtoMarca = produtoMarca;
@@ -228,4 +230,9 @@ public class Produto {
     public void setProdutoEstado(Integer produtoEstado) {
         this.produtoEstado = produtoEstado;
     }
+
+    public String getProdutoDataCriacao() {
+        return produtoDataCriacao;
+    }
+
 }

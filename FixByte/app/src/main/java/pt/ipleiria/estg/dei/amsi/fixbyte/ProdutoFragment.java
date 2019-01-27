@@ -28,7 +28,7 @@ public class ProdutoFragment extends Fragment implements FixByteListener
     private ListView lvlistView;
     private Button btnTakeLook;
     private ArrayList<Produto> listaProdutos;
-    private ListaProdutoAdaptador listProdutoAdaptor;
+    private ListaProdutoAdaptador listaProdutoAdaptador;
 
     private CategoriesChildFragment categoriesChildFragment;
 
@@ -114,8 +114,8 @@ public class ProdutoFragment extends Fragment implements FixByteListener
             {
                 lvlistView = getView().findViewById(R.id.listVIewProducts);
             }
-            listProdutoAdaptor = new ListaProdutoAdaptador(getActivity(), listaProdutos);
-            lvlistView.setAdapter(listProdutoAdaptor);
+            listaProdutoAdaptador = new ListaProdutoAdaptador(getActivity(), listaProdutos);
+            lvlistView.setAdapter(listaProdutoAdaptador);
         }
     }
 

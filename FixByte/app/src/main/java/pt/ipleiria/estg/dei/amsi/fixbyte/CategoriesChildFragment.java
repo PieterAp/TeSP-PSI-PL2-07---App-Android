@@ -21,6 +21,7 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Categoria;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.CategoriaChild;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
@@ -34,6 +35,8 @@ public class CategoriesChildFragment extends Fragment implements FixByteListener
     private Long categoria_idcategorias;
     private Long idParent;
 
+    private ProdutoFragment produtoFragment;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -44,6 +47,8 @@ public class CategoriesChildFragment extends Fragment implements FixByteListener
     @Override
     public void onStart() {
         super.onStart();
+
+        produtoFragment = new ProdutoFragment();
 
         Bundle bundle = getArguments();
         categoria_idcategorias = bundle.getLong("categoria_idcategorias");
@@ -59,7 +64,10 @@ public class CategoriesChildFragment extends Fragment implements FixByteListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, produtoFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -133,6 +141,16 @@ public class CategoriesChildFragment extends Fragment implements FixByteListener
 
     @Override
     public void onUpdateListaCategoriasChildBD(CategoriaChild categoriaChild, int operacao) {
+
+    }
+
+    @Override
+    public void onRefreshListaProdutos(ArrayList<Produto> listaProdutos) {
+
+    }
+
+    @Override
+    public void onUpdateListaProdutosBD(Produto produto, int operacao) {
 
     }
 }

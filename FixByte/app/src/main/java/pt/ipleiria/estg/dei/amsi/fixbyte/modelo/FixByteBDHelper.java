@@ -55,6 +55,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
     private static final String IDPRODUTOS = "idprodutos";
     private static final String PRODUTONOME = "produtoNome";
     private static final String PRODUTOCODIGO = "produtoCodigo";
+    private static final String PRODUTODATACRIACAO = "produtoDataCriacao";
     private static final String PRODUTOSTOCK = "produtoStock";
     private static final String PRODUTOPRECO = "produtoPreco";
     private static final String PRODUTOMARCA = "produtoMarca";
@@ -133,25 +134,26 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
                 IDPRODUTOS              + " INTEGER NOT NULL, " +
                 PRODUTONOME             + " TEXT NOT NULL, " +
                 PRODUTOCODIGO           + " TEXT NOT NULL, " +
+                PRODUTODATACRIACAO      + " TEXT NOT NULL, " +
                 PRODUTOSTOCK            + " INTEGER NOT NULL, " +
                 PRODUTOPRECO            + " DECIMAL NOT NULL, " +
                 PRODUTOMARCA            + " TEXT NOT NULL, " +
                 CATEGORIA_CHILDID       + " LONG NOT NULL, " +
-                PRODUTODESCRICAO1       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO2       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO3       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO4       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO5       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO6       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO7       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO8       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO9       + " TEXT NOT NULL, " +
-                PRODUTODESCRICAO10      + " TEXT NOT NULL, " +
-                PRODUTOIMAGEM1          + " TEXT NOT NULL, " +
-                PRODUTOIMAGEM2          + " TEXT NOT NULL, " +
-                PRODUTOIMAGEM3          + " TEXT NOT NULL, " +
-                PRODUTOIMAGEM4          + " TEXT NOT NULL, " +
-                PRODUTOESTADO           + " INTEGER NOT NULL " +
+                PRODUTODESCRICAO1       + " TEXT , " +
+                PRODUTODESCRICAO2       + " TEXT , " +
+                PRODUTODESCRICAO3       + " TEXT , " +
+                PRODUTODESCRICAO4       + " TEXT , " +
+                PRODUTODESCRICAO5       + " TEXT , " +
+                PRODUTODESCRICAO6       + " TEXT , " +
+                PRODUTODESCRICAO7       + " TEXT , " +
+                PRODUTODESCRICAO8       + " TEXT , " +
+                PRODUTODESCRICAO9       + " TEXT , " +
+                PRODUTODESCRICAO10      + " TEXT , " +
+                PRODUTOIMAGEM1          + " TEXT , " +
+                PRODUTOIMAGEM2          + " TEXT , " +
+                PRODUTOIMAGEM3          + " TEXT , " +
+                PRODUTOIMAGEM4          + " TEXT , " +
+                PRODUTOESTADO           + " INTEGER NOT NULL" +
                 ")";
 
         db.execSQL(createProdutotable);
@@ -451,6 +453,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         values.put(IDPRODUTOS, produto.getIdprodutos());
         values.put(PRODUTONOME, produto.getProdutoNome());
         values.put(PRODUTOCODIGO, produto.getProdutoCodigo());
+        values.put(PRODUTODATACRIACAO, produto.getProdutoDataCriacao());
         values.put(PRODUTOSTOCK, produto.getProdutoStock());
         values.put(PRODUTOPRECO, produto.getProdutoPreco());
         values.put(PRODUTOMARCA, produto.getProdutoMarca());
@@ -469,11 +472,12 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         values.put(PRODUTOIMAGEM2, produto.getProdutoImagem2());
         values.put(PRODUTOIMAGEM3, produto.getProdutoImagem3());
         values.put(PRODUTOIMAGEM4, produto.getProdutoImagem4());
+        values.put(PRODUTOESTADO, produto.getProdutoEstado());
 
         long id = this.database.insert(TABLE_NAME_PRODUTO, null,values);
 
         if (id > -1){
-            produto.setIdprodutos(id);
+            produto.setIdprodutos(produto.getIdprodutos());
             return produto;
         }
         return null;
@@ -483,6 +487,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         values.put(IDPRODUTOS, produto.getIdprodutos());
         values.put(PRODUTONOME, produto.getProdutoNome());
         values.put(PRODUTOCODIGO, produto.getProdutoCodigo());
+        values.put(PRODUTODATACRIACAO, produto.getProdutoDataCriacao());
         values.put(PRODUTOSTOCK, produto.getProdutoStock());
         values.put(PRODUTOPRECO, produto.getProdutoPreco());
         values.put(PRODUTOMARCA, produto.getProdutoMarca());
@@ -501,6 +506,7 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         values.put(PRODUTOIMAGEM2, produto.getProdutoImagem2());
         values.put(PRODUTOIMAGEM3, produto.getProdutoImagem3());
         values.put(PRODUTOIMAGEM4, produto.getProdutoImagem4());
+        values.put(PRODUTOESTADO, produto.getProdutoEstado());
 
         return this.database.update(TABLE_NAME_PRODUTO, values, "idprodutos = ?", new String[]{"" + produto.getIdprodutos()})>0;
     }
@@ -511,11 +517,11 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
         ArrayList<Produto> produtos = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_NAME_PRODUTO,new String[]{
-                IDPRODUTOS,PRODUTONOME,PRODUTOCODIGO,PRODUTOSTOCK,PRODUTOPRECO, PRODUTOMARCA,CATEGORIA_CHILDID,
+                IDPRODUTOS,PRODUTONOME,PRODUTOCODIGO, PRODUTODATACRIACAO,PRODUTOSTOCK,PRODUTOPRECO, PRODUTOMARCA,CATEGORIA_CHILDID,
                 PRODUTODESCRICAO1,PRODUTODESCRICAO2,PRODUTODESCRICAO3, PRODUTODESCRICAO4,
                 PRODUTODESCRICAO5,PRODUTODESCRICAO6, PRODUTODESCRICAO7, PRODUTODESCRICAO8,
                 PRODUTODESCRICAO9,PRODUTODESCRICAO10,PRODUTOIMAGEM1,PRODUTOIMAGEM2,PRODUTOIMAGEM3,
-                PRODUTOIMAGEM4},null,null,null,null,null);
+                PRODUTOIMAGEM4, PRODUTOESTADO},null,null,null,null,null);
 
         if (cursor.moveToFirst()){
             do{
@@ -523,11 +529,11 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getInt(3),
-                        cursor.getFloat(4),
-                        cursor.getString(5),
-                        cursor.getLong(6),
-                        cursor.getString(7),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getFloat(5),
+                        cursor.getString(6),
+                        cursor.getLong(7),
                         cursor.getString(8),
                         cursor.getString(9),
                         cursor.getString(10),
@@ -541,7 +547,8 @@ public class FixByteBDHelper extends SQLiteOpenHelper {
                         cursor.getString(18),
                         cursor.getString(19),
                         cursor.getString(20),
-                        cursor.getInt(21));
+                        cursor.getString(21),
+                        cursor.getInt(22));
 
                 nextProduto.setIdprodutos(cursor.getLong(0));
                 produtos.add(nextProduto);
