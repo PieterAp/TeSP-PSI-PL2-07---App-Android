@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -53,7 +54,11 @@ public class ProdutoFragment extends Fragment implements FixByteListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                Produto tempProduto = (Produto) parent.getItemAtPosition(position);
 
+                Intent intent = new Intent(getContext(), ProductDetailActivity.class);
+                intent.putExtra(ProductDetailActivity.DETALHES_PRODUTOS, tempProduto.getIdprodutos());
+                startActivity(intent);
             }
         });
 
