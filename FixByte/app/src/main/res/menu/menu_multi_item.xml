@@ -14,5 +14,9 @@
         android:title="Cart"
         app:showAsAction="always" />
 
-    
+    <item
+        android:id="@+id/itemRepair"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Cart"
+        app:showAsAction="always" />
 </menu>

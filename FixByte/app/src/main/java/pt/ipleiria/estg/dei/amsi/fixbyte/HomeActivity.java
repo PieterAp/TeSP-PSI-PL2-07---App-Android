@@ -53,6 +53,23 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 return true;
 
+            case R.id.itemRepair:
+                if (networkInfo != null && networkInfo.isConnected()){
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String Token = preferences.getString("token", "");
+                    if (Token == null || Token.isEmpty()){
+                        Toast.makeText(this, "You must log on to access your cart.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        intent = new Intent(getApplication(), ReparacaoListActivity.class);
+                        startActivity(intent);
+                    }
+                }else{
+                    Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                return true;
+
             case R.id.itemCart:
                 if (networkInfo != null && networkInfo.isConnected()){
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

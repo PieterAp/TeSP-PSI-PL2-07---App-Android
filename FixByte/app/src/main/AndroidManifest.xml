@@ -34,8 +34,7 @@
         <activity
             android:name=".HomeActivity"
             android:label="Home"
-            android:theme="@style/AppTheme.MenuMultiItem">
-        </activity>
+            android:theme="@style/AppTheme.MenuMultiItem" />
         <activity
             android:name=".ListaCampanhasActivity"
             android:parentActivityName=".HomeActivity" />
@@ -43,13 +42,9 @@
             android:name=".AccountActivity"
             android:parentActivityName=".HomeActivity" />
         AccountActivity
-        <activity
-            android:name=".DetalhesProdutosCampanha"
-            />
+        <activity android:name=".DetalhesProdutosCampanha" />
         DetalhesProdutosCampanha
-        <activity
-            android:name=".ProdutoCampanhaDetail"
-           />
+        <activity android:name=".ProdutoCampanhaDetail" />
         <activity
             android:name=".SampleActivity"
             android:label="@string/title_activity_sample"
@@ -57,6 +52,8 @@
         <activity android:name=".ProductDetailActivity" />
         <activity android:name=".ComprasListActivity" />
         <activity android:name=".ComprasItemActivity" />
+        <activity android:name=".ReparacaoListActivity" />
+        <activity android:name=".ReparacaoItemActivity"></activity>
     </application>
 
 </manifest>

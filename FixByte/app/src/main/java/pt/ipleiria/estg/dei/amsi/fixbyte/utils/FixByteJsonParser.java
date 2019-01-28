@@ -18,6 +18,7 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.CategoriaChild;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Compra;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Reparacao;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
 public class FixByteJsonParser {
@@ -348,6 +349,37 @@ public class FixByteJsonParser {
             System.out.println("--> error: " + e);
         }
         return tempListCompra;
+    }
+    //endregion
+
+    //region reparacoes
+    public static ArrayList<Reparacao> parserJsonReparacoes (JSONArray response, Context context){
+
+        ArrayList<Reparacao> tempListReparacao = new ArrayList<>();
+
+        try{
+            for (int i = 0; i< response.length();i++){
+                JSONObject reparacao = (JSONObject) response.get(i);
+
+                long idreparacao     = reparacao.getLong("idreparacao");
+                String reparacaoNome   = reparacao.getString("reparacaoNome");
+                String reparacaoEstado   = reparacao.getString("reparacaoEstado");
+                long reparacaoNumero     = reparacao.getLong("reparacaoNumero");
+                String reparacaoData   = reparacao.getString("reparacaoData");
+                String reparacaoDataConcluido   = reparacao.getString("reparacaoDataConcluido");
+                String reparacaoDescricao   = reparacao.getString("reparacaoDescricao");
+                long user_iduser     = reparacao.getLong("user_iduser");
+
+
+                Reparacao auxReparacao = new Reparacao(idreparacao,reparacaoNome,reparacaoData,reparacaoDataConcluido,reparacaoEstado,reparacaoNumero,reparacaoDescricao,user_iduser);
+                tempListReparacao.add(auxReparacao);
+
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return tempListReparacao;
+
     }
     //endregion
 }

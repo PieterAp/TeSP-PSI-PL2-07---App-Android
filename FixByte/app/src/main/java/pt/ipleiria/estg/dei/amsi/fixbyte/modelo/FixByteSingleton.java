@@ -38,13 +38,14 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private ArrayList<CategoriaChild> categoriasChild;
     private ArrayList<Produto> produtos;
     private ArrayList<Compra> compras;
+    private ArrayList<Reparacao> reparacoes;
 
     private User user;
     private JSONObject registo;
 
     private FixByteBDHelper bdhelper = null;
 
-    public String IPAdress = "192.168.1.69";
+    public String IPAdress = "192.168.1.155";
     private String Port = "8888";
 
     private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
@@ -60,6 +61,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private String mUrlAPIProdutos = "http://"+IPAdress+":"+Port+"/v1/produtos";
     private String APIdeleteCompra = "http://"+IPAdress+":"+Port+"/v1/compras/deletecompra?accesstoken=";
     private String APIstateCompra = "http://"+IPAdress+":"+Port+"/v1/compras/state?accesstoken=";
+    private String mUrlAPIReparacoes = "http://"+IPAdress+":"+Port+"/v1/reparacoes?accesstoken=";
 
     private static RequestQueue volleyQueue;
 
@@ -89,6 +91,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         categorias = new ArrayList<>();
         categoriasChild = new ArrayList<>();
         produtos = new ArrayList<>();
+        reparacoes = new ArrayList<>();
     }
 
     //region Campanha
@@ -909,4 +912,85 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     //endregion
 
+    //region reparacao
+    public ArrayList<Reparacao> getReparacoes()
+    {
+        return new ArrayList<>(reparacoes);
+    }
+
+    public Reparacao getReparacao (long idreparacao)
+    {
+        for (Reparacao reparacao : reparacoes)
+        {
+            if (reparacao.getIdreparacao() == idreparacao)
+            {
+                return reparacao;
+            }
+        }
+        return null;
+    }
+
+    public void adicionarReparacaoBD(Reparacao reparacao)
+    {
+
+        bdhelper.adicionarReparacaoBD(reparacao);
+    }
+
+    public void adicionarReparacoesBD(ArrayList<Reparacao> listaReparacoes)
+    {
+        for (Reparacao reparacao : listaReparacoes){
+            adicionarReparacaoBD(reparacao);
+        }
+    }
+
+    public void getAllReparacoesAPI (final Context context, boolean isConnected, String accesstoken){
+        if (!isConnected){
+            reparacoes = bdhelper.getAllReparacoesBD();
+            if (!reparacoes.isEmpty()){
+                if(fixByteListener != null)
+                {
+                    fixByteListener.onRefreshListaReparacoes(reparacoes);
+                }
+            }
+        }else{
+            String APIgetReparacoes = mUrlAPIReparacoes;
+            APIgetReparacoes += accesstoken;
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetReparacoes, null, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    reparacoes = FixByteJsonParser.parserJsonReparacoes(response,context);
+
+                    if(fixByteListener != null)
+                    {
+                        bdhelper.removeAllReparacoes();
+                        adicionarReparacoesBD(reparacoes);
+                        fixByteListener.onRefreshListaReparacoes(reparacoes);
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+
+    }
+
+    @Override
+    public void onRefreshListaReparacoes(ArrayList<Reparacao> listareparacoes)
+    {
+
+    }
+
+    @Override
+    public void onUpdateListaReparacoesBD(Reparacao reparacao, int operacao)
+    {
+
+    }
+
+    //endregion
 }
