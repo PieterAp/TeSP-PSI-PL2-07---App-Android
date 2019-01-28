@@ -19,7 +19,7 @@
         app:showAsAction="always"/>
     <item
         android:id="@+id/itemCart"
-        android:icon="@drawable/ic_action_cart"
+        android:icon="@drawable/ic_account_box_black_24dp"
         android:title="@string/bottom_cart"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

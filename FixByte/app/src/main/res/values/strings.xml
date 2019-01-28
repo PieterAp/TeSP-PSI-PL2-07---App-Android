@@ -32,7 +32,7 @@
     <string name="bottom_home">Home</string>
     <string name="bottom_categories">Categories</string>
     <string name="bottom_sales">Sales</string>
-    <string name="bottom_cart">MyCart</string>
+    <string name="bottom_cart">My Account</string>
     <!-- Strings related to home -->
     <string name="asd"></string>
 
@@ -59,6 +59,7 @@
 
     <string name="productDetailButton">Add to cart!</string>
     <string name="CartButton">Pay</string>
+    <string name="HomeProductsBanner">All products</string>
 
 
 </resources>

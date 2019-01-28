@@ -38,7 +38,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         idProduto = getIntent().getLongExtra(DETALHES_PRODUTOS,-1);
-        Toast.makeText(this, ""+idProduto, Toast.LENGTH_SHORT).show();
 
         imageViewProduto = findViewById(R.id.imageViewProduto);
         textViewNome = findViewById(R.id.textViewNome);

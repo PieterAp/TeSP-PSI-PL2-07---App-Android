@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 /*
-                ArrayList <Livro> listalivroSearch = new ArrayList<>();
+                ArrayList <Produto> listalivroSearch = new ArrayList<>();
 
                 for(Livro temp: FixByteSingleton.getInstance(getApplicationContext()).getLivros()){
                     if (temp.getTitulo().toLowerCase().contains(newText.toLowerCase())){

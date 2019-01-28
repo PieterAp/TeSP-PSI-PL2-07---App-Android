@@ -29,7 +29,9 @@ public class ProdutoFragment extends Fragment implements FixByteListener
     private ListView lvlistView;
     private Button btnTakeLook;
     private ArrayList<Produto> listaProdutos;
+    private ArrayList<Produto> modifiedProduto;
     private ListaProdutoAdaptador listaProdutoAdaptador;
+    private Long idParent;
 
     private CategoriesChildFragment categoriesChildFragment;
 
@@ -113,13 +115,29 @@ public class ProdutoFragment extends Fragment implements FixByteListener
 
     @Override
     public void onRefreshListaProdutos(ArrayList<Produto> listaProdutos) {
+        modifiedProduto = new ArrayList<Produto>();
+
         if (listaProdutos!=null)
         {
             if (lvlistView == null)
             {
-                lvlistView = getView().findViewById(R.id.listVIewProducts);
+                lvlistView = getView().findViewById(R.id.listVIewCategoriesChild);
             }
-            listaProdutoAdaptador = new ListaProdutoAdaptador(getActivity(), listaProdutos);
+
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                idParent = bundle.getLong("idchild");
+            }
+
+            for (Produto produto : listaProdutos)
+            {
+                if (produto.getCategoria_child_id() == idParent)
+                {
+                    modifiedProduto.add(produto);
+                }
+            }
+
+            listaProdutoAdaptador = new ListaProdutoAdaptador(getActivity(), modifiedProduto);
             lvlistView.setAdapter(listaProdutoAdaptador);
         }
     }

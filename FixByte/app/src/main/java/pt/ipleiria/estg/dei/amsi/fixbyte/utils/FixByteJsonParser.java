@@ -273,6 +273,47 @@ public class FixByteJsonParser {
                 String produtoImagem4 = produto.getString("produtoImagem4");
                 Integer produtoEstado = produto.getInt("produtoEstado");
 
+                if (produtoDescricao1=="null")
+                {
+                    produtoDescricao1="";
+                }
+                if (produtoDescricao2=="null")
+                {
+                    produtoDescricao2="";
+                }
+                if (produtoDescricao3=="null")
+                {
+                    produtoDescricao3="";
+                }
+                if (produtoDescricao4=="null")
+                {
+                    produtoDescricao4="";
+                }
+                if (produtoDescricao5=="null")
+                {
+                    produtoDescricao5="";
+                }
+                if (produtoDescricao6=="null")
+                {
+                    produtoDescricao6="";
+                }
+                if (produtoDescricao7=="null")
+                {
+                    produtoDescricao7="";
+                }
+                if (produtoDescricao8=="null")
+                {
+                    produtoDescricao8="";
+                }
+                if (produtoDescricao9=="null")
+                {
+                    produtoDescricao9="";
+                }
+                if (produtoDescricao10=="null")
+                {
+                    produtoDescricao10="";
+                }
+
                 Produto auxProduto = new Produto(idprodutos,produtoNome,produtoCodigo,produtoDataCriacao,produtoStock,produtoPreco,produtoMarca,categoria_child_id,produtoDescricao1,produtoDescricao2,produtoDescricao3,produtoDescricao4,produtoDescricao5,produtoDescricao6,produtoDescricao7,produtoDescricao8,produtoDescricao9,produtoDescricao10,produtoImagem1,produtoImagem2,produtoImagem3,produtoImagem4,produtoEstado);
                 tempListProduto.add(auxProduto);
 

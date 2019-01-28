@@ -64,7 +64,13 @@ public class CategoriesChildFragment extends Fragment implements FixByteListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                CategoriaChild tempCategoriaChild = (CategoriaChild) parent.getItemAtPosition(position);
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("idchild",tempCategoriaChild.getIdchild());
+
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                produtoFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.main_frame, produtoFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
