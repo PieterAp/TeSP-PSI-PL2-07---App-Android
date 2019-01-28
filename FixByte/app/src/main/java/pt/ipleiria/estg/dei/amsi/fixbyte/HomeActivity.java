@@ -39,6 +39,22 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.itemSearch:
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.itemCart:
+                Toast.makeText(this, "Cart", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     public boolean onCreateOptionsMenu(Menu menu){
