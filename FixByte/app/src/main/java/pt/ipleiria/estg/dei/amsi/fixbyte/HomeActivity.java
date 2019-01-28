@@ -3,6 +3,8 @@ package pt.ipleiria.estg.dei.amsi.fixbyte;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -42,6 +44,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
         switch (item.getItemId())
         {
             case R.id.itemSearch:
@@ -49,7 +54,20 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
 
             case R.id.itemCart:
-                Toast.makeText(this, "Cart", Toast.LENGTH_SHORT).show();
+                if (networkInfo != null && networkInfo.isConnected()){
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String Token = preferences.getString("token", "");
+                    if (Token == null || Token.isEmpty()){
+                        Toast.makeText(this, "You must log on to access your cart.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        intent = new Intent(getApplication(), ComprasListActivity.class);
+                        startActivity(intent);
+                    }
+                }else{
+                    Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
+
+                }
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -95,10 +113,16 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.itemCart:
-                        intent = new Intent(getApplication(), AccountActivity.class);
-                        String text = getIntent().getStringExtra(TOKEN);
-                        startActivity(intent);
-                        setFragment(cartFragment);
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        String Token = preferences.getString("token", "");
+                        if (Token == null || Token.isEmpty()){
+                            Toast.makeText(getApplicationContext(), "You must log in that least one time to access your data.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            intent = new Intent(getApplication(), AccountActivity.class);
+                            String text = getIntent().getStringExtra(TOKEN);
+                            startActivity(intent);
+                            setFragment(cartFragment);
+                        }
                         return true;
 
                         default:

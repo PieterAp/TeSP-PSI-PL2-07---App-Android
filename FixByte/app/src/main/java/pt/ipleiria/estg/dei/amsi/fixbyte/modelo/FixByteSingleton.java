@@ -43,7 +43,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     private FixByteBDHelper bdhelper = null;
 
-    public String IPAdress = "192.168.1.84";
+    public String IPAdress = "192.168.1.69";
     private String Port = "8888";
 
     private String mUrlAPIProdutosCampanhas = "http://"+IPAdress+":"+Port+"/v1/campanhas/";
@@ -57,6 +57,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private String APIgetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/getcompras?accesstoken=";
     private String APIsetCompras = "http://"+IPAdress+":"+Port+"/v1/compras/setcompras";
     private String mUrlAPIProdutos = "http://"+IPAdress+":"+Port+"/v1/produtos";
+    private String APIdeleteCompra = "http://"+IPAdress+":"+Port+"/v1/compras/deletecompra?accesstoken=";
+    private String APIstateCompra = "http://"+IPAdress+":"+Port+"/v1/compras/state?accesstoken=";
 
     private static RequestQueue volleyQueue;
 
@@ -621,6 +623,11 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     public void onRefreshListaCompra(ArrayList<Compra> compra) {
 
     }
+
+    @Override
+    public void callback(boolean state) {
+
+    }
     //endregion
 
     //region account set and get
@@ -829,5 +836,84 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     }
     //endregion
 
+    //region state compras
+    public void APIstateCompras (final Context context, boolean isConnected, String accesstoken){
+        if (isConnected){
+            String APIstateCompras1 = APIstateCompra;
+            APIstateCompras1 += accesstoken;
+            APIstateCompras1 +="&access-token=";
+            APIstateCompras1 += accesstoken;
+
+            StringRequest req = new StringRequest(Request.Method.GET, APIstateCompras1, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    if (response.equals("true")){
+                        Toast.makeText(context, "Purchase made successfully", Toast.LENGTH_SHORT).show();
+                        comprasListener.callback(true);
+                    }
+                    if (response.equals("false")){
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                    if (response.equals("no stock")){
+                        Toast.makeText(context, "One of the products has no stock", Toast.LENGTH_SHORT).show();
+                    }
+                    if(fixByteListener != null)
+                    {
+                        comprasListener.onRefreshListaCompra(compras);
+
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+    //endregion
+
+    //region delete
+    public void APIdeleteCompras (final Context context, boolean isConnected, String accesstoken, long id){
+        if (isConnected){
+            String APIdeleteCompras1 = APIdeleteCompra;
+            APIdeleteCompras1 += accesstoken;
+            APIdeleteCompras1 +="&access-token=";
+            APIdeleteCompras1 += accesstoken;
+            APIdeleteCompras1 += "&id=" + id;
+
+            StringRequest req = new StringRequest(Request.Method.GET, APIdeleteCompras1, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("--> RESPOSTA: " + response);
+                    if (response.equals("true")){
+                        Toast.makeText(context, "Delete made successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    if (response.equals("false")){
+                        Toast.makeText(context, "Access token invalid", Toast.LENGTH_SHORT).show();
+                    }
+                    if (response.equals("no stock")){
+                        Toast.makeText(context, "One of the products has no stock", Toast.LENGTH_SHORT).show();
+                    }
+                    if(fixByteListener != null)
+                    {
+                        comprasListener.onRefreshListaCompra(compras);
+
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    System.out.println("ERROR: " + error);
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+    //endregion
 
 }

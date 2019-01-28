@@ -1,8 +1,13 @@
 package pt.ipleiria.estg.dei.amsi.fixbyte;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +21,7 @@ import java.io.File;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.FixByteSingleton;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
+import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
 public class ProductDetailActivity extends AppCompatActivity {
     public static final String DETALHES_PRODUTOS = "DETALHES_PRODUTOS";
@@ -28,6 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private Produto produto;
     FloatingActionButton fab;
+    private Button btn;
     long idProduto;
     private String ImageRoute;
 
@@ -43,6 +50,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         textViewNome = findViewById(R.id.textViewNome);
         textViewDescricao = findViewById(R.id.textViewDescricao);
         textViewPrecoOriginal = findViewById(R.id.textViewPrecoOriginal);
+
+        btn = findViewById(R.id.buttonAddCart);
+        btn.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String Token = preferences.getString("token", "");
+                FixByteSingleton.getInstance(getApplicationContext()).APIsetCompras(getApplicationContext(),Token,idProduto);
+            }
+        });
 
         produto = FixByteSingleton.getInstance(getApplicationContext()).getProduto(idProduto);
         preencherDadosProduto();

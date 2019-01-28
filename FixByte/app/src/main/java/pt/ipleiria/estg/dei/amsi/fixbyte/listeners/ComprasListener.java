@@ -7,4 +7,5 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.User;
 
 public interface ComprasListener {
     void onRefreshListaCompra(ArrayList<Compra> compra);
+    void callback(boolean state);
 }

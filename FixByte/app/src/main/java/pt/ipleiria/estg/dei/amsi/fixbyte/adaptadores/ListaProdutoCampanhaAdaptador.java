@@ -11,31 +11,37 @@ import java.util.ArrayList;
 
 import pt.ipleiria.estg.dei.amsi.fixbyte.R;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Campanha;
+import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.Produto;
 import pt.ipleiria.estg.dei.amsi.fixbyte.modelo.ProdutoCampanha;
 
 public class ListaProdutoCampanhaAdaptador extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<ProdutoCampanha> produtoscampanha;
+    private ArrayList<ProdutoCampanha> produtos;
 
-
-    public ListaProdutoCampanhaAdaptador(Context context, ArrayList<ProdutoCampanha> produtoscampanha) {
+    public ListaProdutoCampanhaAdaptador(Context context, ArrayList<ProdutoCampanha> produtos)
+    {
         this.context = context;
-        this.produtoscampanha = produtoscampanha;
+        this.produtos = produtos;
+    }
+
+
+    @Override
+    public int getCount()
+    {
+        return produtos.size();
     }
 
     @Override
-    public int getCount() {
-        return produtoscampanha.size();
-    }
-    @Override
-    public Object getItem(int position) {
-        return produtoscampanha.get(position);
+    public Object getItem(int position)
+    {
+        return produtos.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return position;
     }
 
@@ -48,52 +54,39 @@ public class ListaProdutoCampanhaAdaptador extends BaseAdapter {
 
         if (convertView == null)
         {
-            convertView = inflater.inflate(R.layout.fragment_sales,null);
+            convertView = inflater.inflate(R.layout.activity_product_item,null);
         }
 
-        ViewHolderListaproduto viewHolderListaproduto = (ViewHolderListaproduto) convertView.getTag();
-        if (viewHolderListaproduto == null)
+        ListaProdutoCampanhaAdaptador.ViewHolderLista viewHolderLista = (ListaProdutoCampanhaAdaptador.ViewHolderLista) convertView.getTag();
+        if (viewHolderLista == null)
         {
-            viewHolderListaproduto = new ViewHolderListaproduto(convertView);
-            convertView.setTag(viewHolderListaproduto);
+            viewHolderLista = new ListaProdutoCampanhaAdaptador.ViewHolderLista(convertView);
+            convertView.setTag(viewHolderLista);
         }
 
-        viewHolderListaproduto.update(produtoscampanha.get(position));
+        viewHolderLista.update(produtos.get(position));
         return convertView;
     }
 
-    public void refresh(ArrayList<ProdutoCampanha> produtoscampanha)
-    {
-        this.produtoscampanha=produtoscampanha;
+    public void refresh(ArrayList<ProdutoCampanha> produtos){
+        this.produtos = produtos;
         notifyDataSetChanged();
     }
 
-    private class ViewHolderListaproduto
-    {
-        private TextView nome;
-        private TextView preco;
-        private TextView precodpsDesconto;
-        private TextView percentagem;
+    private class ViewHolderLista{
+        private TextView produtoNome;
+        private TextView produtoPreco;
 
-
-
-        public ViewHolderListaproduto (View convertView)
+        public ViewHolderLista (View convertView)
         {
-            nome = convertView.findViewById(R.id.txtNome);
-           // preco = convertView.findViewById(R.id.txtpreco);
-            //precodpsDesconto = convertView.findViewById(R.id.txt);
-            //percentagem = convertView.findViewById(R.id.txtpercentagem);
-
-
+            produtoNome = convertView.findViewById(R.id.textViewNomeProduto);
+            produtoPreco = convertView.findViewById(R.id.textViewPrecoProduto);
         }
 
-        public void update (ProdutoCampanha produtocampanha)
+        public void update (ProdutoCampanha produto)
         {
-             nome.setText(produtocampanha.getProdutoNome());
-             preco.setText(String.valueOf(produtocampanha.getProdutoPreco()));
-             precodpsDesconto.setText(produtocampanha.getPrecoDpsDesconto());
-             percentagem.setText(produtocampanha.getCampanhaPercentagem());
-
+            produtoNome.setText(produto.getProdutoNome());
+            produtoPreco.setText(produto.getPrecoDpsDesconto()+"€");
         }
     }
 }
