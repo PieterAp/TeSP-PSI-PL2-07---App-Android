@@ -945,14 +945,8 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     public void getAllReparacoesAPI (final Context context, boolean isConnected, String accesstoken){
         if (!isConnected){
-            reparacoes = bdhelper.getAllReparacoesBD();
-            if (!reparacoes.isEmpty()){
-                if(fixByteListener != null)
-                {
-                    fixByteListener.onRefreshListaReparacoes(reparacoes);
-                }
-            }
-        }else{
+            Toast.makeText(context, "You must be connected to the internet", Toast.LENGTH_SHORT).show();
+        }else {
             String APIgetReparacoes = mUrlAPIReparacoes;
             APIgetReparacoes += accesstoken;
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, APIgetReparacoes, null, new Response.Listener<JSONArray>() {

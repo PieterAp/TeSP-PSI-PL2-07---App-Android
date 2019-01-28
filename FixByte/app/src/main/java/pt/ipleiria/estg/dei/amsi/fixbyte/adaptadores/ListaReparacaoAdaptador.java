@@ -74,17 +74,20 @@ public class ListaReparacaoAdaptador extends BaseAdapter
     private class ViewHolderLista{
         private TextView textViewEstado;
         private TextView textViewDataFim;
+        private TextView textViewCode;
 
         public ViewHolderLista (View convertView)
         {
             textViewEstado = convertView.findViewById(R.id.textViewEstado);
             textViewDataFim = convertView.findViewById(R.id.textViewDataFim);
+            textViewCode = convertView.findViewById(R.id.textViewCode);
         }
 
         public void update (Reparacao reparacao)
         {
             textViewEstado.setText(reparacao.getReparacaoEstado());
             textViewDataFim.setText(reparacao.getReparacaoDataConcluido());
+            textViewCode.setText(Long.toString(reparacao.getReparacaoNumero()));
         }
     }
 }
