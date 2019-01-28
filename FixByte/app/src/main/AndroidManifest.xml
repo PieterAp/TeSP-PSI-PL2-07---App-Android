@@ -45,8 +45,11 @@
         AccountActivity
         <activity
             android:name=".DetalhesProdutosCampanha"
-            android:parentActivityName=".ListaCampanhasActivity" />
+            />
         DetalhesProdutosCampanha
+        <activity
+            android:name=".ProdutoCampanhaDetail"
+           />
         <activity
             android:name=".SampleActivity"
             android:label="@string/title_activity_sample"

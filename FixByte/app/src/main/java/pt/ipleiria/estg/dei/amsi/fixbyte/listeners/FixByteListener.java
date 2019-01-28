@@ -13,9 +13,6 @@ public interface FixByteListener {
     void onRefreshListaCampanhas(ArrayList<Campanha> listacampanhas);
     void onUpdateListaCampanhasBD (Campanha livro, int operacao);
 
-    void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha);
-    void onUpdateListaProdutosCampanhaBD (ProdutoCampanha produtocampanha, int operacao);
-
     void onRefreshListaCategorias(ArrayList<Categoria> listacategorias);
     void onUpdateListaCategoriasBD (Categoria categoria, int operacao);
 

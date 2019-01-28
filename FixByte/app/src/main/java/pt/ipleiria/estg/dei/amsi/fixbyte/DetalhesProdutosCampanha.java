@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,44 +22,41 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 public class DetalhesProdutosCampanha extends AppCompatActivity implements ProdutocampanhaListener {
     public static final String DETALHES_PRODUCTS_SALE = "DETALHES_PRODUCTS_SALE";
 
-    SharedPreferences sharePref;
-    SharedPreferences.Editor editor;
 
     Long idCampanha;
 
     private ListView lvlistView;
     private ArrayList<Campanha> listaCampanhas;
-    private ListaProdutoCampanhaAdaptador listacampanhasAdaptador;
+    private ListaProdutoCampanhaAdaptador listaprodutocampanhasAdaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_campanhas);
-
-        sharePref = getPreferences(Context.MODE_PRIVATE);
-        editor = sharePref.edit();
+        setContentView(R.layout.fragment_product_list);
 
         idCampanha = getIntent().getLongExtra(DETALHES_PRODUCTS_SALE,-1);
 
-        //FixByteSingleton.getInstance(getApplicationContext()).setProdutosCampanhaListener(this);
+        FixByteSingleton.getInstance(getApplicationContext()).setProdutosCampanhaListener(this);
         FixByteSingleton.getInstance(getApplicationContext()).getAllProdutoCampanhaAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()),idCampanha);
 
-        lvlistView = (ListView) findViewById(R.id.listviewCampanhas);
+        lvlistView = (ListView) findViewById(R.id.listVIewProducts);
 
 
         lvlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Campanha tempCampanha = (Campanha) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getApplicationContext(), DetalhesProdutosCampanha.class);
-                intent.putExtra(DetalhesProdutosCampanha.DETALHES_PRODUCTS_SALE, tempCampanha.getIdCampanha());
+                ProdutoCampanha tempCampanha = (ProdutoCampanha) parent.getItemAtPosition(position);
+                System.out.println("--> coise: " + tempCampanha.getPrecoDpsDesconto());
+
+                Intent intent = new Intent(getApplicationContext(), ProdutoCampanhaDetail.class);
+                intent.putExtra(ProdutoCampanhaDetail.IDPRODUTO, tempCampanha.getIdprodutos());
+                intent.putExtra(ProdutoCampanhaDetail.DESCONTO, tempCampanha.getPrecoDpsDesconto().toString());
                 startActivity(intent);
             }
         });
 
     }
-
 
     protected void onResume()
     {
@@ -72,16 +70,11 @@ public class DetalhesProdutosCampanha extends AppCompatActivity implements Produ
         if (listaprodutoscampanha!=null)
         {
             if (lvlistView == null) {
-                lvlistView =  findViewById(R.id.listviewCampanhas);
+                lvlistView =  findViewById(R.id.listVIewProducts);
             }
-            listacampanhasAdaptador = new ListaProdutoCampanhaAdaptador(this,listaprodutoscampanha);
-            lvlistView.setAdapter(listacampanhasAdaptador);
+            listaprodutocampanhasAdaptador = new ListaProdutoCampanhaAdaptador(this,listaprodutoscampanha);
+            lvlistView.setAdapter(listaprodutocampanhasAdaptador);
         }
-    }
-
-    @Override
-    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
-
     }
 
 }

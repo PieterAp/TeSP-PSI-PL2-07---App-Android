@@ -87,16 +87,6 @@ public class ComprasFragment extends Fragment implements FixByteListener
     }
 
     @Override
-    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha) {
-
-    }
-
-    @Override
-    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
-
-    }
-
-    @Override
     public void onRefreshListaCategorias(ArrayList<Categoria> listaCategorias)
     {
 

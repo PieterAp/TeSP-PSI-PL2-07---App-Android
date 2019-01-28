@@ -334,7 +334,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
                                 try{
                                     if (error != null){
                                         if (!error.isNull("username")){
-                                            mUsernameView.setError(error.get("username").toString());
+                                            mUsernameView.setError("This username has already been taken.");
                                             mUsernameView.requestFocus();
                                             Notcancel[0] = false;
                                             System.out.println("--> RESPOSTA ERROR12 : "+Notcancel[0]);
@@ -351,12 +351,12 @@ public class RegisterActivity extends AppCompatActivity implements RegisterListe
                                             Notcancel[0] = false;
                                         }
                                         if (!error.isNull("email")){
-                                            mEmailView.setError(error.get("email").toString());
+                                            mEmailView.setError("This EMAIL has already been taken.");
                                             mEmailView.requestFocus();
                                             Notcancel[0] = false;
                                         }
                                         if (!error.isNull("userNIF")){
-                                            mNifView.setError(error.get("userNIF").toString());
+                                            mNifView.setError("This NIF has already been taken.");
                                             mNifView.requestFocus();
                                             Notcancel[0] = false;
                                         }

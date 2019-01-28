@@ -27,7 +27,6 @@ import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
 public class ListaCampanhasActivity extends AppCompatActivity implements FixByteListener {
 
-    public static final String DADOS_EMAIL = "amsi.dei.estg.ipleiria.pt.EMAIL";
 
     SharedPreferences sharePref;
     SharedPreferences.Editor editor;
@@ -41,19 +40,6 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_campanhas);
 
-        sharePref = getPreferences(Context.MODE_PRIVATE);
-        editor = sharePref.edit();
-
-        String text = getIntent().getStringExtra(DADOS_EMAIL);
-
-        if (text == null)
-        {
-            text = sharePref.getString("DADOS_EMAIL",text);
-        }
-        else
-        {
-            editor.putString("DADOS_EMAIL",text);
-        }
 
         FixByteSingleton.getInstance(getApplicationContext()).setFixByteListener(this);
         FixByteSingleton.getInstance(getApplicationContext()).getAllCampanhasAPI(getApplicationContext(),FixByteJsonParser.isConnectedInternet(getApplicationContext()));
@@ -73,7 +59,6 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
         });
 
     }
-
 
     protected void onResume()
     {
@@ -95,15 +80,6 @@ public class ListaCampanhasActivity extends AppCompatActivity implements FixByte
 
     @Override
     public void onUpdateListaCampanhasBD(Campanha campanha, int operacao) {
-
-    }
-    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha)
-    {
-
-    }
-
-    @Override
-    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao) {
 
     }
 

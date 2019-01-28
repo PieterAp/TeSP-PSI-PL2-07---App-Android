@@ -108,7 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.itemSales:
                         //setFragment(salesFragment);
                         intent = new Intent(getApplication(), ListaCampanhasActivity.class);
-                        intent.putExtra(ListaCampanhasActivity.DADOS_EMAIL, "ola");
                         startActivity(intent);
                         return true;
 

@@ -23,11 +23,12 @@ import java.util.Map;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.ComprasListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.FixByteListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.LoginListener;
+import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.ProdutocampanhaListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.RegisterListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.listeners.UserListener;
 import pt.ipleiria.estg.dei.amsi.fixbyte.utils.FixByteJsonParser;
 
-public class FixByteSingleton implements FixByteListener, LoginListener, RegisterListener, UserListener, ComprasListener {
+public class FixByteSingleton implements FixByteListener, LoginListener, RegisterListener, UserListener, ComprasListener, ProdutocampanhaListener {
     private static FixByteSingleton INSTANCE = null;
 
     private ArrayList<Campanha> campanhas;
@@ -67,6 +68,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
     private RegisterListener registerListener;
     private UserListener userListener;
     private ComprasListener comprasListener;
+    private ProdutocampanhaListener produtocampanhaListener;
 
     public static synchronized FixByteSingleton getInstance(Context context)
     {
@@ -230,8 +232,6 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
 
     public void getAllProdutoCampanhaAPI (final Context context, boolean isConnected, Long idCampanha)
     {
-        Toast.makeText(context, "isConnected: " + isConnected, Toast.LENGTH_SHORT).show();
-
         String mUrlAPIProdutosCampanhas1;
         mUrlAPIProdutosCampanhas1 = null;
         mUrlAPIProdutosCampanhas1 = mUrlAPIProdutosCampanhas;
@@ -245,7 +245,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
                 public void onResponse(JSONArray response) {
                     System.out.println("--> RESPOSTA: " + response);
                     produtoscampanha = FixByteJsonParser.parserJsonProdutosCampanha(response,context);
-                    fixByteListener.onRefreshListaProdutosCampanha(produtoscampanha);
+                    produtocampanhaListener.onRefreshListaProdutosCampanha(produtoscampanha);
                 }
             }, new Response.ErrorListener(){
                 @Override
@@ -257,21 +257,13 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
         }
     }
 
-    public void setProdutosCampanhaListener (FixByteListener fixByteListener )
-    {
-        this.fixByteListener = fixByteListener;
-    }
-
     @Override
-    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha)
-    {
+    public void onRefreshListaProdutosCampanha(ArrayList<ProdutoCampanha> listaprodutoscampanha) {
 
     }
 
-    @Override
-    public void onUpdateListaProdutosCampanhaBD(ProdutoCampanha produtocampanha, int operacao)
-    {
-
+    public void setProdutosCampanhaListener(ProdutocampanhaListener produtocampanhaListener) {
+        this.produtocampanhaListener = produtocampanhaListener;
     }
     //endregion
 
@@ -914,6 +906,7 @@ public class FixByteSingleton implements FixByteListener, LoginListener, Registe
             volleyQueue.add(req);
         }
     }
+
     //endregion
 
 }
